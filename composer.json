@@ -1,0 +1,12 @@
+{
+    "name": "cloudberry"
+  , "description": "Cloudberry is application for managing and sharing documents in the web"
+  , "keywords": ["mollify"]
+  , "homepage": "http://www.cloudberryapp.com"
+  , "author": "Samuli Järvelä"
+  , "license": "GPLv2"
+  , "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "phpunit/dbunit": ">=1.2"
+    }
+}

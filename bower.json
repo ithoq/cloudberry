@@ -1,0 +1,16 @@
+{
+    "name": "cloudberry",
+    "version": "1.0.0",
+    "main": [],
+    "dependencies": {
+        "angular": "1.2.x",
+        "angular-route": "1.2.x",
+        "angular-loader": "1.2.x",
+        "angular-mocks": "~1.2.16",
+        "angular-ui-router": "*",
+        "angular-gettext": "*",
+        "bootstrap": "~3.1.1",
+        "angular-bootstrap": "*",
+        "font-awesome": "4.1"
+    }
+}

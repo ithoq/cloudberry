@@ -1,0 +1,92 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: js/config.js
+msgid "config_viewTitle"
+msgstr ""
+
+#: js/core.js
+msgid "fileSize_byte"
+msgid_plural "fileSize_bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/core.js
+msgid "fileSize_gigabyte"
+msgid_plural "fileSize_gigabytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/core.js
+msgid "fileSize_kilobyte"
+msgid_plural "fileSize_kilobytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/core.js
+msgid "fileSize_megabyte"
+msgid_plural "fileSize_megabytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/files.js
+msgid "filesList_colLastModified"
+msgstr ""
+
+#: js/files.js
+msgid "filesList_colName"
+msgstr ""
+
+#: js/files.js
+msgid "filesList_colPath"
+msgstr ""
+
+#: js/files.js
+msgid "filesList_colSize"
+msgstr ""
+
+#: js/files.js
+msgid "filesList_colType"
+msgstr ""
+
+#: js/files.js
+msgid "files_viewTitle"
+msgstr ""
+
+#: templates/login.html
+msgid "forgotPassword_Email"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Login"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Password"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Register"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Remember me"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Reset password"
+msgstr ""
+
+#: templates/login.html
+msgid "login_Username"
+msgstr ""
+
+#: js/core.js
+msgid "session_logout"
+msgstr ""
+
+#: js/main.js
+msgid "user_changePassword"
+msgstr ""

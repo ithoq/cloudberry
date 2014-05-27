@@ -1,0 +1,66 @@
+<div class="main-view">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Mollify</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="main-header-nav nav navbar-nav navbar-left">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa {{activeView.icon}}"></i>&nbsp;<span>{{activeView.titleKey | translate}}</span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="view in views"><a href="#" ui-sref="{{view.id}}"><i class="fa {{view.icon}}"></i>&nbsp;<span>{{view.titleKey | translate}}</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="main-header-sub-nav nav navbar-nav navbar-left" ui-view="header-nav"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{session.user.name}} <b class="caret"></b></a>
+                        <menu-list ng-items="sessionActions" ng-ctx="session.user"></menu-list>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="TODO">
+                </form>
+                <ul class="nav navbar-nav navbar-right nav-pills" ui-view="header-tools">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" popupmenu-container>
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" ui-view="sidebar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view>
+            </div>
+
+            <div class="popupmenu-container">
+                <menu-list ng-items="popupmenu.items" ng-ctx="popupmenu.parent"></menu-list>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width: 0px; height: 0px; overflow: hidden;"><iframe id="mollify-download-frame" src=""></iframe></div>
+
+<script type="text/ng-template" id="main/change_password.html">
+    <div class="modal-header">
+        <h3 class="modal-title">pw</h3>
+    </div>
+    <div class="modal-body">
+        User: <b>{{ user.name }}</b>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
