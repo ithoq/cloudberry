@@ -17,27 +17,17 @@
 <html>
 	<?php pageHeader("Cloudberry Update", "init"); ?>
 	
-	<body id="page-mysql-update-needed">
-		<?php pageBody("Update", "Database Update"); ?>
-		<div class="content">
-			<p>
-				<?php echo $installer->updateSummary(); ?>
-			</p>
-			<p>
-				Click "Update" to start update.
-			</p>
-			<p>
-				<a id="button-update" href="#" class="btn green">Update</a>
-			</p>
-		</div>
-		<?php pageFooter(); ?>
-	</body>
-	
-	<script type="text/javascript">
-		function init() {
-			$("#button-update").click(function() {
-				action("update");
-			});
-		}
-	</script>
+	<?php pageBody(); ?>
+
+	<p>
+		<?php echo $installer->updateSummary(); ?>
+	</p>
+	<p>
+		Click "Update" to start update.
+	</p>
+	<p>
+		<a id="button-update" href="javascript: action('update');" class="btn btn-success">Update</a>
+	</p>
+
+	<?php pageFooter(); ?>
 </html>

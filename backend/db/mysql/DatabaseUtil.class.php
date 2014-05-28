@@ -21,7 +21,7 @@
 		}
 		
 		public function getVersionHistory() {
-			return array();
+			return array("201405280000");
 		}
 		
 		public function currentVersion() {

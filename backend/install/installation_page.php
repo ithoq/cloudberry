@@ -18,7 +18,7 @@
 			<title><?php echo($title);?></title>
 			<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css">
 			<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-theme.min.css">
-			<link rel="stylesheet" href="resources/install.css">
+			<link rel="stylesheet" href="../install/resources/install.css">
 			
 			<script type="text/javascript" src="../resources/jquery.min.js"></script>
 			<script type="text/javascript" src="../resources/bootstrap/bootstrap.min.js"></script>

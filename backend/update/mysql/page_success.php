@@ -21,18 +21,16 @@
 <html>
 	<?php pageHeader("Cloudberry Update"); ?>
 	
-	<body id="page-mysql-update_success">
-		<?php pageBody("Update", "Update Complete"); ?>
-		<div class="content">
-			<p>
-				Cloudberry was successfully updated with following updates:
-				<ul><?php
-					$updates = $installer->data("updates");
-					foreach($updates as $update)
-						echo "<li>".$update."</li>";
-				?></ul>
-			</p>	
-		</div>
-		<?php pageFooter(); ?>
-	</body>
+	<?php pageBody("Update Complete"); ?>
+
+	<p>
+		Cloudberry was successfully updated with following updates:
+		<ul><?php
+			$updates = $installer->data("updates");
+			foreach($updates as $update)
+				echo "<li>".$update."</li>";
+		?></ul>
+	</p>	
+
+	<?php pageFooter(); ?>
 </html>

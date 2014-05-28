@@ -20,12 +20,7 @@
 
 <html>
 	<?php pageHeader("Cloudberry Update"); ?>
-	
-	<body id="page-mysql-current-installed">
-		<?php pageBody("Update"); ?>
-		<div class="content">
-			<h2>No update is required.</h2>	
-		</div>
-		<?php pageFooter(); ?>
-	</body>
+	<?php pageBody(); ?>
+	<h2>No update is required.</h2>	
+	<?php pageFooter(); ?>
 </html>

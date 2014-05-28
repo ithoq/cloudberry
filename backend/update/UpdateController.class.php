@@ -85,7 +85,7 @@
 			}
 
 			if (!in_array($current, $versionHistory)) {
-				$this->installer->processor()->setError("Updater error", "Cloudberry updater does not contain the update required to update to current version, report a new updater issue at <a href='http://code.google.com/p/Cloudberry/issues/list'>issue list</a>");
+				$this->installer->processor()->setError("Updater error", "Cloudberry updater does not contain the update required to update to current version, report a new updater issue at <a href='https://github.com/sjarvela/cloudberry/issues'>issue list</a>");
 				$this->installer->processor()->showPage("update_error");
 			}
 
@@ -149,7 +149,7 @@
 			$systemCurrent = $this->installer->currentVersion();
 			
 			if (strcmp($systemInstalled, $systemCurrent) != 0) {
-				$result .= 'Cloudberry system requires an update to version <b>'.$this->versionString($systemCurrent).'</b>';
+				$result .= 'Cloudberry system requires an update to version <b>'.$systemCurrent.'</b>';
 			} else {
 				$result .= 'Cloudberry system is up-to-date.';
 			}

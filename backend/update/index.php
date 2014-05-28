@@ -59,7 +59,7 @@
 	function showError($e) {
 		$c = get_class($e);
 		if ($c === "ServiceException") {
-			echo "Mollify error (".$e->type()."): ".$e->details();
+			echo "Cloudberry error (".$e->type()."): ".$e->details();
 		} else {
 			echo "Unknown error (".$c."): ".$e->getMessage();
 		}
