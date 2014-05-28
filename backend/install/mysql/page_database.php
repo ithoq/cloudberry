@@ -27,15 +27,17 @@
 			<li><b>User:</b> <code><?php echo $installer->db()->user(); ?></code></li>
 			<?php if ($installer->db()->tablePrefix() != '') { ?><li><b>Table prefix:</b> <code><?php echo $installer->db()->tablePrefix(); ?></code></li><?php } ?>
 		</ul>
-		<?php if (!$installer->db()->databaseExists()) { ?>
-					<div class="clear" />
-					<div class="note">
-						<p><b>Note!</b> Database "<code><?php echo $installer->db()->database(); ?></code>" does not exist or user "<code><?php echo $installer->db()->user(); ?></code>" does not have access permissions.</p>
-						<p>If you continue installation, installer will try to create it.</p>
-						<p>If you wish to create the database and associate user permissions manually instead, click "Refresh Configuration" when ready.</p>
-					</div>
-		<?php } ?>				
 	</p>
+	<?php if (!$installer->db()->databaseExists()) { ?>
+		<p>
+			<div class="bs-callout bs-callout-warning">
+				<h4>Database "<code><?php echo $installer->db()->database(); ?></code>" does not exist or user "<code><?php echo $installer->db()->user(); ?></code>" does not have access permissions.</h4>
+				<p>If you continue installation, installer will try to create it.</p>
+				<p>If you wish to create the database and associate user permissions manually instead, click "Refresh Configuration" when ready.</p>
+			</div>
+		</p>
+	<?php } ?>
+	
 	<p>
 		If this configuration is correct, click "Continue Installation". Otherwise, modify the configuration file and click "Refresh Configuration".
 	</p>

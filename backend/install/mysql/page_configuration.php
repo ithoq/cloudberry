@@ -19,15 +19,13 @@
 	
 	<?php pageBody("MySQL Database Configuration"); ?>
 		
-	<?php if ($installer->action() === 'continue' and !$installer->hasError()) { ?>		
-	<div class="error">
-		<div class="title">	
-			No database configuration found.
-		</div>
-		<div class="details">
-			MySQL database configuration is missing or it is not complete. Make sure that the configuration is done according to the instructions below. At minimum, database user and password must be defined.
-		</div>
-	</div>
+	<?php if ($installer->action() === 'continue' and !$installer->hasError()) { ?>
+		<p>
+			<div class="bs-callout bs-callout-danger">
+				<h4>No database configuration found.</h4>
+				<p>MySQL database configuration is missing or it is not complete. Make sure that the configuration is done according to the instructions below. At minimum, database user and password must be defined.</p>
+			</div>
+		</p>
 	<?php } ?>
 		
 	<p>
