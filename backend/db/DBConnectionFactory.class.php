@@ -3,10 +3,10 @@
 	/**
 	 * DBConnectionFactory.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	class DBConnectionFactory {
@@ -28,10 +28,10 @@
 				return PostgresqlDatabase::createFromConf($db);
 			} else if (strcasecmp($type, 'sqlite3') == 0) {
 				require_once("db/sqlite/SQLite3Database.class.php");
-				return MollifySQLite3Database::createFromConf($db);
+				return ClousberrySQLite3Database::createFromConf($db);
 			} else if (strcasecmp($type, 'sqlite') == 0) {
 				require_once("db/sqlite/SQLiteDatabase.class.php");
-				return MollifySQLiteDatabase::createFromConf($db);
+				return CloudberrySQLiteDatabase::createFromConf($db);
 			} else {
 				throw new ServiceException("INVALID_CONFIGURATION", "Unsupported database type: [".$type."]");
 			}

@@ -3,10 +3,10 @@
 	/**
 	 * UpdateController.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	
 	class UpdateController {		
@@ -21,7 +21,7 @@
 			if (!$this->installer->isInstalled()) die();
 
 			$this->installer->processor()->createEnvironment($this->installer->db());
-			//if (!$this->installer->processor()->authentication()->isAdmin()) die("Mollify Updater requires administrator user");
+			//if (!$this->installer->processor()->authentication()->isAdmin()) die("Cloudberry Updater requires administrator user");
 			
 			if ($this->installer->isCurrentVersionInstalled() and $this->arePluginsUptodate()) $this->installer->processor()->showPage("current_installed");
 			
@@ -85,7 +85,7 @@
 			}
 
 			if (!in_array($current, $versionHistory)) {
-				$this->installer->processor()->setError("Updater error", "Mollify updater does not contain the update required to update to current version, report a new updater issue at <a href='http://code.google.com/p/mollify/issues/list'>issue list</a>");
+				$this->installer->processor()->setError("Updater error", "Cloudberry updater does not contain the update required to update to current version, report a new updater issue at <a href='http://code.google.com/p/Cloudberry/issues/list'>issue list</a>");
 				$this->installer->processor()->showPage("update_error");
 			}
 
@@ -103,7 +103,7 @@
 				$stepFrom = $stepTo;
 			}
 			
-			return "Mollify updated to ".$this->versionString($current);
+			return "Cloudberry updated to ".$this->versionString($current);
 		}
 		
 		private function updatePlugin($id, $plugin) {
@@ -149,9 +149,9 @@
 			$systemCurrent = $this->installer->currentVersion();
 			
 			if (strcmp($systemInstalled, $systemCurrent) != 0) {
-				$result .= 'Mollify system requires an update to version <b>'.$this->versionString($systemCurrent).'</b>';
+				$result .= 'Cloudberry system requires an update to version <b>'.$this->versionString($systemCurrent).'</b>';
 			} else {
-				$result .= 'Mollify system is up-to-date.';
+				$result .= 'Cloudberry system is up-to-date.';
 			}
 
 			$installedPlugins = array();

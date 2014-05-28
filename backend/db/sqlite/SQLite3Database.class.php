@@ -3,13 +3,13 @@
 	/**
 	 * SQLiteDatabase.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
-	class MollifySQLite3Database {
+	class CloudberrySQLite3Database {
 		private $file;		
 		private $db = NULL;
 		private $transaction = FALSE;
@@ -18,7 +18,7 @@
 			if (!isset($conf["file"])) throw new ServiceException("INVALID_CONFIGURATION", "No SQLite database file defined");
 			
 			$file = $conf["file"];
-			$db = new MollifySQLite3Database($file);
+			$db = new CloudberrySQLite3Database($file);
 			$db->connect();
 			return $db;
 		}

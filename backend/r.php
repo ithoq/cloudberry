@@ -3,10 +3,10 @@
 	/**
 	 * r.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	date_default_timezone_set("Europe/Helsinki");
@@ -53,13 +53,13 @@
 	global $CONFIGURATION, $VERSION;
 	Logging::initialize($CONFIGURATION, $VERSION);
 
-	require_once("include/MollifyBackend.class.php");
+	require_once("include/CloudberryBackend.class.php");
 	require_once("include/Settings.class.php");
 		
 	$responseHandler = new ResponseHandler(new OutputHandler(getSetting($CONFIGURATION, 'mime_types', array()), isSetting($CONFIGURATION, 'support_output_buffer')));
 	try {
 		$settings = new Settings($CONFIGURATION);
-		$backend = new MollifyBackend($settings, getDB($settings), $responseHandler);
+		$backend = new CloudberryBackend($settings, getDB($settings), $responseHandler);
 		$backend->processRequest(Request::get());
 	} catch (ServiceException $e) {
 		Logging::logException($e);

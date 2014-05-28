@@ -1,24 +1,24 @@
 <?php
 
 	/**
-	 * MollifyZipRaw.class.php
+	 * CloudberryZipRaw.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	
 	@include_once('zip.lib.php');
 	
-	class MollifyZipRaw implements MollifyCompressor {
+	class CloudberryZipRaw implements CloudberryCompressor {
 		private $env;
 		private $name;
 		private $zip;
 		
 		function __construct($env) {
 			$this->env = $env;
-			$this->name = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid('Mollify', true).'zip';
+			$this->name = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid('Cloudberry', true).'zip';
 			$this->zip = new zipfile();
 		}
 		

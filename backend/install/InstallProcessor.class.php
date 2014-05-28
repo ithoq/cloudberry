@@ -3,10 +3,10 @@
 	/**
 	 * InstallProcessor.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	
 	class InstallProcessor {
@@ -59,7 +59,7 @@
 			$this->configuration->initialize($this);
 			$this->features = new Features($this->settings);
 			$this->cookies = new Cookie($this->settings);
-			$this->passwordHash = new Mollify_PasswordHash($this->settings);
+			$this->passwordHash = new Cloudberry_PasswordHash($this->settings);
 			
 			$this->plugins->setup();
 			$this->session->initialize($this, NULL);

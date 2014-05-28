@@ -3,10 +3,10 @@
 	/**
 	 * page_current_installed.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	 include("install/installation_page.php");
@@ -19,7 +19,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html>
-	<?php pageHeader("Mollify Update"); ?>
+	<?php pageHeader("Cloudberry Update"); ?>
 	
 	<body id="page-mysql-current-installed">
 		<?php pageBody("Update"); ?>

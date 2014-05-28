@@ -3,10 +3,10 @@
 	/**
 	 * page_configuration.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	 include("install/installation_page.php");
@@ -34,7 +34,7 @@
 			<li>User</li>
 			<li>Password</li>
 			<li>Host name (optional, by default "localhost")</li>
-			<li>Database name (optional, by default "mollify")</li>
+			<li>Database name (optional, by default "cloudberry")</li>
 			<li>Port (for remote MySQL servers, optional)</li>
 			<li>Socket (for local MySQL servers, optional)</li>
 			<li>Table prefix (optional)</li>
@@ -52,8 +52,8 @@ $CONFIGURATION = array(
 		&quot;user&quot; => &quot;<span class="value">[MYSQL_USERNAME]</span>&quot;,
 		&quot;password&quot; => &quot;<span class="value">[MYSQL_PASSWORD]</span>&quot;,
 		&quot;host&quot; => &quot;<span class="value">localhost</span>&quot;,
-		&quot;database&quot; => &quot;<span class="value">mollify</span>&quot;,
-		&quot;table_prefix&quot; => &quot;<span class="value">mollify_</span>&quot;,
+		&quot;database&quot; => &quot;<span class="value">cloudberry</span>&quot;,
+		&quot;table_prefix&quot; => &quot;<span class="value">cloudberry_</span>&quot;,
 		&quot;charset&quot; => &quot;<span class="value">utf8</span>&quot;
 	)
 );

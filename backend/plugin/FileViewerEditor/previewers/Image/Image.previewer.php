@@ -3,10 +3,10 @@
 	/**
 	 * ImagePreviewer.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class ImagePreviewer extends PreviewerBase {

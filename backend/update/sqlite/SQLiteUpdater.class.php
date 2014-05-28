@@ -3,10 +3,10 @@
 	/**
 	 * SQLiteUpdater.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	
 	require_once("install/sqlite/SQLiteInstaller.class.php");
@@ -22,10 +22,6 @@
 		}
 		
 		public function getConversion($versionTo) {
-			if (strcmp("1_8_5", $versionTo) === 0) {
-				require_once("update/conversion/1_8_5.php");
-				return new Upd_1_8_5();
-			}
 			return NULL;
 		}
 		

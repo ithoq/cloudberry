@@ -3,10 +3,10 @@
 	/**
 	 * SQLiteInstaller.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	require_once("install/InstallProcessor.class.php");
@@ -40,10 +40,10 @@
 		private function createDB($file) {
 			if (strcasecmp($this->type, "sqlite3") == 0) {
 				require_once("db/sqlite/SQLite3Database.class.php");
-				return new MollifySQLite3Database($file);				
+				return new CloudberrySQLite3Database($file);				
 			}
 			require_once("db/sqlite/SQLiteDatabase.class.php");
-			return new MollifySQLiteDatabase($file);
+			return new CloudberrySQLiteDatabase($file);
 		}
 		
 		public function util() {

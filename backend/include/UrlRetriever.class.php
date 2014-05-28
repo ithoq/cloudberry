@@ -3,10 +3,10 @@
 	/**
 	 * UrlRetriever.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class UrlRetriever {
@@ -29,7 +29,7 @@
 				throw new ServiceException("INVALID_CONFIGURATION", "Failed to initialize curl: ".curl_errno()." ".curl_error());
 			}
 			
-			$tempFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.uniqid('Mollify', true);
+			$tempFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.uniqid('Cloudberry', true);
 			$fh = @fopen($tempFile, "wb");
 			if (!$fh) {
 				curl_close($h);

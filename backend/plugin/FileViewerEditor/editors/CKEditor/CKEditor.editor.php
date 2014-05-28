@@ -5,7 +5,7 @@
 			return '
 				<script type="text/javascript" src="'.$resourceUrl.'ckeditor.js"></script>
 				<script type="text/javascript" src="'.$resourceUrl.'adapters/jquery.js"></script>
-				<script type="text/javascript" src="'.$resourceUrl.'mollify.js"></script>
+				<script type="text/javascript" src="'.$resourceUrl.'cloudberry.js"></script>
 			';
 		}
 		

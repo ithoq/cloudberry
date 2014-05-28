@@ -2,7 +2,7 @@
 
 require_once "PHPUnit/Extensions/Database/TestCase.php";
 
-abstract class Mollify_TestCase extends PHPUnit_Extensions_Database_TestCase {
+abstract class Cloudberry_TestCase extends PHPUnit_Extensions_Database_TestCase {
 	static private $CONFIGURATION = array(
 		"debug" => TRUE,
 		"timezone" => "Europe/Helsinki"
@@ -20,7 +20,7 @@ abstract class Mollify_TestCase extends PHPUnit_Extensions_Database_TestCase {
     final public function getConnection() {
     	if (!self::$init) {
 		    set_include_path(dirname(__FILE__).'/..'.PATH_SEPARATOR.get_include_path());
-			require_once("include/MollifyBackend.class.php");
+			require_once("include/CloudberryBackend.class.php");
 			require_once("include/Settings.class.php");
 			require_once("include/Logging.class.php");
 			require_once("include/Request.class.php");
@@ -45,7 +45,7 @@ abstract class Mollify_TestCase extends PHPUnit_Extensions_Database_TestCase {
 		$this->responseHandler = new TestResponseHandler();
 		$db = PDODatabase::createFromObj(self::$pdo, "sqlite");
 		$settings = new Settings(self::$CONFIGURATION);
-		$backend = new MollifyBackend($settings, $db, $this->responseHandler);
+		$backend = new CloudberryBackend($settings, $db, $this->responseHandler);
 		//$backend->processRequest(new Request());
 		return $backend;
     }

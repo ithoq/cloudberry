@@ -3,10 +3,10 @@
 	/**
 	 * Cookie.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class Cookie {
@@ -35,7 +35,7 @@
 		private function getName($n) {
 			$id = $this->settings ? $this->settings->setting("session_name") : FALSE;
 			if (!$id) $id = "app";
-			return "mollify_".$id."_".$n;
+			return "cloudberry_".$id."_".$n;
 		}
 	}
 ?>

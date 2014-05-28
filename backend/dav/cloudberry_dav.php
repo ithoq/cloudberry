@@ -1,6 +1,6 @@
 <?php
 	// DON'T MODIFY THIS FILE
-	set_include_path('lib/'.PATH_SEPARATOR.$MOLLIFY_BACKEND_ROOT.PATH_SEPARATOR.get_include_path());
+	set_include_path('lib/'.PATH_SEPARATOR.$CLOUDBERRY_BACKEND_ROOT.PATH_SEPARATOR.get_include_path());
 	
 	require_once("configuration.php");
 	require_once("include/Logging.class.php");
@@ -9,7 +9,7 @@
 	global $CONFIGURATION;
 	Logging::initialize($CONFIGURATION);
 
-	require_once("include/MollifyBackend.class.php");
+	require_once("include/CloudberryBackend.class.php");
 	require_once("include/configuration/ConfigurationDao.class.php");
 	require_once("include/Settings.class.php");
 	require_once("include/Request.class.php");
@@ -51,7 +51,7 @@
 		public function removeAllSessionBefore($time) {}
 	}
 	
-	class Mollify_DAV_Request {
+	class Cloudberry_DAV_Request {
 		public function ip() { return $_SERVER['REMOTE_ADDR']; }
 		
 		public function getSessionId() { return NULL; }
@@ -70,7 +70,7 @@
 			throw new Sabre_DAV_Exception_Forbidden();
 	}
 	
-	class Mollify_DAV_Root extends Sabre_DAV_Directory {
+	class Cloudberry_DAV_Root extends Sabre_DAV_Directory {
 		private $controller;
 		private $roots;
 		
@@ -82,16 +82,16 @@
 		function getChildren() {
 			$children = array();
 			foreach($this->roots as $root)
-				$children[] = new Mollify_DAV_Folder($this->controller, $root);
+				$children[] = new Cloudberry_DAV_Folder($this->controller, $root);
 			return $children;
 		}
 		
 		function getName() {
-			return "Mollify";
+			return "Cloudberry";
 		}
 	}
 	
-	class Mollify_DAV_Folder extends Sabre_DAV_Directory {
+	class Cloudberry_DAV_Folder extends Sabre_DAV_Directory {
 		private $controller;
 		private $folder;
 
@@ -108,8 +108,8 @@
 		}
 		
 		private function createItem($item) {
-			if ($item->isFile()) return new Mollify_DAV_File($this->controller, $item);
-			return new Mollify_DAV_Folder($this->controller, $item);
+			if ($item->isFile()) return new Cloudberry_DAV_File($this->controller, $item);
+			return new Cloudberry_DAV_Folder($this->controller, $item);
 		}
 
 		public function createFile($name, $data = null) {
@@ -142,7 +142,7 @@
 		}
 	}
 
-	class Mollify_DAV_File extends Sabre_DAV_File {
+	class Cloudberry_DAV_File extends Sabre_DAV_File {
 		private $controller;
 		private $file;
 
@@ -193,7 +193,7 @@
 		$env = new ServiceEnvironment($db, new TemporarySession(), new VoidResponseHandler(), $conf, $settings);
 		$env->plugins()->setup();
 		
-		$env->initialize(new Mollify_DAV_Request());
+		$env->initialize(new Cloudberry_DAV_Request());
 		
 		if (isset($BASIC_AUTH) and $BASIC_AUTH == TRUE) {
 			$auth = new Sabre_HTTP_BasicAuth();
@@ -253,7 +253,7 @@
 			$env->authentication()->setAuth($user, "pw");
 		}
 
-		$dav = new Sabre_DAV_Server(new Mollify_DAV_Root($env->filesystem()));
+		$dav = new Sabre_DAV_Server(new Cloudberry_DAV_Root($env->filesystem()));
 		$dav->setBaseUri($BASE_URI);
 		if ($ENABLE_LOCKING) $dav->addPlugin(new Sabre_DAV_Locks_Plugin(new Sabre_DAV_Locks_Backend_FS('data')));
 		if ($ENABLE_BROWSER) $dav->addPlugin(new Sabre_DAV_Browser_Plugin());

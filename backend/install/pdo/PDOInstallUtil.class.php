@@ -3,10 +3,10 @@
 	/**
 	 * PDOInstallUtil.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class PDOInstallUtil {
@@ -21,7 +21,7 @@
 		}
 		
 		public function checkPermissions() {
-			$table = $this->db->table("mollify_install_test");
+			$table = $this->db->table("cloudberry_install_test");
 
 			// first cleanup, if test table was left
 			try {

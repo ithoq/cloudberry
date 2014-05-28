@@ -3,17 +3,17 @@
 	/**
 	 * Settings.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class Settings {
 		private $settings = array();
 		
 		private static $VALUES = array(
-			"server_hash_salt" => "MOLLIFY_SERVER_SALT",
+			"server_hash_salt" => "CLOUDBERRY_SERVER_SALT",
 			"db" => FALSE,
 			"plugins" => FALSE,
 			"email_login" => FALSE,

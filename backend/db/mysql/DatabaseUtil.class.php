@@ -3,10 +3,10 @@
 	/**
 	 * DatabaseUtil.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class DatabaseUtil {
@@ -21,7 +21,7 @@
 		}
 		
 		public function getVersionHistory() {
-			return array("0_9_5", "1_0_0", "1_5_0", "1_5_4", "1_6_0", "1_7_8", "1_7_10", "1_8_1", "1_8_5", "1_8_7", "1_8_8", "2_0", "2_2", "2_4", "2_5", "2_5_1", "2_5_6");
+			return array();
 		}
 		
 		public function currentVersion() {

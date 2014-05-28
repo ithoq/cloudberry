@@ -3,10 +3,10 @@
 	/**
 	 * Authentication.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class Authentication {
@@ -96,13 +96,13 @@
 		public function login($username, $pw) {
 			$user = $this->env->configuration()->findUser($username, $this->env->settings()->setting("email_login"), time());
 			if (!$user) {
-				syslog(LOG_NOTICE, "Failed Mollify login attempt from [".$this->env->request()->ip()."], user [".$username."]");
+				syslog(LOG_NOTICE, "Failed Cloudberry login attempt from [".$this->env->request()->ip()."], user [".$username."]");
 				$this->env->events()->onEvent(SessionEvent::failedLogin($username, $this->env->request()->ip()));
 				throw new ServiceException("AUTHENTICATION_FAILED");
 			}
 			$auth = $this->env->configuration()->getUserAuth($user["id"]);
 			if (!$this->auth($user, $auth, $pw)) {
-				syslog(LOG_NOTICE, "Failed Mollify login attempt from [".$this->env->request()->ip()."], user [".$username."]");
+				syslog(LOG_NOTICE, "Failed Cloudberry login attempt from [".$this->env->request()->ip()."], user [".$username."]");
 				$this->env->events()->onEvent(SessionEvent::failedLogin($username, $this->env->request()->ip()));
 				throw new ServiceException("AUTHENTICATION_FAILED");				
 			}
@@ -133,7 +133,7 @@
 			else
 				$cls = "include/auth/Authenticator".strtoupper($id).".class.php";
 			require_once($cls);
-			$name = "Mollify_Authenticator_".strtoupper($id);
+			$name = "Cloudberry_Authenticator_".strtoupper($id);
 			return new $name($this->env);
 		}
 		
@@ -152,7 +152,7 @@
 		}
 		
 		public function realm() {
-			return "mollify";
+			return "Cloudberry";
 		}
 		
 		public function isAuthenticated() {
@@ -178,7 +178,7 @@
 		}
 	}
 	
-	abstract class Mollify_Authenticator {
+	abstract class Cloudberry_Authenticator {
 		abstract function authenticate($user, $pw, $auth);
 	}
 ?>

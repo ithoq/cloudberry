@@ -3,10 +3,10 @@
 	/**
 	 * page_configuration.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	 include("install/installation_page.php");
@@ -45,10 +45,10 @@
 $CONFIGURATION = array(
 	&quot;db&quot; => array(
 		&quot;type&quot; => &quot;pdo&quot;,
-		&quot;str&quot; => &quot;<span class="value">mysql:host=localhost;dbname=mollify</span>&quot;,
+		&quot;str&quot; => &quot;<span class="value">mysql:host=localhost;dbname=cloudberry</span>&quot;,
 		&quot;user&quot; => &quot;<span class="value">[DB_USERNAME]</span>&quot;,
 		&quot;password&quot; => &quot;<span class="value">[DB_PASSWORD]</span>&quot;,
-		&quot;table_prefix&quot; => &quot;<span class="value">mollify_</span>&quot;
+		&quot;table_prefix&quot; => &quot;<span class="value">cloudberry_</span>&quot;
 	)
 );
 ?&gt;</pre>

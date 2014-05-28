@@ -3,10 +3,10 @@
 	/**
 	 * FilesystemController.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	 require_once("include/event/EventHandler.class.php");
@@ -34,7 +34,7 @@
 		public $allowFilesystems = FALSE;
 
 		function __construct($env) {
-			require_once("MollifyFilesystem.class.php");
+			require_once("CloudberryFilesystem.class.php");
 			require_once("LocalFilesystem.class.php");
 			require_once("FilesystemItem.class.php");
 			require_once("BaseSearcher.class.php");
@@ -331,7 +331,7 @@
 		}
 
 		public function ignoredItems($filesystem, $path) {
-			return array('mollify.dsc', 'mollify.uac');	//TODO get from settings and/or configuration etc
+			return array();	//TODO get from settings and/or configuration etc
 		}
 		
 		public function items($folder) {

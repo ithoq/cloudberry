@@ -2,13 +2,13 @@
 	/**
 	 * AuthenticatorPW.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
-	class Mollify_Authenticator_PW extends Mollify_Authenticator {
+	class Cloudberry_Authenticator_PW extends Cloudberry_Authenticator {
 		private $env;
 		
 		public function __construct($env) {

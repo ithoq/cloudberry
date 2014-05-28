@@ -1,15 +1,15 @@
 <?php
 
 	/**
-	 * MollifyZipNative.class.php
+	 * CloudberryZipNative.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	
-	class MollifyZipNative implements MollifyCompressor {
+	class CloudberryZipNative implements CloudberryCompressor {
 		private static $availableCommands = NULL;
 		
 		private static function availableCommands() {
@@ -74,7 +74,7 @@
 		
 		function __construct($env) {
 			$this->env = $env;
-			$this->name = sys_get_temp_dir().DIRECTORY_SEPARATOR.uniqid('Mollify', true).'zip';
+			$this->name = sys_get_temp_dir().DIRECTORY_SEPARATOR.uniqid('Cloudberry', true).'zip';
 			$this->cmd = self::command('application/zip');
 			if ($this->cmd == NULL) throw new ServiceException("INVALID_CONFIGURATION", "No native zip library found");
 		}

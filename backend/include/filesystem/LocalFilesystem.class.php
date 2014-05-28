@@ -3,13 +3,13 @@
 	/**
 	 * LocalFilesystem.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
-	class LocalFilesystem extends MollifyFilesystem {
+	class LocalFilesystem extends CloudberryFilesystem {
 		const FS_TYPE = "local";
 		
 		private $rootPath;
@@ -44,7 +44,7 @@
 		}
 		
 		public function type() {
-			return MollifyFilesystem::TYPE_LOCAL;
+			return CloudberryFilesystem::TYPE_LOCAL;
 		}
 				
 		public function createItem($id, $path) {

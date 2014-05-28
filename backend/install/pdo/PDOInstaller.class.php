@@ -3,10 +3,10 @@
 	/**
 	 * PDOInstaller.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	require_once("install/InstallProcessor.class.php");
@@ -66,7 +66,7 @@
 			/*try {
 				$this->db->selectDb();
 			} catch (ServiceException $e) {
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 				return FALSE;
 			}*/
 			
@@ -158,16 +158,6 @@
 		
 		private function checkSystem() {
 			//TODO
-			
-			/*if (!function_exists('mysql_connect')) {
-				$this->processor->setError("MySQL not detected", "Mollify cannot be installed to this system when MySQL is not available. Check your system configuration or choose different configuration type.");
-				$this->processor->showPage("install_error");
-			}
-		
-			if (!function_exists('mysqli_multi_query')) {
-				$this->processor->setError("MySQL Improved (mysqli) not detected", "Mollify installer cannot continue without <a href='http://www.php.net/manual/en/mysqli.overview.php' target='_blank'>MySQL Improved</a> installed. Either check your configuration to install or enable this, or install Mollify manually (see instructions <a href='http://code.google.com/p/mollify/wiki/ConfigurationMySql' target='_blank'>here</a>).");
-				$this->processor->showPage("install_error");
-			}*/
 		}
 		
 		private function checkInstalled() {

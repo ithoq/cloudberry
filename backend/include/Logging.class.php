@@ -3,10 +3,10 @@
 	/**
 	 * Logging.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	include_once("Util.class.php");
@@ -40,14 +40,14 @@
 			if (!self::isDebug()) return;
 
 			$s = self::toStr($m);
-			error_log("MOLLIFY DEBUG: ".$s);
+			error_log("Cloudberry DEBUG: ".$s);
 			if (self::$firebug) FB::log($m);
 			self::$trace[] = $s;
 		}
 		
 		public static function logInfo($m) {
 			$s = self::toStr($m);
-			error_log("MOLLIFY INFO: ".$s);
+			error_log("Cloudberry INFO: ".$s);
 
 			if (self::$firebug) FB::log($m);
 			if (self::isDebug()) self::$trace[] = $s;
@@ -55,7 +55,7 @@
 		
 		public static function logError($m) {
 			$s = self::toStr($m);
-			error_log("MOLLIFY ERROR: ".$s);
+			error_log("Cloudberry ERROR: ".$s);
 			
 			if (self::$firebug) FB::error($m);
 			if (self::isDebug()) self::$trace[] = $s;

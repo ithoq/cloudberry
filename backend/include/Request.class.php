@@ -3,10 +3,10 @@
 	/**
 	 * Request.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class Request {
@@ -28,8 +28,8 @@
 			$uri = self::getUri();
 			$ip = self::getIp();
 
-			if (isset($_SERVER['HTTP_MOLLIFY_HTTP_METHOD']))
-				$method = strtolower($_SERVER['HTTP_MOLLIFY_HTTP_METHOD']);
+			if (isset($_SERVER['HTTP_CLOUDBERRY_HTTP_METHOD']))
+				$method = strtolower($_SERVER['HTTP_CLOUDBERRY_HTTP_METHOD']);
 			
 			$p = stripos($uri, "?");
 			if ($p) $uri = trim(substr($uri, 0, $p), "/");
@@ -38,7 +38,7 @@
 			$params = self::getParams($method);
 			$data = self::getData($method, $raw, $params);
 			
-			return new Request(self::getMollifySessionId($params), $method, $uri, $ip, $parts, $params, $data);
+			return new Request(self::getCloudberrySessionId($params), $method, $uri, $ip, $parts, $params, $data);
 		}
 		
 		private static function getUri() {
@@ -71,9 +71,9 @@
 			}
 		}
 		
-		private static function getMollifySessionId($params) {
+		private static function getCloudberrySessionId($params) {
 			if (isset($params['session'])) return $params["session"];
-			if (isset($_SERVER['HTTP_MOLLIFY_SESSION_ID'])) return $_SERVER['HTTP_MOLLIFY_SESSION_ID'];
+			if (isset($_SERVER['HTTP_CLOUDBERRY_SESSION_ID'])) return $_SERVER['HTTP_CLOUDBERRY_SESSION_ID'];
 			return NULL;
 		}
 				

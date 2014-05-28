@@ -3,10 +3,10 @@
 	/**
 	 * ArchiveManager.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 
 	class ArchiveManager {
@@ -63,17 +63,17 @@
 		}
 
 		private function getCompressor() {
-			require_once('MollifyCompressor.class.php');
+			require_once('CloudberryCompressor.class.php');
 			
 			if ($this->compressor == NULL || strcasecmp($this->compressor, "ziparchive") === 0) {
-				require_once('zip/MollifyZipArchive.class.php');
-				return new MollifyZipArchive($this->env);
+				require_once('zip/CloudberryZipArchive.class.php');
+				return new CloudberryZipArchive($this->env);
 			} else if (strcasecmp($this->compressor, "native") === 0) {
-				require_once('zip/MollifyZipNative.class.php');
-				return new MollifyZipNative($this->env);
+				require_once('zip/CloudberryZipNative.class.php');
+				return new CloudberryZipNative($this->env);
 			} else if (strcasecmp($this->compressor, "raw") === 0) {
-				require_once('zip/MollifyZipRaw.class.php');
-				return new MollifyZipRaw($this->env);
+				require_once('zip/CloudberryZipRaw.class.php');
+				return new CloudberryZipRaw($this->env);
 			}
 			
 			throw new ServiceException("INVALID_CONFIGURATION", "Unsupported compressor configured: ".$this->compressor);

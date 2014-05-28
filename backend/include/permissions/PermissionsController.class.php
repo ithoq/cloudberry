@@ -2,15 +2,15 @@
 	/**
 	 * PermissionsController.class.php
 	 *
-	 * Copyright 2008- Samuli Järvelä
+	 * Copyright 2014- Samuli Järvelä
 	 * Released under GPL License.
 	 *
-	 * License: http://www.mollify.org/license.php
+	 * License: http://www.cloudberryapp.com/license.php
 	 */
 	 
 	 require_once("PermissionsDao.class.php");
 
-	class Mollify_PermissionsController {
+	class Cloudberry_PermissionsController {
 		private $env;
 		private $dao;
 		private $genericPermissions = array();
@@ -21,7 +21,7 @@
 
 		public function __construct($env) {
 			$this->env = $env;
-			$this->dao = new Mollify_PermissionsDao($this->env);
+			$this->dao = new Cloudberry_PermissionsDao($this->env);
 		}
 		
 		public function initialize() {
