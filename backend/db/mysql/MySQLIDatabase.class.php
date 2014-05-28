@@ -22,7 +22,7 @@
 		private $db = NULL;
 		private $transaction = FALSE;
 				
-		public static function createFromConf($conf) {
+		public static function createFromConf($conf, $connect = TRUE) {
 			if (!isset($conf["user"]) or !isset($conf["password"])) throw new ServiceException("INVALID_CONFIGURATION", "No MySQL db user information defined");
 			
 			if (isset($conf["host"])) $host = $conf["host"];
@@ -48,7 +48,7 @@
 			else $engine = NULL;
 			
 			$db = new MySQLIDatabase($host, $conf["user"], $conf["password"], $database, $tablePrefix, $port, $socket, $engine);
-			$db->connect();
+			if ($connect) $db->connect();
 			if (isset($conf["charset"])) $db->setCharset($conf["charset"]);
 			return $db;
 		}

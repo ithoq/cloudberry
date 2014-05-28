@@ -131,7 +131,7 @@
 		}
 		
 		public function init() {
-			$this->db = MySQLIDatabase::createFromConf($this->settings["db"]);
+			$this->db = MySQLIDatabase::createFromConf($this->settings["db"], FALSE);
 			$this->db->connect(FALSE);
 			$this->dbUtil = new DatabaseUtil($this->db);
 		}
