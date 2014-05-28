@@ -9,7 +9,7 @@
 	 * License: http://www.mollify.org/license.php
 	 */
 	
-	require_once("install/MollifyInstallProcessor.class.php");
+	require_once("install/InstallProcessor.class.php");
 	
 	class DefaultInstaller {
 		private $page;
@@ -17,7 +17,7 @@
 		
 		public function __construct($page) {
 			$this->page = $page; 
-			$this->processor = new MollifyInstallProcessor("install", NULL, array());
+			$this->processor = new InstallProcessor("install", NULL, array());
 		}
 		
 		public function process() {

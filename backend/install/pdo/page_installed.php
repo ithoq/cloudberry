@@ -10,34 +10,27 @@
 	 */
 	 
 	 include("install/installation_page.php");
-	 
-	 function version($ver) {
-	 	return str_replace("_", ".", $ver);
-	 }
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html>
-	<?php pageHeader("Mollify Installation"); ?>
+	<?php pageHeader("Cloudberry Installation"); ?>
 	
-	<body id="page-mysql-installed">
-		<?php pageBody("Installation", "Mollify Already Installed"); ?>
+	<?php pageBody(); ?>
 
-		<div class="content">
-		<?php if ($installer->isCurrentVersionInstalled()) { ?>
-			<p>
-				Mollify is already installed with the current version.
-			</p>	
-		<?php } else { ?>
-			<p>
-				Mollify is already installed, but needs updating to version <b><?php echo version($installer->currentVersion()) ?></b>.
-			</p>
-			<p>
-				Open <a href="../update/">Mollify updater</a> to update.
-			</p>
-		<?php } ?>
-		</div>
-		<?php pageFooter(); ?>
-	</body>
+	<?php if ($installer->isCurrentVersionInstalled()) { ?>
+		<p>
+			Cloudberry is already installed.
+		</p>	
+	<?php } else { ?>
+		<p>
+			Cloudberry is already installed, but needs updating.
+		</p>
+		<p>
+			Open <a href="../update/">Cloudberry updater</a> to update.
+		</p>
+	<?php } ?>
+
+	<?php pageFooter(); ?>
 </html>

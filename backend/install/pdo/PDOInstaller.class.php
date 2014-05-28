@@ -9,7 +9,7 @@
 	 * License: http://www.mollify.org/license.php
 	 */
 
-	require_once("install/MollifyInstallProcessor.class.php");
+	require_once("install/InstallProcessor.class.php");
 	require_once("include/ServiceEnvironment.class.php");
 	require_once("db/pdo/PDODatabase.class.php");
 	require_once("db/pdo/DatabaseUtil.class.php");
@@ -23,7 +23,7 @@
 
 		public function __construct($settings, $type = "install") {
 			$this->settings = $settings;
-			$this->processor = new MollifyInstallProcessor($type, "pdo", $settings);			
+			$this->processor = new InstallProcessor($type, "pdo", $settings);			
 			$this->configured = isset($settings["db"]["str"], $settings["db"]["user"], $settings["db"]["password"]);
 		}
 		
@@ -73,14 +73,14 @@
 			try {
 				$ver = $this->dbUtil->installedVersion();
 			} catch (ServiceException $e) {
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 				return FALSE;
 			}
 
 			if ($ver != NULL)
-				Logging::logDebug('Mollify installed version: '.$ver);
+				Logging::logDebug('Cloudberry installed version: '.$ver);
 			else
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 
 			return $ver != NULL;
 		}
@@ -174,7 +174,7 @@
 			if (!$this->isInstalled()) return;
 			
 			$this->processor->createEnvironment($this->db);
-			if (!$this->processor->authentication()->isAdmin()) die("Mollify Installer requires administrator user");
+			if (!$this->processor->authentication()->isAdmin()) die("Cloudberry Installer requires administrator user");
 			
 			$this->processor->showPage("installed");
 		}

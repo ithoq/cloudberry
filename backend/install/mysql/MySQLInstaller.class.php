@@ -9,7 +9,7 @@
 	 * License: http://www.mollify.org/license.php
 	 */
 
-	require_once("install/MollifyInstallProcessor.class.php");
+	require_once("install/InstallProcessor.class.php");
 	require_once("include/ServiceEnvironment.class.php");
 	require_once("db/mysql/DatabaseUtil.class.php");
 	require_once("install/mysql/MySQLInstallUtil.class.php");
@@ -23,7 +23,7 @@
 
 		public function __construct($settings, $type = "install") {
 			$this->settings = $settings;
-			$this->processor = new MollifyInstallProcessor($type, "mysql", $settings);		
+			$this->processor = new InstallProcessor($type, "mysql", $settings);		
 			$this->configured = isset($settings["db"]["user"], $settings["db"]["password"]);
 		}
 		
@@ -63,21 +63,21 @@
 			try {
 				$this->db->selectDb();
 			} catch (ServiceException $e) {
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 				return FALSE;
 			}
 			
 			try {
 				$ver = $this->dbUtil->installedVersion();
 			} catch (ServiceException $e) {
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 				return FALSE;
 			}
 
 			if ($ver != NULL)
-				Logging::logDebug('Mollify installed version: '.$ver);
+				Logging::logDebug('Cloudberry installed version: '.$ver);
 			else
-				Logging::logDebug('Mollify not installed');
+				Logging::logDebug('Cloudberry not installed');
 
 			return $ver != NULL;
 		}
@@ -161,12 +161,12 @@
 		
 		private function checkSystem() {
 			if (!function_exists('mysql_connect')) {
-				$this->processor->setError("MySQL not detected", "Mollify cannot be installed to this system when MySQL is not available. Check your system configuration or choose different configuration type.");
+				$this->processor->setError("MySQL not detected", "Cloudberry cannot be installed to this system when MySQL is not available. Check your system configuration or choose different configuration type.");
 				$this->processor->showPage("install_error");
 			}
 		
 			if (!function_exists('mysqli_multi_query')) {
-				$this->processor->setError("MySQL Improved (mysqli) not detected", "Mollify installer cannot continue without <a href='http://www.php.net/manual/en/mysqli.overview.php' target='_blank'>MySQL Improved</a> installed. Either check your configuration to install or enable this, or install Mollify manually (see instructions <a href='http://code.google.com/p/mollify/wiki/ConfigurationMySql' target='_blank'>here</a>).");
+				$this->processor->setError("MySQL Improved (mysqli) not detected", "Cloudberry installer cannot continue without <a href='http://www.php.net/manual/en/mysqli.overview.php' target='_blank'>MySQL Improved</a> installed.");
 				$this->processor->showPage("install_error");
 			}
 		}
@@ -175,7 +175,7 @@
 			if (!$this->isInstalled()) return;
 			
 			$this->processor->createEnvironment($this->db);
-			if (!$this->processor->authentication()->isAdmin()) die("Mollify Installer requires administrator user");
+			//if (!$this->processor->authentication()->isAdmin()) die("Installer requires administrator user");
 			
 			$this->processor->showPage("installed");
 		}
@@ -258,7 +258,7 @@
 			try {
 				$this->processor->createAdminUser($this->data("name"), $this->data("password"));
 			} catch (ServiceException $e) {
-				$this->processor->setError("Could not create admin user", '<code>'.$e->details().'</code>');
+				$this->processor->setError("Could not create admin user", $e->details());
 				$this->processor->showPage("install_error");
 			}
 			
