@@ -1,4 +1,4 @@
 cloudberry
 ==========
 
-Cloudberry is web application for management and sharing documents in web
+Cloudberry is web application for managing and sharing documents in web
