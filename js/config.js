@@ -14,13 +14,13 @@
                 template: "config.html",
                 controller: "ConfigCtrl",
                 redirect: ['views',
-                    function($location, views) {
-                        if ($location.$$path == '/config') {
+                    function(to, views) {
+                        if ((to.toState && to.toState.name == 'config') || (to.location && to.location.$$path == '/config')) {
                             var views = views.get('config');
                             if (!views) return;
 
-                            var rd = "/config/" + views[0].id;
-                            console.log("PATH:" + $location.$$path + " -> " + rd);
+                            var rd = views[0].id;
+                            console.log("RD:" + rd);
                             return rd;
                         }
                     }

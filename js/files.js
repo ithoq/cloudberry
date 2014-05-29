@@ -18,13 +18,13 @@
                 template: "files.html",
                 controller: "FilesCtrl",
                 redirect: ['filesystem',
-                    function($location, filesystem) {
-                        if ($location.$$path == '/files') {
+                    function(to, filesystem) {
+                        if (to.location && to.location.$$path == '/files') {
                             var roots = filesystem.roots();
                             if (!roots || roots.length === 0) return;
 
                             var rd = "/files/" + roots[0].id;
-                            console.log("PATH:" + $location.$$path + " -> " + rd);
+                            console.log("PATH:" + to.location.$$path + " -> " + rd);
                             return rd;
                         }
                     }

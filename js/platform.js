@@ -116,11 +116,11 @@
 
                     if (rd.length > 0) $urlRouterProvider.rule(function($injector, $location) {
                         var res = undefined;
-                        
+
                         $.each(rd, function(i, rde) {
                             //TODO matches location?
                             var deps = [];
-                            var args = [$location];
+                            var args = [{location:$location}];
                             if (rde.deps)
                                 for (var i = 0; i <= rde.deps.length - 1; i++) args.push($injector.get(rde.deps[i]));
                             res = rde.fn.apply(null, args);
