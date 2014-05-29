@@ -21,7 +21,7 @@
                     function($location, filesystem) {
                         if ($location.$$path == '/files') {
                             var roots = filesystem.roots();
-                            if (!roots) return;
+                            if (!roots || roots.length === 0) return;
 
                             var rd = "/files/" + roots[0].id;
                             console.log("PATH:" + $location.$$path + " -> " + rd);

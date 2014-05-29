@@ -97,7 +97,7 @@
             });
         });
 
-        app.run(function($templateCache, $rootScope, $state, $injector, gettextCatalog, service, session, filesystem) {
+        app.run(function($templateCache, $rootScope, $location, $state, $injector, gettextCatalog, service, session, filesystem) {
             if (settings["localization-debug"])
                 gettextCatalog.debug = true;
 
@@ -113,7 +113,7 @@
 
             $rootScope.plugins = settings.plugins;
 
-            that._onStart($rootScope, $state, $injector, gettextCatalog, session);
+            that._onStart($rootScope, $location, $state, $injector, gettextCatalog, session);
         });
 
         this.run = function() {
@@ -122,7 +122,7 @@
             ng.bootstrap($root, ['cloudberry']);
         };
 
-        this._onStart = function($rootScope, $state, $injector, gettextCatalog, session) {
+        this._onStart = function($rootScope, $location, $state, $injector, gettextCatalog, session) {
             var initialized = false;
             var pendingStateChange = false;
             console.log("cloudberry started");
@@ -144,6 +144,25 @@
                 event.preventDefault();
                 $state.go("error");
             });
+
+            var onBeforeStateChange = function(event, toState, toParams, fromState, fromParams) {
+                if (views[toState.name] && views[toState.name].redirect) {
+                    var v = views[toState.name];
+                    var fn = false;
+                    var deps = false;
+
+                    if (typeof(v.redirect) == 'function') fn = v.redirect;
+                    else if (window.isArray(v.redirect) && v.redirect.length > 0) {
+                        fn = v.redirect[v.redirect.length - 1];
+                        deps = v.redirect.slice(0, v.redirect.length - 1);
+                    }
+                    var args = [$location];
+                    if (deps)
+                        for (var i = 0; i <= deps.length - 1; i++) args.push($injector.get(deps[i]));
+                    var rd = fn.apply(null, args);
+                    console.log(rd);
+                }
+            };
 
             // state interceptor
             $rootScope.$on('$stateChangeStart',
@@ -176,7 +195,7 @@
                         $state.go("login");
                         return;
                     }
-                    //onBeforeStateChange(event, toState, toParams, fromState, fromParams);
+                    onBeforeStateChange(event, toState, toParams, fromState, fromParams);
                 });
 
             $rootScope.$on('session/start', function(e, s) {

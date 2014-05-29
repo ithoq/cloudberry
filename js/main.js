@@ -15,13 +15,21 @@
 
             mod.controller('MainCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'views', 'actions',
                 function($scope, $rootScope, $state, $stateParams, views, actions) {
+                    var updateViews = function(to) {
+                        $scope.activeView = [views.all[to.name]];
+                        var cur = to;
+                        while(true) {
+                            if (!cur.parent) break;
+                            cur = views.all[cur.parent];
+                            $scope.activeView.unshift(cur);
+                        }
+                    };
                     $scope.views = views.get('main');
-                    $scope.activeView = views.all[$state.current.name];
-
+                    updateViews($state.current);
                     $scope.sessionActions = actions.getType('session');
 
                     $rootScope.$on('$stateChangeSuccess', function(e, to) {
-                        $scope.activeView = views.all[to.name];
+                        updateViews(to);
                     });
                 }
             ]);

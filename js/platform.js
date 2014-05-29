@@ -53,6 +53,7 @@
                         };
                     };
 
+                    var rd = [];
                     $.each(cloudberry.utils.getKeys(o.views), function(i, vk) {
                         var v = o.views[vk];
                         var vp = {};
@@ -97,18 +98,35 @@
 
                         if (v.redirect) {
                             var fn = false;
+                            var deps = false;
+
                             if (typeof(v.redirect) == 'function') fn = v.redirect;
-                            else if (window.isArray(v.redirect) && v.redirect.length > 0)
+                            else if (window.isArray(v.redirect) && v.redirect.length > 0) {
                                 fn = v.redirect[v.redirect.length - 1];
-                            if (fn)
-                                $urlRouterProvider.rule(function($injector, $location) {
-                                    var deps = [];
-                                    var args = [$location];
-                                    if (window.isArray(v.redirect) && v.redirect.length > 1)
-                                        for (var i = 0; i <= v.redirect.length - 2; i++) args.push($injector.get(v.redirect[i]));
-                                    fn.apply(null, args);
-                                });
+                                deps = v.redirect.slice(0, v.redirect.length - 1);
+                            }
+
+                            if (fn) rd.push({
+                                id: vk,
+                                fn: fn,
+                                deps: deps
+                            });
                         }
+                    });
+
+                    if (rd.length > 0) $urlRouterProvider.rule(function($injector, $location) {
+                        var res = undefined;
+                        
+                        $.each(rd, function(i, rde) {
+                            //TODO matches location?
+                            var deps = [];
+                            var args = [$location];
+                            if (rde.deps)
+                                for (var i = 0; i <= rde.deps.length - 1; i++) args.push($injector.get(rde.deps[i]));
+                            res = rde.fn.apply(null, args);
+                            if (res) return false;
+                        });
+                        return res;
                     });
                 }
             ]);
