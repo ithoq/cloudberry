@@ -56,7 +56,6 @@
                         var modalInstance = $modal.open({
                             templateUrl: 'main/change_password.html',
                             controller: ChangePasswordController,
-                            user: ctx,
                             resolve: {
                                 user: function() {
                                     return ctx;

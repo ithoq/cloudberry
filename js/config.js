@@ -41,7 +41,7 @@
             mod.directive('configTable', ['$parse',
                 function($parse) {
                     return {
-                        template: '<div class="config-table">head<div ng-grid="options"></div></div>',
+                        template: '<div class="config-table"><div class="config-table-actions btn-group"><button class="config-table-action btn btn-default" ng-repeat="ac in listConfig.actions" ng-click="onAction(ac)"><i class="fa {{ac.icon}}"></button></div><div ng-grid="options"></div></div>',
                         replace: true,
                         transclude: true,
                         restrict: 'E',
@@ -73,6 +73,9 @@
                     $scope.options = {
                         data: 'list',
                         columnDefs: []
+                    };
+                    $scope.onAction = function(ac) {
+                        if (ac && ac.callback) ac.callback();
                     };
                     $scope.refresh = function() {
                         $scope.getData().done(function(r) {
@@ -134,7 +137,7 @@
         }
     });
 
-   / * Folders * /
+    / * Folders * /
     cloudberry.modules.push({
         id: 'cloudberry.config.folders',
 
@@ -150,15 +153,32 @@
             });
 
             gettext("configFolders_listName");
-            mod.controller('ConfigFoldersCtrl', ['$scope', 'service',
-                function($scope, service) {
-                    $scope.userListConfig = {
+            mod.controller('ConfigFoldersCtrl', ['$scope', '$modal', 'service',
+                function($scope, $modal, service) {
+                    $scope.folderListConfig = {
                         cols: [{
                             key: 'id',
                             titleKey: 'configTable_id'
                         }, {
                             key: 'name',
                             titleKey: 'configFolders_listName'
+                        }],
+                        actions: [{
+                            icon: 'fa-plus',
+                            callback: function() {
+                                var modalInstance = $modal.open({
+                                    templateUrl: 'config/addedit_folder.html',
+                                    controller: AddEditFolderController,
+                                    resolve: {
+                                        folder: function() {
+                                            return null;
+                                        }
+                                    }
+                                });
+                                modalInstance.result.then(function() {
+                                    alert("ok");
+                                }, function() {});
+                            }
                         }]
                     };
                     $scope.getFolders = function() {
@@ -166,6 +186,18 @@
                     }
                 }
             ]);
+
+            var AddEditFolderController = function($scope, $modalInstance, folder) {
+                $scope.folder = folder;
+
+                $scope.ok = function() {
+                    $modalInstance.close();
+                };
+
+                $scope.cancel = function() {
+                    $modalInstance.dismiss('cancel');
+                };
+            };
         }
     });
 }(window.cloudberry);
