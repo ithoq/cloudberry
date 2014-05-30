@@ -37,6 +37,7 @@
                 }
             ]);
 
+            gettext("configTable_id");
             mod.directive('configTable', ['$parse',
                 function($parse) {
                     return {
@@ -46,18 +47,15 @@
                         restrict: 'E',
                         controller: "ConfigTableCtrl",
                         /*scope: {
-                            data: '=data'
+                            config: '=config'
                         },*/
                         compile: function($element, attr) {
                             var dataFn = $parse(attr['data']);
+                            //var configFn = $parse(attr['config']);
 
                             return {
                                 pre: function(scope, element, attr) {
-                                    scope.applyData = function() {
-                                        scope.$apply(function() {
-                                            dataFn(scope, {});
-                                        });
-                                    };
+                                    scope.listConfig = scope[attr['config']];
                                     scope.getData = function() {
                                         return dataFn(scope, {})();
                                     }
@@ -69,21 +67,29 @@
                 }
             ]);
 
-            mod.controller('ConfigTableCtrl', ['$scope', 'service',
-                function($scope, service) {
+            mod.controller('ConfigTableCtrl', ['$scope', 'service', 'gettextCatalog',
+                function($scope, service, gettextCatalog) {
                     $scope.list = [];
                     $scope.options = {
-                        data: 'list'
+                        data: 'list',
+                        columnDefs: []
                     };
                     $scope.refresh = function() {
-                        $scope.getData().done(function(u) {
-                            $scope.list = u.data;
-                            if (!$scope.$$phase) {
+                        $scope.getData().done(function(r) {
+                            $scope.list = r.data;
+                            if (!$scope.$$phase)
                                 $scope.$apply();
-                            }
                         })
                     };
                     $scope._onReady = function() {
+                        var cols = [];
+                        $.each($scope.listConfig.cols, function(i, col) {
+                            cols.push({
+                                field: col.key,
+                                displayName: gettextCatalog.getString(col.titleKey)
+                            });
+                        });
+                        $scope.options.columnDefs = cols;
                         $scope.refresh();
                     }
                 }
@@ -103,14 +109,22 @@
                 parent: "config",
                 url: "/users",
                 template: "config/users.html",
-                controller: "ConfigUsersCtrl",
-                resolve: {},
+                controller: "ConfigUsersCtrl"
             });
 
+            gettext("configUsers_listName");
             mod.controller('ConfigUsersCtrl', ['$scope', 'service',
                 function($scope, service) {
+                    $scope.userListConfig = {
+                        cols: [{
+                            key: 'id',
+                            titleKey: 'configTable_id'
+                        }, {
+                            key: 'name',
+                            titleKey: 'configUsers_listName'
+                        }]
+                    };
                     $scope.getUsers = function() {
-                        console.log("get users");
                         return service.post('configuration/users/query', {
                             start: 0
                         });
