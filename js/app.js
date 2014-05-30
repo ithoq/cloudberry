@@ -63,7 +63,7 @@
             }
         };
 
-        var deps = ['ui.bootstrap', 'ui.router', 'gettext'];
+        var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid'];
         var gettext_stub = function(s) {};
 
         // create modules

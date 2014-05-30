@@ -18,10 +18,7 @@
                         if ((to.toState && to.toState.name == 'config') || (to.location && to.location.$$path == '/config')) {
                             var views = views.get('config');
                             if (!views) return;
-
-                            var rd = views[0].id;
-                            console.log("RD:" + rd);
-                            return rd;
+                            return views[0].id;
                         }
                     }
                 ],
@@ -35,20 +32,52 @@
             mod.controller('ConfigCtrl', ['$scope', '$state', '$stateParams', 'views', 'actions',
                 function($scope, $state, $stateParams, views, actions) {
                     $scope.$parent.config = {
-                        views : views.get('config')
+                        views: views.get('config')
                     };
-                    //$scope.activeView = views.all[$state.current.name];
+                }
+            ]);
 
-                    //$rootScope.$on('$stateChangeSuccess', function(e, to) {
-                        //$scope.activeView = views.all[to.name];
-                    //});
+            mod.directive('pagingTable', function() {
+                return {
+                    template: '<div class="paging-table">head<div ng-grid="gridOptions"></div></div>',
+                    replace: true,
+                    //transclude: true,
+                    restrict: 'E',
+                    controller: "PagingTableCtrl",
+                    scope: {
+                        serviceCb: '=serviceCb'
+                    }
+                };
+            });
 
+            mod.controller('PagingTableCtrl', ['$scope', 'service',
+                function($scope, service) {
+                    console.log("paging");
+                    $scope.myData = [{
+                        name: "Moroni",
+                        age: 50
+                    }, {
+                        name: "Tiancum",
+                        age: 43
+                    }, {
+                        name: "Jacob",
+                        age: 27
+                    }, {
+                        name: "Nephi",
+                        age: 29
+                    }, {
+                        name: "Enos",
+                        age: 34
+                    }];
+                    $scope.gridOptions = {
+                        data: 'myData'
+                    };
                 }
             ]);
         }
     });
 
-    /* Users */
+    / * Users * /
     cloudberry.modules.push({
         id: 'cloudberry.config.users',
 
@@ -60,11 +89,12 @@
                 parent: "config",
                 url: "/users",
                 template: "config/users.html",
-                controller: "ConfigUsersCtrl"
+                controller: "ConfigUsersCtrl",
+                resolve: {},
             });
 
             mod.controller('ConfigUsersCtrl', ['$scope',
-                function($scope, $state, $stateParams) {}
+                function($scope) {}
             ]);
         }
     });
