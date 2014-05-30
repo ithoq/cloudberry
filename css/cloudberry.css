@@ -7765,3 +7765,6 @@ button.close {
 #cloudberry .main-view ul.quickaction-list li:hover {
   background-color: rgba(220, 220, 220, 0.5);
 }
+#cloudberry .main-view .config-table .ngGrid {
+  height: 300px;
+}

@@ -37,41 +37,55 @@
                 }
             ]);
 
-            mod.directive('pagingTable', function() {
-                return {
-                    template: '<div class="paging-table">head<div ng-grid="gridOptions"></div></div>',
-                    replace: true,
-                    //transclude: true,
-                    restrict: 'E',
-                    controller: "PagingTableCtrl",
-                    scope: {
-                        serviceCb: '=serviceCb'
-                    }
-                };
-            });
+            mod.directive('configTable', ['$parse',
+                function($parse) {
+                    return {
+                        template: '<div class="config-table">head<div ng-grid="options"></div></div>',
+                        replace: true,
+                        transclude: true,
+                        restrict: 'E',
+                        controller: "ConfigTableCtrl",
+                        /*scope: {
+                            data: '=data'
+                        },*/
+                        compile: function($element, attr) {
+                            var dataFn = $parse(attr['data']);
 
-            mod.controller('PagingTableCtrl', ['$scope', 'service',
-                function($scope, service) {
-                    console.log("paging");
-                    $scope.myData = [{
-                        name: "Moroni",
-                        age: 50
-                    }, {
-                        name: "Tiancum",
-                        age: 43
-                    }, {
-                        name: "Jacob",
-                        age: 27
-                    }, {
-                        name: "Nephi",
-                        age: 29
-                    }, {
-                        name: "Enos",
-                        age: 34
-                    }];
-                    $scope.gridOptions = {
-                        data: 'myData'
+                            return {
+                                pre: function(scope, element, attr) {
+                                    scope.applyData = function() {
+                                        scope.$apply(function() {
+                                            dataFn(scope, {});
+                                        });
+                                    };
+                                    scope.getData = function() {
+                                        return dataFn(scope, {})();
+                                    }
+                                    scope._onReady();
+                                }
+                            }
+                        }
                     };
+                }
+            ]);
+
+            mod.controller('ConfigTableCtrl', ['$scope', 'service',
+                function($scope, service) {
+                    $scope.list = [];
+                    $scope.options = {
+                        data: 'list'
+                    };
+                    $scope.refresh = function() {
+                        $scope.getData().done(function(u) {
+                            $scope.list = u.data;
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        })
+                    };
+                    $scope._onReady = function() {
+                        $scope.refresh();
+                    }
                 }
             ]);
         }
@@ -93,8 +107,15 @@
                 resolve: {},
             });
 
-            mod.controller('ConfigUsersCtrl', ['$scope',
-                function($scope) {}
+            mod.controller('ConfigUsersCtrl', ['$scope', 'service',
+                function($scope, service) {
+                    $scope.getUsers = function() {
+                        console.log("get users");
+                        return service.post('configuration/users/query', {
+                            start: 0
+                        });
+                    }
+                }
             ]);
         }
     });
