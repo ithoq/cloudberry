@@ -133,4 +133,39 @@
             ]);
         }
     });
+
+   / * Folders * /
+    cloudberry.modules.push({
+        id: 'cloudberry.config.folders',
+
+        setup: function(h, mod, gettext) {
+            gettext("configFolders_viewTitle");
+            h.registerView('folders', {
+                titleKey: "configFolders_viewTitle",
+                icon: "fa-folder",
+                parent: "config",
+                url: "/folders",
+                template: "config/folders.html",
+                controller: "ConfigFoldersCtrl"
+            });
+
+            gettext("configFolders_listName");
+            mod.controller('ConfigFoldersCtrl', ['$scope', 'service',
+                function($scope, service) {
+                    $scope.userListConfig = {
+                        cols: [{
+                            key: 'id',
+                            titleKey: 'configTable_id'
+                        }, {
+                            key: 'name',
+                            titleKey: 'configFolders_listName'
+                        }]
+                    };
+                    $scope.getFolders = function() {
+                        return service.get('configuration/folders');
+                    }
+                }
+            ]);
+        }
+    });
 }(window.cloudberry);
