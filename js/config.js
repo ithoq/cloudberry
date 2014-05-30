@@ -175,8 +175,8 @@
                                         }
                                     }
                                 });
-                                modalInstance.result.then(function() {
-                                    alert("ok");
+                                modalInstance.result.then(function(f) {
+                                    alert(JSON.stringify(f));
                                 }, function() {});
                             }
                         }]
@@ -188,7 +188,11 @@
             ]);
 
             var AddEditFolderController = function($scope, $modalInstance, folder) {
-                $scope.folder = folder;
+                $scope.folder = folder || {};
+
+                $scope.onSave = function() {
+                    $modalInstance.close($scope.folder);
+                };
 
                 $scope.ok = function() {
                     $modalInstance.close();
