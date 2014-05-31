@@ -52,14 +52,12 @@
                 type: 'session',
                 titleKey: 'user_changePassword',
                 handler: ["$modal",
-                    function(ctx, $modal) {
+                    function(user, $modal) {
                         var modalInstance = $modal.open({
                             templateUrl: 'main/change_password.html',
                             controller: ChangePasswordController,
                             resolve: {
-                                user: function() {
-                                    return ctx;
-                                }
+                                user: user
                             }
                         });
                         modalInstance.result.then(function() {

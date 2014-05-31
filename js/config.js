@@ -41,14 +41,11 @@
             mod.directive('configTable', ['$parse',
                 function($parse) {
                     return {
-                        template: '<div class="config-table"><div class="config-table-actions btn-group"><button class="config-table-action btn btn-default" ng-repeat="ac in listConfig.actions" ng-click="onAction(ac)"><i class="fa {{ac.icon}}"></button></div><div ng-grid="options"></div></div>',
+                        templateUrl: 'templates/config/config-list.html',   //TODO url
                         replace: true,
                         transclude: true,
                         restrict: 'E',
                         controller: "ConfigTableCtrl",
-                        /*scope: {
-                            config: '=config'
-                        },*/
                         compile: function($element, attr) {
                             var dataFn = $parse(attr['data']);
                             //var configFn = $parse(attr['config']);
@@ -70,16 +67,27 @@
             mod.controller('ConfigTableCtrl', ['$scope', 'service', 'gettextCatalog',
                 function($scope, service, gettextCatalog) {
                     $scope.list = [];
+                    $scope.selectedItems = [];
                     $scope.options = {
+                        enableRowSelection: true,
+                        selectWithCheckboxOnly: true,
+                        showSelectionCheckbox: true,
                         data: 'list',
+                        selectedItems: $scope.selectedItems,
                         columnDefs: []
                     };
                     $scope.onAction = function(ac) {
-                        if (ac && ac.callback) ac.callback();
+                        if (ac && ac.callback) ac.callback.apply({
+                            refresh: $scope.refresh
+                        }, [$scope.selectedItems]);
                     };
                     $scope.refresh = function() {
                         $scope.getData().done(function(r) {
-                            $scope.list = r.data;
+                            if ($scope.listConfig.serverPaging)
+                                $scope.list = r.data;
+                            else
+                                $scope.list = r;
+
                             if (!$scope.$$phase)
                                 $scope.$apply();
                         })
@@ -125,7 +133,8 @@
                         }, {
                             key: 'name',
                             titleKey: 'configUsers_listName'
-                        }]
+                        }],
+                        serverPaging: true
                     };
                     $scope.getUsers = function() {
                         return service.post('configuration/users/query', {
@@ -166,22 +175,27 @@
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
-                                var modalInstance = $modal.open({
+                                var t = this;
+                                $modal.open({
                                     templateUrl: 'config/addedit_folder.html',
                                     controller: AddEditFolderController,
                                     resolve: {
-                                        folder: function() {
-                                            return null;
-                                        }
+                                        folder: null
                                     }
+                                }).result.then(function(f) {
+                                    service.post('configuration/folders', f).done(t.refresh);
                                 });
-                                modalInstance.result.then(function(f) {
-                                    alert(JSON.stringify(f));
-                                }, function() {});
+                            }
+                        }, {
+                            icon: 'fa-trash',
+                            selection: 'any',
+                            callback: function(sel) {
+                                alert(JSON.stringify(sel));
                             }
                         }]
                     };
                     $scope.getFolders = function() {
+                        //TODO paging params
                         return service.get('configuration/folders');
                     }
                 }
