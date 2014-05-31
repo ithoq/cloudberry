@@ -88,6 +88,11 @@
                             refresh: $scope.refresh
                         }, [$scope.selectedItems]);
                     };
+                    $scope.onRowAction = function(ac, row) {
+                        if (ac && ac.callback) ac.callback.apply({
+                            refresh: $scope.refresh
+                        }, [row]);
+                    };
                     $scope.refresh = function() {
                         $scope.getData().done(function(r) {
                             if ($scope.listConfig.serverPaging)
@@ -107,6 +112,11 @@
                                 displayName: gettextCatalog.getString(col.titleKey)
                             });
                         });
+                        if ($scope.listConfig.rowActions)
+                            cols.push({
+                                displayName: '',
+                                cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><div class="ngCellAction" ng-repeat="ac in listConfig.rowActions" ng-click="onRowAction(ac, row.entity)">{{ac.id}}</div></div>'
+                            })
                         $scope.options.columnDefs = cols;
                         $scope.refresh();
                     }
@@ -182,6 +192,14 @@
                         }, {
                             key: 'path',
                             titleKey: 'configFolders_listPath'
+                        }],
+                        rowActions: [{
+                            id: "open",
+                            icon: 'fa-plus',
+                            titleKey: 'configFolders_openFolder',
+                            callback: function(f) {
+                                console.log(f);
+                            }
                         }],
                         actions: [{
                             icon: 'fa-plus',
