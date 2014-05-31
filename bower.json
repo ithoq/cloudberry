@@ -10,6 +10,7 @@
         "angular-ui-router": "*",
         "angular-gettext": "*",
         "ng-grid": "*",
+        "ng-ui-utils": "*",
         "bootstrap": "~3.1.1",
         "angular-bootstrap": "*",
         "font-awesome": "4.1"

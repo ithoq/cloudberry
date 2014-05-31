@@ -1,2 +1,9 @@
 <h2>{{folder.name}}</h2>
 {{folder.path}}
+
+<tabset>
+    <tab ng-repeat="tab in details" heading="{{tab.title}}" ng-controller-controller="tab.controller">
+    	tab
+    	<ng-include src="tab.template"></ng-include>
+    </tab>
+</tabset>

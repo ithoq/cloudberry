@@ -199,7 +199,9 @@
                             titleKey: 'configFolders_openFolder',
                             callback: function(f) {
                                 console.log(f);
-                                $state.go("folder", {folderId:f.id});
+                                $state.go("folder", {
+                                    folderId: f.id
+                                });
                             }
                         }],
                         actions: [{
@@ -261,8 +263,42 @@
                 }
             });
 
-            mod.controller('ConfigFolderCtrl', ['$scope', '$stateParams', 'folderRepository', 'dialogs', 'folder',
-                function($scope, $stateParams, folderRepository, dialogs, folder) {
+            mod.controller('ConfigFolderCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'folderRepository', 'dialogs', 'configDetails', 'folder',
+                function($scope, $controller, $stateParams, gettextCatalog, folderRepository, dialogs, configDetails, folder) {
+                    $scope.folder = folder;
+                    $scope.details = [];
+
+                    $.each(configDetails.getDetails('folder'), function(i, d) {
+                        var ctrl = $controller(d.controller, {
+                            '$scope': $scope,
+                            folder: folder
+                        });
+                        $scope.details.push({
+                            title: gettextCatalog.getString(d.titleKey),
+                            controller: ctrl,
+                            template: "templates/" + d.template  //TODO url
+                        })
+                    });
+                }
+            ]);
+
+            gettext("configFolderUsers_viewTitle");
+            h.registerConfigDetails('folder_users', {
+                parent: "folder",
+                controller: "ConfigFolderUsersCtrl",
+                titleKey: "configFolderUsers_viewTitle",
+                template: "config/folderusers.html",
+                resolve: {
+                    users: function(folder) {
+                        return [{
+                            id: "1"
+                        }];
+                    }
+                }
+            });
+
+            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folder',
+                function($scope, folder) {
                     $scope.folder = folder;
                 }
             ]);

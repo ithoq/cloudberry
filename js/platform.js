@@ -35,6 +35,17 @@
                 });
             });
 
+            app.config(function($provide) {
+                $provide.factory('configDetails', function() {
+                    return {
+                        getDetails: function(parent) {
+                            if (!o.configDetails[parent]) return [];
+                            return o.configDetails[parent];
+                        }
+                    };
+                });
+            });
+
             // views
             app.
             config(['$stateProvider', '$urlRouterProvider',

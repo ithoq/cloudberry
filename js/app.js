@@ -63,6 +63,7 @@
             }
         };
         var dialogs = {};
+        var configDetails = {};
 
         var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid'];
         var gettext_stub = function(s) {};
@@ -86,6 +87,13 @@
                 },
                 registerDialog: function(d) {
                     dialogs[d.id] = d;
+                },
+                registerConfigDetails: function(id, s) {
+                    if (!configDetails[s.parent]) {
+                        configDetails[s.parent] = [];
+                    }
+                    s.id = id;
+                    configDetails[s.parent].push(s);
                 }
             }, mod, gettext_stub);
             deps.push(m.id);
@@ -98,7 +106,8 @@
                 settings: settings,
                 views: views,
                 actions: actions,
-                dialogs: dialogs
+                dialogs: dialogs,
+                configDetails: configDetails
             });
         });
 
