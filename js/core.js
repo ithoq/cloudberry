@@ -239,6 +239,10 @@
                         getAllFolders: function() {
                             return service.get('configuration/folders');
                         },
+                        getFolder: function(id) {
+                            if (!id) return null;
+                            return service.get('configuration/folders/' + id);
+                        },
                         addFolder: function(f) {
                             return service.post('configuration/folders', f);
                         },

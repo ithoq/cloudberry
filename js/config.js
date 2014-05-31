@@ -253,12 +253,17 @@
                 parent: "folders",
                 url: "/:folderId",
                 template: "config/folder.html",
-                controller: "ConfigFolderCtrl"
+                controller: "ConfigFolderCtrl",
+                resolve: {
+                    folder: function($stateParams, folderRepository) {
+                        return folderRepository.getFolder($stateParams.folderId);
+                    }
+                }
             });
 
-            mod.controller('ConfigFolderCtrl', ['$scope', '$stateParams', 'folderRepository', 'dialogs',
-                function($scope, $stateParams, folderRepository, dialogs) {
-
+            mod.controller('ConfigFolderCtrl', ['$scope', '$stateParams', 'folderRepository', 'dialogs', 'folder',
+                function($scope, $stateParams, folderRepository, dialogs, folder) {
+                    $scope.folder = folder;
                 }
             ]);
         }

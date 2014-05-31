@@ -485,7 +485,7 @@
 		private function processGetFolders() {
 			if (count($this->path) == 1) {
 				$list = $this->env->configuration()->getFolders();
-				$root = $this->env->settings()->setting("published_folders_root");				
+				$root = $this->env->settings()->setting("published_folders_root");
 				if ($root != NULL) {
 					$root = rtrim($root, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 					$i = 0;
@@ -500,8 +500,18 @@
 				return;
 			}
 			$folderId = $this->path[1];
-			
-			if (count($this->path) == 3) {
+			if (count($this->path) == 2) {
+				$f = $this->env->configuration()->getFolder($folderId);
+				$root = $this->env->settings()->setting("published_folders_root");
+				if ($root != NULL) {
+					$root = rtrim($root, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+					$i = 0;
+					if (strpos($f["path"], $root) == 0)
+						$f["path"] = substr($f["path"], strlen($root));
+				}
+					
+				$this->response()->success($f);
+			} else if (count($this->path) == 3) {
 				switch ($this->path[2]) {
 					case 'users':
 						$this->response()->success($this->env->configuration()->getFolderUsers($folderId));
