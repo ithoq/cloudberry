@@ -115,7 +115,7 @@
                         if ($scope.listConfig.rowActions)
                             cols.push({
                                 displayName: '',
-                                cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><div class="ngCellAction" ng-repeat="ac in listConfig.rowActions" ng-click="onRowAction(ac, row.entity)">{{ac.id}}</div></div>'
+                                cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in listConfig.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
                             })
                         $scope.options.columnDefs = cols;
                         $scope.refresh();
@@ -180,8 +180,8 @@
 
             gettext("configFolders_listName");
             gettext("configFolders_listPath");
-            mod.controller('ConfigFoldersCtrl', ['$scope', 'folderRepository', 'dialogs',
-                function($scope, folderRepository, dialogs) {
+            mod.controller('ConfigFoldersCtrl', ['$scope', '$state', 'folderRepository', 'dialogs',
+                function($scope, $state, folderRepository, dialogs) {
                     $scope.folderListConfig = {
                         cols: [{
                             key: 'id',
@@ -199,6 +199,7 @@
                             titleKey: 'configFolders_openFolder',
                             callback: function(f) {
                                 console.log(f);
+                                $state.go("folder", {folderId:f.id});
                             }
                         }],
                         actions: [{
@@ -246,6 +247,20 @@
                 },
                 params: ['folder']
             });
+
+            gettext("configFolders_viewTitle");
+            h.registerView('folder', {
+                parent: "folders",
+                url: "/:folderId",
+                template: "config/folder.html",
+                controller: "ConfigFolderCtrl"
+            });
+
+            mod.controller('ConfigFolderCtrl', ['$scope', '$stateParams', 'folderRepository', 'dialogs',
+                function($scope, $stateParams, folderRepository, dialogs) {
+
+                }
+            ]);
         }
     });
 }(window.cloudberry);
