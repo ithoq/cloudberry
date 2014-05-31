@@ -18,7 +18,7 @@
                     var updateViews = function(to) {
                         $scope.activeView = [views.all[to.name]];
                         var cur = to;
-                        while(true) {
+                        while (true) {
                             if (!cur.parent) break;
                             cur = views.all[cur.parent];
                             $scope.activeView.unshift(cur);
@@ -45,24 +45,24 @@
                     $modalInstance.dismiss('cancel');
                 };
             };
-
+            
+            h.registerDialog({
+                id: "changePassword",
+                template: 'main/change_password.html',
+                controller: ChangePasswordController,
+                params: ['user']
+            });
             gettext('user_changePassword');
             h.registerAction({
                 id: 'user/change_pw',
                 type: 'session',
                 titleKey: 'user_changePassword',
-                handler: ["$modal",
-                    function(user, $modal) {
-                        var modalInstance = $modal.open({
-                            templateUrl: 'main/change_password.html',
-                            controller: ChangePasswordController,
-                            resolve: {
-                                user: user
-                            }
-                        });
-                        modalInstance.result.then(function() {
+                handler: ["dialogs",
+                    function(user, dialogs) {
+                        dialogs.custom('changePassword', user).done(function() {
+                            //TODO new pw as param? or change already in controller?
                             alert("ok");
-                        }, function() {});
+                        });
                     }
                 ]
             });

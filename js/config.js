@@ -41,7 +41,7 @@
             mod.directive('configTable', ['$parse',
                 function($parse) {
                     return {
-                        templateUrl: 'templates/config/config-list.html',   //TODO url
+                        templateUrl: 'templates/config/config-table.html', //TODO url
                         replace: true,
                         transclude: true,
                         restrict: 'E',
@@ -75,6 +75,13 @@
                         data: 'list',
                         selectedItems: $scope.selectedItems,
                         columnDefs: []
+                    };
+                    $scope.isActionDisabled = function(ac) {
+                        if (!ac.selection) return false;
+                        if (ac.selection == 'any' && $scope.selectedItems.length === 0) return true;
+                        if (ac.selection == 'one' && $scope.selectedItems.length !== 1) return true;
+                        if (ac.selection == 'many' && $scope.selectedItems.length < 2) return true;
+                        return false;
                     };
                     $scope.onAction = function(ac) {
                         if (ac && ac.callback) ac.callback.apply({
@@ -162,8 +169,9 @@
             });
 
             gettext("configFolders_listName");
-            mod.controller('ConfigFoldersCtrl', ['$scope', '$modal', 'service',
-                function($scope, $modal, service) {
+            gettext("configFolders_listPath");
+            mod.controller('ConfigFoldersCtrl', ['$scope', 'folderRepository', 'dialogs',
+                function($scope, folderRepository, dialogs) {
                     $scope.folderListConfig = {
                         cols: [{
                             key: 'id',
@@ -171,51 +179,55 @@
                         }, {
                             key: 'name',
                             titleKey: 'configFolders_listName'
+                        }, {
+                            key: 'path',
+                            titleKey: 'configFolders_listPath'
                         }],
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
                                 var t = this;
-                                $modal.open({
-                                    templateUrl: 'config/addedit_folder.html',
-                                    controller: AddEditFolderController,
-                                    resolve: {
-                                        folder: null
-                                    }
-                                }).result.then(function(f) {
-                                    service.post('configuration/folders', f).done(t.refresh);
+                                dialogs.custom('addEditFolder', null).done(function(f) {
+                                    folderRepository.addFolder(f).done(t.refresh);
                                 });
                             }
                         }, {
-                            icon: 'fa-trash',
+                            icon: 'fa-minus',
                             selection: 'any',
                             callback: function(sel) {
-                                alert(JSON.stringify(sel));
+                                dialogs.confirmation("foo", "bar").done(function() {
+                                    folderRepository.deleteFolders(sel).done(this.refresh);
+                                });
                             }
                         }]
                     };
                     $scope.getFolders = function() {
                         //TODO paging params
-                        return service.get('configuration/folders');
+                        return folderRepository.getAllFolders();
                     }
                 }
             ]);
 
-            var AddEditFolderController = function($scope, $modalInstance, folder) {
-                $scope.folder = folder || {};
+            h.registerDialog({
+                id: "addEditFolder",
+                template: 'config/addedit_folder.html',
+                controller: function($scope, $modalInstance, folder) {
+                    $scope.folder = folder || {};
 
-                $scope.onSave = function() {
-                    $modalInstance.close($scope.folder);
-                };
+                    $scope.onSave = function() {
+                        $modalInstance.close($scope.folder);
+                    };
 
-                $scope.ok = function() {
-                    $modalInstance.close();
-                };
+                    $scope.ok = function() {
+                        $modalInstance.close();
+                    };
 
-                $scope.cancel = function() {
-                    $modalInstance.dismiss('cancel');
-                };
-            };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                params: ['folder']
+            });
         }
     });
 }(window.cloudberry);

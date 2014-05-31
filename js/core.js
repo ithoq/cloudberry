@@ -233,6 +233,25 @@
                 }
             ]);
 
+            mod.factory('folderRepository', ['$rootScope', 'service',
+                function($rootScope, service) {
+                    return {
+                        getAllFolders: function() {
+                            return service.get('configuration/folders');
+                        },
+                        addFolder: function(f) {
+                            return service.post('configuration/folders', f);
+                        },
+                        deleteFolders: function(f) {
+                            return service.del("configuration/folders", {
+                                ids: cloudberry.utils.extractValue(f, "id")
+                            });
+                        }
+                    }
+                }
+            ]);
+
+
             mod.factory('service', ['$rootScope', 'settings',
                 function($rootScope, settings) {
                     var _sessionId = false;

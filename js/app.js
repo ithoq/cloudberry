@@ -62,6 +62,7 @@
                 quick: []
             }
         };
+        var dialogs = {};
 
         var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid'];
         var gettext_stub = function(s) {};
@@ -82,6 +83,9 @@
                         actions.byType[ac.type].push(ac);
                     }
                     if (ac.quick) actions.byType['quick'].push(ac);
+                },
+                registerDialog: function(d) {
+                    dialogs[d.id] = d;
                 }
             }, mod, gettext_stub);
             deps.push(m.id);
@@ -93,7 +97,8 @@
             m.setup(app, {
                 settings: settings,
                 views: views,
-                actions: actions
+                actions: actions,
+                dialogs: dialogs
             });
         });
 

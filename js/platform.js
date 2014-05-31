@@ -120,7 +120,9 @@
                         $.each(rd, function(i, rde) {
                             //TODO matches location?
                             var deps = [];
-                            var args = [{location:$location}];
+                            var args = [{
+                                location: $location
+                            }];
                             if (rde.deps)
                                 for (var i = 0; i <= rde.deps.length - 1; i++) args.push($injector.get(rde.deps[i]));
                             res = rde.fn.apply(null, args);
@@ -128,6 +130,71 @@
                         });
                         return res;
                     });
+                }
+            ]);
+
+            app.factory('dialogs', ['$rootScope', '$modal',
+                function($rootScope, $modal) {
+                    return {
+                        confirmation: function(title, message) {
+                            var df = $.Deferred();
+                            var modalInstance = $modal.open({
+                                templateUrl: 'core/confirmation_dialog.html',
+                                controller: function($modalInstance, $scope, spec) {
+                                    $scope.spec = spec;
+
+                                    $scope.ok = function() {
+                                        $modalInstance.close();
+                                    };
+
+                                    $scope.cancel = function() {
+                                        $modalInstance.dismiss('cancel');
+                                    };
+                                },
+                                resolve: {
+                                    spec: function() {
+                                        return {
+                                            title: title,
+                                            message: message
+                                        };
+                                    }
+                                }
+                            });
+                            modalInstance.result.then(df.resolve);
+                            return df.promise();
+                        },
+                        custom: function(id) {
+                            var df = $.Deferred();
+                            var d = o.dialogs[id];
+                            if (!d) return;
+
+                            var resolve = {};
+                            if (d.params) {
+                                var args = arguments;
+                                $.each(d.params, function(i, p) {
+                                    if (args.length <= i + 1) return false;
+                                    var a = args[i + 1];
+                                    if (typeof(a) == 'function') resolve[p] = a;
+                                    else
+                                        resolve[p] = (function(v) {
+                                            return function() {
+                                                return v;
+                                            }
+                                        })(a);
+                                })
+                            }
+
+                            var modalInstance = $modal.open({
+                                templateUrl: d.template, //TODO path
+                                controller: d.controller,
+                                resolve: resolve
+                            });
+                            modalInstance.result.then(function(r) {
+                                df.resolve(r);
+                            }, df.reject);
+                            return df.promise();
+                        }
+                    }
                 }
             ]);
 
