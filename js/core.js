@@ -250,6 +250,11 @@
                         addFolder: function(f) {
                             return service.post('configuration/folders', f);
                         },
+                        addFolderUsers: function(f, u) {
+                            return service.get('configuration/folders/' + f.id + "/users/", {
+                                ids: cloudberry.utils.extractValue(u, "id")
+                            });
+                        },
                         deleteFolders: function(f) {
                             return service.del("configuration/folders", {
                                 ids: cloudberry.utils.extractValue(f, "id")

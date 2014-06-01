@@ -286,7 +286,6 @@
                 params: ['folder']
             });
 
-            gettext("configFolders_viewTitle");
             h.registerView('folder', {
                 parent: "folders",
                 url: "/{folderId:[0-9]{1,8}}",
@@ -326,8 +325,8 @@
                 template: "config/folderusers.html"
             });
 
-            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folderRepository', 'folder',
-                function($scope, folderRepository, folder) {
+            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folderRepository', 'userRepository', 'dialogs', 'folder',
+                function($scope, folderRepository, userRepository, dialogs, folder) {
                     $scope.folder = folder;
 
                     $scope.folderUsersListConfig = {
@@ -341,7 +340,19 @@
                         rowActions: [],
                         actions: [{
                             icon: 'fa-plus',
-                            callback: function() {}
+                            callback: function() {
+                                var t = this;
+                                userRepository.getAllUsers().done(function(all) {
+                                    var possible = all; //TODO resolve possible
+                                    if (possible.length === 0) {
+                                        //TODO message
+                                        return;
+                                    }
+                                    dialogs.custom('selectItem', 'todo', 'foo', possible).done(function(u) {
+                                        folderRepository.addFolderUsers(folder, u).done(t.refresh);
+                                    });
+                                });
+                            }
                         }, {
                             icon: 'fa-minus',
                             selection: 'any',
@@ -353,6 +364,33 @@
                     }
                 }
             ]);
+
+            h.registerDialog({
+                id: "selectItem",
+                template: 'config/select_item.html',
+                controller: function($scope, $modalInstance, title, message, options) {
+                    $scope.title = title;
+                    $scope.message = message;
+                    $scope.list = options;
+                    $scope.selectedItems = [];
+                    $scope.listOptions = {
+                        enableRowSelection: true,
+                        selectWithCheckboxOnly: true,
+                        showSelectionCheckbox: true,
+                        data: 'list',
+                        selectedItems: $scope.selectedItems
+                    };
+
+                    $scope.ok = function() {
+                        $modalInstance.close($scope.selectedItems);
+                    };
+
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                params: ['title', 'message', 'options']
+            });
         }
     });
 }(window.cloudberry);

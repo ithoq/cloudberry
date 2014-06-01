@@ -1,1 +1,15 @@
 <div ui-view></div>
+
+<script type="text/ng-template" id="config/select_item.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body">
+        {{message}}
+        <div ng-grid="listOptions"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()" translate>dialogOK</button>
+        <button class="btn btn-warning" ng-click="cancel()" translate>dialogCancel</button>
+    </div>
+</script>
