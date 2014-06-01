@@ -141,8 +141,8 @@
             });
 
             gettext("configUsers_listName");
-            mod.controller('ConfigUsersCtrl', ['$scope', 'userRepository', 'dialogs',
-                function($scope, userRepository, dialogs) {
+            mod.controller('ConfigUsersCtrl', ['$scope', '$state', 'userRepository', 'dialogs',
+                function($scope, $state, userRepository, dialogs) {
                     $scope.userListConfig = {
                         cols: [{
                             key: 'id',
@@ -150,6 +150,16 @@
                         }, {
                             key: 'name',
                             titleKey: 'configUsers_listName'
+                        }],
+                        rowActions: [{
+                            id: "open",
+                            icon: 'fa-plus',
+                            titleKey: 'configUsers_openUser',
+                            callback: function(u) {
+                                $state.go("user", {
+                                    userId: u.id
+                                });
+                            }
                         }],
                         serverPaging: true,
                         actions: [{
@@ -196,6 +206,112 @@
                 },
                 params: ['user']
             });
+
+            h.registerView('user', {
+                parent: "users",
+                url: "/{userId:[0-9]{1,8}}",
+                template: "config/user.html",
+                controller: "ConfigUserCtrl",
+                resolve: {
+                    user: function($stateParams, userRepository) {
+                        return userRepository.getUser($stateParams.userId);
+                    }
+                }
+            });
+
+            mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
+                function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
+                    $scope.user = user;
+                    $scope.details = [];
+
+                    $.each(configDetails.getDetails('user'), function(i, d) {
+                        var ctrl = $controller(d.controller, {
+                            '$scope': $scope,
+                            user: user
+                        });
+                        $scope.details.push({
+                            title: gettextCatalog.getString(d.titleKey),
+                            controller: ctrl,
+                            template: "templates/" + d.template //TODO url
+                        })
+                    });
+                }
+            ]);
+            gettext("configUserFolders_viewTitle");
+            h.registerConfigDetails('user_folders', {
+                parent: "user",
+                controller: "ConfigUserFoldersCtrl",
+                titleKey: "configUserFolders_viewTitle",
+                template: "config/userfolders.html"
+            });
+
+            mod.controller('ConfigUserFoldersCtrl', ['$scope', 'userRepository', 'folderRepository', 'dialogs', 'user',
+                function($scope, userRepository, folderRepository, dialogs, user) {
+                    $scope.user = user;
+
+                    $scope.userFoldersListConfig = {
+                        cols: [{
+                            key: 'id',
+                            titleKey: 'configTable_id'
+                        }, {
+                            key: 'name',
+                            titleKey: 'configUserFolders_listName'
+                        }],
+                        rowActions: [],
+                        actions: [{
+                            icon: 'fa-plus',
+                            callback: function() {
+                                var t = this;
+                            }
+                        }, {
+                            icon: 'fa-minus',
+                            selection: 'any',
+                            callback: function(sel) {}
+                        }]
+                    };
+                    $scope.getUserFolders = function() {
+                        return userRepository.getUserFolders(user.id)
+                    }
+                }
+            ]);
+
+            gettext("configUserGroups_viewTitle");
+            h.registerConfigDetails('user_groups', {
+                parent: "user",
+                controller: "ConfigUserGroupsCtrl",
+                titleKey: "configUserGroups_viewTitle",
+                template: "config/usergroups.html"
+            });
+
+            mod.controller('ConfigUserGroupsCtrl', ['$scope', 'userRepository', 'dialogs', 'user',
+                function($scope, userRepository, dialogs, user) {
+                    $scope.user = user;
+
+                    $scope.userGroupsListConfig = {
+                        cols: [{
+                            key: 'id',
+                            titleKey: 'configTable_id'
+                        }, {
+                            key: 'name',
+                            titleKey: 'configUserGroups_listName'
+                        }],
+                        rowActions: [],
+                        actions: [{
+                            icon: 'fa-plus',
+                            callback: function() {
+                                var t = this;
+                            }
+                        }, {
+                            icon: 'fa-minus',
+                            selection: 'any',
+                            callback: function(sel) {}
+                        }]
+                    };
+                    $scope.getUserGroups = function() {
+                        return userRepository.getUserGroups(user.id)
+                    }
+                }
+            ]);
         }
     });
 

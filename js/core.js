@@ -281,6 +281,20 @@
                             if (!id) return [];
                             return service.get('configuration/users/' + id + "/folders/");
                         },
+                        addUserFolders: function(u, f) {
+                            return service.post('configuration/users/' + u.id + "/folders/",
+                                cloudberry.utils.extractValue(f, "id")
+                            );
+                        },
+                        getUserGroups: function(id) {
+                            if (!id) return [];
+                            return service.get('configuration/users/' + id + "/groups/");
+                        },
+                        addUserGroups: function(u, g) {
+                            return service.post('configuration/users/' + u.id + "/groups/",
+                                cloudberry.utils.extractValue(g, "id")
+                            );
+                        },
                         addUser: function(u) {
                             return service.post('configuration/users', u);
                         },
