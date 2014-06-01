@@ -7768,3 +7768,6 @@ button.close {
 #cloudberry .main-view .config-table .ngGrid {
   height: 300px;
 }
+.select-list.ngGrid {
+  height: 200px;
+}

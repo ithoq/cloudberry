@@ -348,7 +348,18 @@
                                         //TODO message
                                         return;
                                     }
-                                    dialogs.custom('selectItem', 'todo', 'foo', possible).done(function(u) {
+                                    dialogs.custom('selectItem', {
+                                        title: 'todo',
+                                        message: 'foo',
+                                        options: possible,
+                                        cols: [{
+                                            key: 'id',
+                                            titleKey: 'configTable_id'
+                                        }, {
+                                            key: 'name',
+                                            titleKey: 'configUsers_listName'
+                                        }]
+                                    }).done(function(u) {
                                         folderRepository.addFolderUsers(folder, u).done(t.refresh);
                                     });
                                 });
@@ -368,17 +379,24 @@
             h.registerDialog({
                 id: "selectItem",
                 template: 'config/select_item.html',
-                controller: function($scope, $modalInstance, title, message, options) {
-                    $scope.title = title;
-                    $scope.message = message;
-                    $scope.list = options;
+                controller: function($scope, $modalInstance, gettextCatalog, spec) {
+                    $scope.spec = spec;
+                    $scope.list = spec.options;
                     $scope.selectedItems = [];
+                    var columns = [];
+                    $.each(spec.cols, function(i, col) {
+                        columns.push({
+                            field: col.key,
+                            displayName: gettextCatalog.getString(col.titleKey)
+                        });
+                    });
                     $scope.listOptions = {
                         enableRowSelection: true,
                         selectWithCheckboxOnly: true,
                         showSelectionCheckbox: true,
                         data: 'list',
-                        selectedItems: $scope.selectedItems
+                        selectedItems: $scope.selectedItems,
+                        columnDefs: columns
                     };
 
                     $scope.ok = function() {
@@ -389,7 +407,7 @@
                         $modalInstance.dismiss('cancel');
                     };
                 },
-                params: ['title', 'message', 'options']
+                params: ['spec']
             });
         }
     });
