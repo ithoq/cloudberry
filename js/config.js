@@ -141,8 +141,8 @@
             });
 
             gettext("configUsers_listName");
-            mod.controller('ConfigUsersCtrl', ['$scope', 'service',
-                function($scope, service) {
+            mod.controller('ConfigUsersCtrl', ['$scope', 'userRepository', 'dialogs',
+                function($scope, userRepository, dialogs) {
                     $scope.userListConfig = {
                         cols: [{
                             key: 'id',
@@ -151,15 +151,51 @@
                             key: 'name',
                             titleKey: 'configUsers_listName'
                         }],
-                        serverPaging: true
+                        serverPaging: true,
+                        actions: [{
+                            icon: 'fa-plus',
+                            callback: function() {
+                                var t = this;
+                                dialogs.custom('addEditUser', null).done(function(u) {
+                                    userRepository.addUser(u).done(t.refresh);
+                                });
+                            }
+                        }]
                     };
                     $scope.getUsers = function() {
-                        return service.post('configuration/users/query', {
+                        return userRepository.userQuery({
                             start: 0
                         });
                     }
                 }
             ]);
+
+            h.registerDialog({
+                id: "addEditUser",
+                template: 'config/addedit_user.html',
+                controller: function($scope, $modalInstance, user) {
+                    $scope.edit = !! user;
+                    $scope.user = user || {};
+                    $scope.showLanguages = true; //TODO
+
+                    $scope.onSave = function() {
+                        $modalInstance.close($scope.user);
+                    };
+
+                    $scope.generatePassword = function() {
+                        $scope.user.password = "foo"; //TODO
+                    };
+
+                    $scope.ok = function() {
+                        $modalInstance.close();
+                    };
+
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                params: ['user']
+            });
         }
     });
 
@@ -253,7 +289,7 @@
             gettext("configFolders_viewTitle");
             h.registerView('folder', {
                 parent: "folders",
-                url: "/:folderId",
+                url: "/{folderId:[0-9]{1,8}}",
                 template: "config/folder.html",
                 controller: "ConfigFolderCtrl",
                 resolve: {
@@ -276,7 +312,7 @@
                         $scope.details.push({
                             title: gettextCatalog.getString(d.titleKey),
                             controller: ctrl,
-                            template: "templates/" + d.template  //TODO url
+                            template: "templates/" + d.template //TODO url
                         })
                     });
                 }
@@ -287,19 +323,34 @@
                 parent: "folder",
                 controller: "ConfigFolderUsersCtrl",
                 titleKey: "configFolderUsers_viewTitle",
-                template: "config/folderusers.html",
-                resolve: {
-                    users: function(folder) {
-                        return [{
-                            id: "1"
-                        }];
-                    }
-                }
+                template: "config/folderusers.html"
             });
 
-            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folder',
-                function($scope, folder) {
+            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folderRepository', 'folder',
+                function($scope, folderRepository, folder) {
                     $scope.folder = folder;
+
+                    $scope.folderUsersListConfig = {
+                        cols: [{
+                            key: 'id',
+                            titleKey: 'configTable_id'
+                        }, {
+                            key: 'name',
+                            titleKey: 'configFolderUsers_listName'
+                        }],
+                        rowActions: [],
+                        actions: [{
+                            icon: 'fa-plus',
+                            callback: function() {}
+                        }, {
+                            icon: 'fa-minus',
+                            selection: 'any',
+                            callback: function(sel) {}
+                        }]
+                    };
+                    $scope.getFolderUsers = function() {
+                        return folderRepository.getFolderUsers(folder.id)
+                    }
                 }
             ]);
         }

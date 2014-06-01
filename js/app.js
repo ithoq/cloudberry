@@ -149,7 +149,7 @@
                     }
                 };
                 pendingStateChange = false;
-                $state.go(stateChange.to.name);
+                $state.go(stateChange.to.name, stateChange.params);
             }
 
             // state not found
@@ -170,7 +170,10 @@
                         fn = v.redirect[v.redirect.length - 1];
                         deps = v.redirect.slice(0, v.redirect.length - 1);
                     }
-                    var args = [{toState: toState, fromState: fromState}];
+                    var args = [{
+                        toState: toState,
+                        fromState: fromState
+                    }];
                     if (deps)
                         for (var i = 0; i <= deps.length - 1; i++) args.push($injector.get(deps[i]));
                     var rd = fn.apply(null, args);

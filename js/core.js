@@ -243,6 +243,10 @@
                             if (!id) return null;
                             return service.get('configuration/folders/' + id);
                         },
+                        getFolderUsers: function(id) {
+                            if (!id) return [];
+                            return service.get('configuration/folders/' + id + "/users/");
+                        },
                         addFolder: function(f) {
                             return service.post('configuration/folders', f);
                         },
@@ -255,6 +259,34 @@
                 }
             ]);
 
+            mod.factory('userRepository', ['$rootScope', 'service',
+                function($rootScope, service) {
+                    return {
+                        getAllUsers: function() {
+                            return service.get('configuration/users');
+                        },
+                        userQuery: function(q) {
+                            return service.post('configuration/users/query', q);
+                        },
+                        getUser: function(id) {
+                            if (!id) return null;
+                            return service.get('configuration/users/' + id);
+                        },
+                        getUserFolders: function(id) {
+                            if (!id) return [];
+                            return service.get('configuration/users/' + id + "/folders/");
+                        },
+                        addUser: function(u) {
+                            return service.post('configuration/users', u);
+                        },
+                        deleteUsers: function(u) {
+                            return service.del("configuration/users", {
+                                ids: cloudberry.utils.extractValue(f, "id")
+                            });
+                        }
+                    }
+                }
+            ]);
 
             mod.factory('service', ['$rootScope', 'settings',
                 function($rootScope, settings) {
