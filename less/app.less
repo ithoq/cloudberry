@@ -93,11 +93,43 @@
                 }
             }
         }
+        .config-view {
+            h2.header, h3.header {
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+        }
         .config-table {
             .ngGrid {
                 height: 300px;
             }
         }
+    }
+}
+.ngGrid {
+    .ngHeaderContainer, .ngTopPanel {
+        height: 32px !important;
+    }
+    .ngHeaderScroller {
+        font-weight: normal;
+        background: white;
+        border-bottom: 2px solid #ddd;
+    }
+    .ngHeaderText {
+        padding: 8px;
+        vertical-align: bottom;
+        
+    }
+    .ngRow {
+        border-spacing: 2px;
+        border-color: gray;
+
+        &.even {
+            background-color: #f9f9f9;
+        }
+    }
+    .ngCellText {
+        padding: 8px;
     }
 }
 .select-list.ngGrid {

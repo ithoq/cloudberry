@@ -7765,8 +7765,36 @@ button.close {
 #cloudberry .main-view ul.quickaction-list li:hover {
   background-color: rgba(220, 220, 220, 0.5);
 }
+#cloudberry .main-view .config-view h2.header,
+#cloudberry .main-view .config-view h3.header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
 #cloudberry .main-view .config-table .ngGrid {
   height: 300px;
+}
+.ngGrid .ngHeaderContainer,
+.ngGrid .ngTopPanel {
+  height: 32px !important;
+}
+.ngGrid .ngHeaderScroller {
+  font-weight: normal;
+  background: white;
+  border-bottom: 2px solid #ddd;
+}
+.ngGrid .ngHeaderText {
+  padding: 8px;
+  vertical-align: bottom;
+}
+.ngGrid .ngRow {
+  border-spacing: 2px;
+  border-color: gray;
+}
+.ngGrid .ngRow.even {
+  background-color: #f9f9f9;
+}
+.ngGrid .ngCellText {
+  padding: 8px;
 }
 .select-list.ngGrid {
   height: 200px;
