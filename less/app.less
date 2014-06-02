@@ -100,6 +100,9 @@
             }
         }
         .config-table {
+            .config-table-actions {
+                padding-bottom: 8px;
+            }
             .ngGrid {
                 height: 300px;
             }
@@ -108,7 +111,7 @@
 }
 .ngGrid {
     .ngHeaderContainer, .ngTopPanel {
-        height: 32px !important;
+        height: 34px !important;
     }
     .ngHeaderScroller {
         font-weight: normal;
@@ -118,18 +121,27 @@
     .ngHeaderText {
         padding: 8px;
         vertical-align: bottom;
-        
     }
     .ngRow {
+        height: 32px !important;
+        .ngCell, .ngCellText {
+            height: 31px !important;
+        }
         border-spacing: 2px;
         border-color: gray;
-
+        border-bottom: 1px solid #ddd;
         &.even {
             background-color: #f9f9f9;
         }
+        &.even.selected {
+            background-color: #c9dde1
+        }
     }
-    .ngCellText {
+    .ngCellText, .ngCellActions {
         padding: 8px;
+    }
+    .ngCellAction {
+        cursor: pointer;
     }
 }
 .select-list.ngGrid {

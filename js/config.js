@@ -74,7 +74,9 @@
                         showSelectionCheckbox: true,
                         data: 'list',
                         selectedItems: $scope.selectedItems,
-                        columnDefs: []
+                        columnDefs: [],
+                        rowHeight: 33,
+                        headerRowHeight: 32
                     };
                     $scope.isActionDisabled = function(ac) {
                         if (!ac.selection) return false;

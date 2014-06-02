@@ -7770,12 +7770,15 @@ button.close {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
+#cloudberry .main-view .config-table .config-table-actions {
+  padding-bottom: 8px;
+}
 #cloudberry .main-view .config-table .ngGrid {
   height: 300px;
 }
 .ngGrid .ngHeaderContainer,
 .ngGrid .ngTopPanel {
-  height: 32px !important;
+  height: 34px !important;
 }
 .ngGrid .ngHeaderScroller {
   font-weight: normal;
@@ -7787,14 +7790,27 @@ button.close {
   vertical-align: bottom;
 }
 .ngGrid .ngRow {
+  height: 32px !important;
   border-spacing: 2px;
   border-color: gray;
+  border-bottom: 1px solid #ddd;
+}
+.ngGrid .ngRow .ngCell,
+.ngGrid .ngRow .ngCellText {
+  height: 31px !important;
 }
 .ngGrid .ngRow.even {
   background-color: #f9f9f9;
 }
-.ngGrid .ngCellText {
+.ngGrid .ngRow.even.selected {
+  background-color: #c9dde1;
+}
+.ngGrid .ngCellText,
+.ngGrid .ngCellActions {
   padding: 8px;
+}
+.ngGrid .ngCellAction {
+  cursor: pointer;
 }
 .select-list.ngGrid {
   height: 200px;
