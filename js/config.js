@@ -38,8 +38,8 @@
             ]);
 
             gettext("configTable_id");
-            mod.directive('configTable', ['$parse', 'gettextCatalog',
-                function($parse, gettextCatalog) {
+            mod.directive('configTable', ['$parse', 'gettextCatalog', '$timeout',
+                function($parse, gettextCatalog, $timeout) {
                     return {
                         templateUrl: 'templates/config/config-table.html', //TODO url
                         replace: true,
@@ -74,7 +74,7 @@
                                             displayName: ' ',
                                             cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
                                         })
-
+                                    scope._values = [];
                                     scope.options = {
                                         enableRowSelection: true,
                                         selectWithCheckboxOnly: true,
@@ -101,6 +101,11 @@
                                     scope.onRowAction = function(ac, row) {
                                         if (ac && ac.callback) ac.callback.apply(null, [row]);
                                     };
+                                    scope.$watch('values', function(v) {
+                                        $timeout(function() {
+                                            scope._values = v;
+                                        }, 100);
+                                    }, false);
                                     /*var refresh = function() {
                                     getDataFn().done(function(r) {
                                         if (config.serverPaging)
@@ -123,7 +128,7 @@
         }
     });
 
-    var setupDetailsCtrl = function($scope, $timeout, $controller, gettextCatalog, details, ctx) {
+    var setupDetailsCtrl = function($scope, $controller, gettextCatalog, details, ctx) {
         $scope.details = [];
         $scope.onTab = function(d) {
             var fn = 'on' + d.controllerName;
@@ -271,11 +276,11 @@
                 }
             });
 
-            mod.controller('ConfigUserCtrl', ['$scope', '$timeout', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
-                function($scope, $timeout, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
+            mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
+                function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
 
-                    setupDetailsCtrl($scope, $timeout, $controller, gettextCatalog, configDetails.getDetails('user'), {
+                    setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
                         user: user
                     });
                 }
@@ -504,10 +509,12 @@
             mod.controller('ConfigFolderUsersCtrl', ['$scope', 'gettextCatalog', 'folderRepository', 'userRepository', 'dialogs', 'folder',
                 function($scope, gettextCatalog, folderRepository, userRepository, dialogs, folder) {
                     $scope.folder = folder;
+                    $scope.folderUsers = [];
+                    $scope.selectedFolderUsers = [];
 
                     $scope.onConfigFolderUsersCtrl = function() {
                         console.log("folder users");
-                        $scope._list.refresh();
+                        $scope.refreshFolderUsers();
                     };
 
                     $scope.folderUsersListConfig = {
@@ -527,8 +534,8 @@
                             callback: function() {
                                 var t = this;
                                 userRepository.getAllUsers().done(function(all) {
-                                    var currentIds = cloudberry.helpers.extractValue($scope._list.values, "id");
-                                    var possible = cloudberry.helpers.filter(all, function(u) {
+                                    var currentIds = cloudberry.utils.extractValue($scope.folderUsers, "id");
+                                    var possible = cloudberry.utils.filter(all, function(u) {
                                         return currentIds.indexOf(u.id) < 0;
                                     });
                                     if (possible.length === 0) {
@@ -550,7 +557,7 @@
                                             titleKey: 'configUsers_list_email'
                                         }]
                                     }).done(function(u) {
-                                        folderRepository.addFolderUsers(folder, u).done(t.refresh);
+                                        folderRepository.addFolderUsers(folder, u).done($scope.refreshFolderUsers);
                                     });
                                 });
                             }
@@ -560,8 +567,10 @@
                             callback: function(sel) {}
                         }]
                     };
-                    $scope.getFolderUsers = function() {
-                        return folderRepository.getFolderUsers(folder.id)
+                    $scope.refreshFolderUsers = function() {
+                        folderRepository.getFolderUsers(folder.id).done(function(u) {
+                            $scope.folderUsers = u;
+                        });
                     }
                 }
             ]);
