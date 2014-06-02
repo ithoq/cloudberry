@@ -38,94 +38,115 @@
             ]);
 
             gettext("configTable_id");
-            mod.directive('configTable', ['$parse',
-                function($parse) {
+            mod.directive('configTable', ['$parse', 'gettextCatalog',
+                function($parse, gettextCatalog) {
                     return {
                         templateUrl: 'templates/config/config-table.html', //TODO url
                         replace: true,
                         transclude: true,
                         restrict: 'E',
-                        controller: "ConfigTableCtrl",
-                        compile: function($element, attr) {
-                            var dataFn = $parse(attr['data']);
-                            //var configFn = $parse(attr['config']);
+                        scope: {
+                            config: '=config',
+                            values: '=values',
+                            selected: '=selected'
+                        },
+                        //compile: function($element, attr) {
+                        //var dataFn = $parse(attr['data']);
+                        //var tableId = attr['tableid'];
 
+                        compile: function() {
                             return {
-                                pre: function(scope, element, attr) {
-                                    scope.listConfig = scope[attr['config']];
-                                    scope.getData = function() {
+                                pre: function(scope, element, attrs) {
+                                    //scope.selected = [];
+                                    //var config = scope.config;//scope[attr['config']];
+                                    /*var getDataFn = function() {
                                         return dataFn(scope, {})();
-                                    }
-                                    scope._onReady();
+                                    };*/
+                                    var cols = [];
+                                    $.each(scope.config.cols, function(i, col) {
+                                        cols.push({
+                                            field: col.key,
+                                            displayName: gettextCatalog.getString(col.titleKey)
+                                        });
+                                    });
+                                    if (scope.config.rowActions)
+                                        cols.push({
+                                            displayName: ' ',
+                                            cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
+                                        })
+
+                                    scope.options = {
+                                        enableRowSelection: true,
+                                        selectWithCheckboxOnly: true,
+                                        showSelectionCheckbox: true,
+                                        data: 'values',
+                                        columnDefs: cols,
+                                        rowHeight: 33,
+                                        headerRowHeight: 32
+                                    };
+                                    //scope._list = _table;
+                                    //_table.options.selectedItems = _table.selectedItems;
+                                    //if (tableId) scope.$parent[tableId] = _table;
+
+                                    scope.isActionDisabled = function(ac) {
+                                        if (!ac.selection) return false;
+                                        if (ac.selection == 'any' && scope.selected.length === 0) return true;
+                                        if (ac.selection == 'one' && scope.selected.length !== 1) return true;
+                                        if (ac.selection == 'many' && scope.selected.length < 2) return true;
+                                        return false;
+                                    };
+                                    scope.onAction = function(ac) {
+                                        if (ac && ac.callback) ac.callback.apply(null, [scope.selected]);
+                                    };
+                                    scope.onRowAction = function(ac, row) {
+                                        if (ac && ac.callback) ac.callback.apply(null, [row]);
+                                    };
+                                    /*var refresh = function() {
+                                    getDataFn().done(function(r) {
+                                        if (config.serverPaging)
+                                            _table.values = r.data;
+                                        else
+                                            _table.values = r;
+
+                                        if (!scope.$$phase)
+                                            scope.$apply();
+                                    })
+                                };
+
+                                if (!config.noInitRefresh) _table.refresh();*/
                                 }
                             }
                         }
-                    };
-                }
-            ]);
-
-            mod.controller('ConfigTableCtrl', ['$scope', 'service', 'gettextCatalog',
-                function($scope, service, gettextCatalog) {
-                    $scope.list = [];
-                    $scope.selectedItems = [];
-                    $scope.options = {
-                        enableRowSelection: true,
-                        selectWithCheckboxOnly: true,
-                        showSelectionCheckbox: true,
-                        data: 'list',
-                        selectedItems: $scope.selectedItems,
-                        columnDefs: [],
-                        rowHeight: 33,
-                        headerRowHeight: 32
-                    };
-                    $scope.isActionDisabled = function(ac) {
-                        if (!ac.selection) return false;
-                        if (ac.selection == 'any' && $scope.selectedItems.length === 0) return true;
-                        if (ac.selection == 'one' && $scope.selectedItems.length !== 1) return true;
-                        if (ac.selection == 'many' && $scope.selectedItems.length < 2) return true;
-                        return false;
-                    };
-                    $scope.onAction = function(ac) {
-                        if (ac && ac.callback) ac.callback.apply({
-                            refresh: $scope.refresh
-                        }, [$scope.selectedItems]);
-                    };
-                    $scope.onRowAction = function(ac, row) {
-                        if (ac && ac.callback) ac.callback.apply({
-                            refresh: $scope.refresh
-                        }, [row]);
-                    };
-                    $scope.refresh = function() {
-                        $scope.getData().done(function(r) {
-                            if ($scope.listConfig.serverPaging)
-                                $scope.list = r.data;
-                            else
-                                $scope.list = r;
-
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                        })
-                    };
-                    $scope._onReady = function() {
-                        var cols = [];
-                        $.each($scope.listConfig.cols, function(i, col) {
-                            cols.push({
-                                field: col.key,
-                                displayName: gettextCatalog.getString(col.titleKey)
-                            });
-                        });
-                        if ($scope.listConfig.rowActions)
-                            cols.push({
-                                displayName: '',
-                                cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in listConfig.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
-                            })
-                        $scope.options.columnDefs = cols;
-                        $scope.refresh();
                     }
                 }
             ]);
         }
     });
+
+    var setupDetailsCtrl = function($scope, $timeout, $controller, gettextCatalog, details, ctx) {
+        $scope.details = [];
+        $scope.onTab = function(d) {
+            var fn = 'on' + d.controllerName;
+            if ($scope[fn]) $scope[fn]();
+        };
+        var params = $.extend({}, ctx, {
+            '$scope': $scope
+        });
+
+        $.each(details, function(i, d) {
+            var ctrl = $controller(d.controller, params);
+            $scope.details.push({
+                title: gettextCatalog.getString(d.titleKey),
+                controllerName: d.controller,
+                controller: ctrl,
+                template: "templates/" + d.template //TODO url
+            });
+        });
+        //if ($scope.details.length > 0)
+        //  $scope._onCtrlReady = function() {
+        $scope.onTab($scope.details[0]);
+        //};
+    };
 
     / * Users * /
     cloudberry.modules.push({
@@ -142,20 +163,22 @@
                 controller: "ConfigUsersCtrl"
             });
 
-            gettext("configUsers_listName");
+            gettext("configUsers_list_name");
             mod.controller('ConfigUsersCtrl', ['$scope', '$state', 'userRepository', 'dialogs',
                 function($scope, $state, userRepository, dialogs) {
+                    $scope.users = [];
+                    $scope.selectedUsers = [];
                     $scope.userListConfig = {
                         cols: [{
                             key: 'id',
                             titleKey: 'configTable_id'
                         }, {
                             key: 'name',
-                            titleKey: 'configUsers_listName'
+                            titleKey: 'configUsers_list_name'
                         }],
                         rowActions: [{
                             id: "open",
-                            icon: 'fa-plus',
+                            icon: 'fa-arrow-circle-right',
                             titleKey: 'configUsers_openUser',
                             callback: function(u) {
                                 $state.go("user", {
@@ -174,28 +197,55 @@
                             }
                         }]
                     };
-                    $scope.getUsers = function() {
-                        return userRepository.userQuery({
+                    $scope.refreshUsers = function() {
+                        userRepository.userQuery({
                             start: 0
+                        }).done(function(r) {
+                            $scope.users = r.data;
                         });
-                    }
+                    };
+                    $scope.refreshUsers();
                 }
             ]);
 
             h.registerDialog({
                 id: "addEditUser",
                 template: 'config/addedit_user.html',
-                controller: function($scope, $modalInstance, user) {
+                controller: function($scope, $modalInstance, settings, user) {
                     $scope.edit = !! user;
                     $scope.user = user || {};
-                    $scope.showLanguages = true; //TODO
+                    $scope.showLanguages = (settings.language.options && settings.language.options.length > 1);
+                    $scope.languages = settings.language.options;
 
                     $scope.onSave = function() {
                         $modalInstance.close($scope.user);
                     };
 
+                    var generatePassword = function() {
+                        var length = 8;
+                        var password = '';
+                        var c;
+
+                        for (var i = 0; i < length; i++) {
+                            while (true) {
+                                c = (parseInt(Math.random() * 1000, 10) % 94) + 33;
+                                if (isValidPasswordChar(c)) break;
+                            }
+                            password += String.fromCharCode(c);
+                        }
+                        return password;
+                    }
+
+                    var isValidPasswordChar = function(c) {
+                        if (c >= 33 && c <= 47) return false;
+                        if (c >= 58 && c <= 64) return false;
+                        if (c >= 91 && c <= 96) return false;
+                        if (c >= 123 && c <= 126) return false;
+                        return true;
+                    }
+
                     $scope.generatePassword = function() {
-                        $scope.user.password = "foo"; //TODO
+                        $scope.user.password = generatePassword();
                     };
 
                     $scope.ok = function() {
@@ -221,21 +271,12 @@
                 }
             });
 
-            mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
-                function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
+            mod.controller('ConfigUserCtrl', ['$scope', '$timeout', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
+                function($scope, $timeout, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
-                    $scope.details = [];
 
-                    $.each(configDetails.getDetails('user'), function(i, d) {
-                        var ctrl = $controller(d.controller, {
-                            '$scope': $scope,
-                            user: user
-                        });
-                        $scope.details.push({
-                            title: gettextCatalog.getString(d.titleKey),
-                            controller: ctrl,
-                            template: "templates/" + d.template //TODO url
-                        })
+                    setupDetailsCtrl($scope, $timeout, $controller, gettextCatalog, configDetails.getDetails('user'), {
+                        user: user
                     });
                 }
             ]);
@@ -250,8 +291,17 @@
             mod.controller('ConfigUserFoldersCtrl', ['$scope', 'userRepository', 'folderRepository', 'dialogs', 'user',
                 function($scope, userRepository, folderRepository, dialogs, user) {
                     $scope.user = user;
+                    $scope.userFolders = [];
+                    $scope.selectedUserFolders = [];
+
+                    $scope.onConfigUserFoldersCtrl = function() {
+                        console.log("user folders");
+                        $scope.refreshUserFolders();
+                        //$scope['usergroups-table'].refresh();
+                    };
 
                     $scope.userFoldersListConfig = {
+                        noInitRefresh: true,
                         cols: [{
                             key: 'id',
                             titleKey: 'configTable_id'
@@ -271,8 +321,10 @@
                             callback: function(sel) {}
                         }]
                     };
-                    $scope.getUserFolders = function() {
-                        return userRepository.getUserFolders(user.id)
+                    $scope.refreshUserFolders = function() {
+                        return userRepository.getUserFolders(user.id).done(function(f) {
+                            $scope.userFolders = f;
+                        })
                     }
                 }
             ]);
@@ -288,6 +340,14 @@
             mod.controller('ConfigUserGroupsCtrl', ['$scope', 'userRepository', 'dialogs', 'user',
                 function($scope, userRepository, dialogs, user) {
                     $scope.user = user;
+                    $scope.userGroups = [];
+                    $scope.selectedUserGroups = [];
+
+                    $scope.onConfigUserGroupsCtrl = function() {
+                        console.log("user groups");
+                        $scope.refreshUserGroups();
+                        //$scope['usergroups-table'].refresh();
+                    };
 
                     $scope.userGroupsListConfig = {
                         cols: [{
@@ -309,7 +369,7 @@
                             callback: function(sel) {}
                         }]
                     };
-                    $scope.getUserGroups = function() {
+                    $scope.refreshUserGroups = function() {
                         return userRepository.getUserGroups(user.id)
                     }
                 }
@@ -332,8 +392,9 @@
                 controller: "ConfigFoldersCtrl"
             });
 
-            gettext("configFolders_listName");
-            gettext("configFolders_listPath");
+            gettext("configFolders_list_name");
+            gettext("configFolders_list_path");
+            gettext("configFolders_openFolder");
             mod.controller('ConfigFoldersCtrl', ['$scope', '$state', 'folderRepository', 'dialogs',
                 function($scope, $state, folderRepository, dialogs) {
                     $scope.folderListConfig = {
@@ -342,17 +403,16 @@
                             titleKey: 'configTable_id'
                         }, {
                             key: 'name',
-                            titleKey: 'configFolders_listName'
+                            titleKey: 'configFolders_list_name'
                         }, {
                             key: 'path',
-                            titleKey: 'configFolders_listPath'
+                            titleKey: 'configFolders_list_path'
                         }],
                         rowActions: [{
                             id: "open",
-                            icon: 'fa-plus',
+                            icon: 'fa-arrow-circle-right',
                             titleKey: 'configFolders_openFolder',
                             callback: function(f) {
-                                console.log(f);
                                 $state.go("folder", {
                                     folderId: f.id
                                 });
@@ -419,18 +479,9 @@
             mod.controller('ConfigFolderCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'folderRepository', 'dialogs', 'configDetails', 'folder',
                 function($scope, $controller, $stateParams, gettextCatalog, folderRepository, dialogs, configDetails, folder) {
                     $scope.folder = folder;
-                    $scope.details = [];
 
-                    $.each(configDetails.getDetails('folder'), function(i, d) {
-                        var ctrl = $controller(d.controller, {
-                            '$scope': $scope,
-                            folder: folder
-                        });
-                        $scope.details.push({
-                            title: gettextCatalog.getString(d.titleKey),
-                            controller: ctrl,
-                            template: "templates/" + d.template //TODO url
-                        })
+                    setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
+                        folder: folder
                     });
                 }
             ]);
@@ -443,9 +494,16 @@
                 template: "config/folderusers.html"
             });
 
-            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'folderRepository', 'userRepository', 'dialogs', 'folder',
-                function($scope, folderRepository, userRepository, dialogs, folder) {
+            gettext("configFolderUsers_list_name");
+            gettext("configFolderUsers_list_email");
+            mod.controller('ConfigFolderUsersCtrl', ['$scope', 'gettextCatalog', 'folderRepository', 'userRepository', 'dialogs', 'folder',
+                function($scope, gettextCatalog, folderRepository, userRepository, dialogs, folder) {
                     $scope.folder = folder;
+
+                    $scope.onConfigFolderUsersCtrl = function() {
+                        console.log("folder users");
+                        $scope._list.refresh();
+                    };
 
                     $scope.folderUsersListConfig = {
                         cols: [{
@@ -453,7 +511,10 @@
                             titleKey: 'configTable_id'
                         }, {
                             key: 'name',
-                            titleKey: 'configFolderUsers_listName'
+                            titleKey: 'configFolderUsers_list_name'
+                        }, {
+                            key: 'email',
+                            titleKey: 'configFolderUsers_list_email'
                         }],
                         rowActions: [],
                         actions: [{
@@ -461,21 +522,27 @@
                             callback: function() {
                                 var t = this;
                                 userRepository.getAllUsers().done(function(all) {
-                                    var possible = all; //TODO resolve possible
+                                    var currentIds = cloudberry.helpers.extractValue($scope._list.values, "id");
+                                    var possible = cloudberry.helpers.filter(all, function(u) {
+                                        return currentIds.indexOf(u.id) < 0;
+                                    });
                                     if (possible.length === 0) {
                                         //TODO message
                                         return;
                                     }
                                     dialogs.custom('selectItem', {
-                                        title: 'todo',
-                                        message: 'foo',
+                                        title: gettextCatalog.getString('configFolderUsers_addFolderUser_title'),
+                                        message: gettextCatalog.getString('configFolderUsers_addFolderUser_message'),
                                         options: possible,
                                         cols: [{
                                             key: 'id',
                                             titleKey: 'configTable_id'
                                         }, {
                                             key: 'name',
-                                            titleKey: 'configUsers_listName'
+                                            titleKey: 'configUsers_list_name'
+                                        }, {
+                                            key: 'email',
+                                            titleKey: 'configUsers_list_email'
                                         }]
                                     }).done(function(u) {
                                         folderRepository.addFolderUsers(folder, u).done(t.refresh);
