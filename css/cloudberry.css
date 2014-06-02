@@ -7774,7 +7774,11 @@ button.close {
   padding-bottom: 8px;
 }
 #cloudberry .main-view .config-table .ngGrid {
-  height: 300px;
+  max-height: 300px;
+  height: auto !important;
+}
+#cloudberry .main-view .config-table .ngGrid .ngViewport {
+  height: auto !important;
 }
 .ngGrid .ngHeaderContainer,
 .ngGrid .ngTopPanel {
@@ -7811,6 +7815,9 @@ button.close {
 }
 .ngGrid .ngCellAction {
   cursor: pointer;
+}
+.config-tab ul {
+  margin-bottom: 15px;
 }
 .select-list.ngGrid {
   height: 200px;

@@ -104,7 +104,11 @@
                 padding-bottom: 8px;
             }
             .ngGrid {
-                height: 300px;
+                max-height: 300px;
+                height: auto !important;
+                .ngViewport {
+                    height: auto !important;
+                }
             }
         }
     }
@@ -142,6 +146,11 @@
     }
     .ngCellAction {
         cursor: pointer;
+    }
+}
+.config-tab {
+    ul {
+        margin-bottom: 15px;
     }
 }
 .select-list.ngGrid {
