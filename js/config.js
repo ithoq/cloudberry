@@ -397,6 +397,9 @@
             gettext("configFolders_openFolder");
             mod.controller('ConfigFoldersCtrl', ['$scope', '$state', 'folderRepository', 'dialogs',
                 function($scope, $state, folderRepository, dialogs) {
+                    $scope.folders = [];
+                    $scope.selectedFolders = [];
+
                     $scope.folderListConfig = {
                         cols: [{
                             key: 'id',
@@ -421,9 +424,8 @@
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
-                                var t = this;
                                 dialogs.custom('addEditFolder', null).done(function(f) {
-                                    folderRepository.addFolder(f).done(t.refresh);
+                                    folderRepository.addFolder(f).done($scope.refresh);
                                 });
                             }
                         }, {
@@ -431,15 +433,18 @@
                             selection: 'any',
                             callback: function(sel) {
                                 dialogs.confirmation("foo", "bar").done(function() {
-                                    folderRepository.deleteFolders(sel).done(this.refresh);
+                                    folderRepository.deleteFolders(sel).done($scope.refresh);
                                 });
                             }
                         }]
                     };
-                    $scope.getFolders = function() {
+                    $scope.refreshFolders = function() {
                         //TODO paging params
-                        return folderRepository.getAllFolders();
+                        folderRepository.getAllFolders().done(function(f) {
+                            $scope.folders = f;
+                        });
                     }
+                    $scope.refreshFolders();
                 }
             ]);
 
