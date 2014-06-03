@@ -1,13 +1,13 @@
 <?php
 	
-	/* For configuration instructions, see ReadMe.txt or wiki page at http://code.google.com/p/mollify/wiki/Installation */
+	/* For configuration instructions, see https://github.com/sjarvela/cloudberry/wiki/Installation-instructions */
 
 	$CONFIGURATION = array(
 		"db" => array(
 			"type" => "mysql",
-			"database" => "mollify",
-			"user" => "mollify",
-			"password" => "mollify",
+			"database" => "cloudberry",
+			"user" => "cloudberry",
+			"password" => "cloudberry",
 			"charset" => "utf8"
 		),
 		"timezone" => "Europe/Helsinki",	// change this to match your timezone
@@ -24,5 +24,4 @@
 			"ItemDetails" => array()
 		)
 	);
-
 ?>

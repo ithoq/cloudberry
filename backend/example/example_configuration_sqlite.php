@@ -1,6 +1,6 @@
 <?php
 	
-	/* For configuration instructions, see ReadMe.txt or wiki page at http://code.google.com/p/mollify/wiki/Installation */
+	/* For configuration instructions, see https://github.com/sjarvela/cloudberry/wiki/Installation-instructions */
 
 	$CONFIGURATION = array(
 		"db" => array(
