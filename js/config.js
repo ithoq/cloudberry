@@ -48,20 +48,13 @@
                         scope: {
                             config: '=config',
                             values: '=values',
-                            selected: '=selected'
+                            selected: '=selected',
+                            paging: '=paging'
                         },
-                        //compile: function($element, attr) {
-                        //var dataFn = $parse(attr['data']);
-                        //var tableId = attr['tableid'];
 
                         compile: function() {
                             return {
                                 pre: function(scope, element, attrs) {
-                                    //scope.selected = [];
-                                    //var config = scope.config;//scope[attr['config']];
-                                    /*var getDataFn = function() {
-                                        return dataFn(scope, {})();
-                                    };*/
                                     var cols = [];
                                     $.each(scope.config.cols, function(i, col) {
                                         cols.push({
@@ -75,18 +68,20 @@
                                             cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
                                         })
                                     scope._values = [];
+                                    scope.total = 0;
                                     scope.options = {
                                         enableRowSelection: true,
                                         selectWithCheckboxOnly: true,
                                         showSelectionCheckbox: true,
-                                        data: 'values',
+                                        data: '_values',
                                         columnDefs: cols,
                                         rowHeight: 33,
-                                        headerRowHeight: 32
+                                        headerRowHeight: 32,
+                                        showFooter: !! scope.paging,
+                                        enablePaging: !! scope.paging,
+                                        pagingOptions: scope.paging,
+                                        //totalServerItems: scope.paging ? scope.total : undefined,
                                     };
-                                    //scope._list = _table;
-                                    //_table.options.selectedItems = _table.selectedItems;
-                                    //if (tableId) scope.$parent[tableId] = _table;
 
                                     scope.isActionDisabled = function(ac) {
                                         if (!ac.selection) return false;
@@ -103,22 +98,13 @@
                                     };
                                     scope.$watch('values', function(v) {
                                         $timeout(function() {
-                                            scope._values = v;
+                                            if (v && v.data && v.total) {
+                                                scope._values = v.data.slice(0);
+                                                scope.total = v.total;
+                                            } else
+                                                scope._values = v;
                                         }, 100);
                                     }, false);
-                                    /*var refresh = function() {
-                                    getDataFn().done(function(r) {
-                                        if (config.serverPaging)
-                                            _table.values = r.data;
-                                        else
-                                            _table.values = r;
-
-                                        if (!scope.$$phase)
-                                            scope.$apply();
-                                    })
-                                };
-
-                                if (!config.noInitRefresh) _table.refresh();*/
                                 }
                             }
                         }
@@ -130,7 +116,7 @@
 
     var setupDetailsCtrl = function($scope, $controller, gettextCatalog, details, ctx) {
         $scope.details = [];
-        $scope.onTab = function(d) {
+        $scope.onSelectDetails = function(d) {
             var fn = 'on' + d.controllerName;
             if ($scope[fn]) $scope[fn]();
         };
@@ -147,13 +133,17 @@
                 template: "templates/" + d.template //TODO url
             });
         });
-        //if ($scope.details.length > 0)
-        //  $scope._onCtrlReady = function() {
-        $scope.onTab($scope.details[0]);
-        //};
+        $scope.onSelectDetails($scope.details[0]);
     };
 
-    / * Users * /
+    var createQuery = function(paging) {
+        return {
+            start: (paging.pageSize * (paging.currentPage - 1)),
+            count: paging.pageSize
+        };
+    }
+
+    /* Users */
     cloudberry.modules.push({
         id: 'cloudberry.config.users',
 
@@ -171,8 +161,13 @@
             gettext("configUsers_list_name");
             mod.controller('ConfigUsersCtrl', ['$scope', '$state', 'userRepository', 'dialogs',
                 function($scope, $state, userRepository, dialogs) {
-                    $scope.users = [];
+                    $scope.users = null;
                     $scope.selectedUsers = [];
+                    $scope.userPaging = {
+                        pageSizes: [100, 250, 500, 1000],
+                        pageSize: 100,
+                        currentPage: 1
+                    };
                     $scope.userListConfig = {
                         cols: [{
                             key: 'id',
@@ -191,7 +186,6 @@
                                 });
                             }
                         }],
-                        serverPaging: true,
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
@@ -202,11 +196,15 @@
                             }
                         }]
                     };
+                    $scope.$watch('userPaging', function(newVal, oldVal) {
+                        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage)
+                            $scope.refreshUsers();
+                    }, true);
                     $scope.refreshUsers = function() {
-                        userRepository.userQuery({
-                            start: 0
-                        }).done(function(r) {
-                            $scope.users = r.data;
+                        userRepository.userQuery(createQuery($scope.userPaging)).done(function(r) {
+                            $scope.users = r;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
                         });
                     };
                     $scope.refreshUsers();
