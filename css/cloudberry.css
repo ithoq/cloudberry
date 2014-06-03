@@ -7780,6 +7780,9 @@ button.close {
 #cloudberry .main-view .config-table .ngGrid .ngViewport {
   height: auto !important;
 }
+.ngGrid {
+  line-height: 1;
+}
 .ngGrid .ngHeaderContainer,
 .ngGrid .ngTopPanel {
   height: 34px !important;
@@ -7815,6 +7818,49 @@ button.close {
 }
 .ngGrid .ngCellAction {
   cursor: pointer;
+}
+.ngGrid .ngFooterPanel {
+  border: none;
+}
+.ngGrid .ngFooterPanel .ngTotalSelectContainer {
+  margin-top: 10px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer {
+  float: right;
+  margin-top: 10px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngRowCountPicker {
+  float: left;
+  margin-right: 10px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngRowCountPicker .ngLabel {
+  float: left;
+  margin-top: 3px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngRowCountPicker select {
+  float: left;
+  width: 100px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngPagerControl {
+  float: left;
+  margin: 0 10px 0 0;
+  line-height: 25px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngPagerControl .ngPagerCurrent {
+  float: left;
+  width: 50px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngPagerControl li.prev > a {
+  margin-right: 4px;
+}
+.ngGrid .ngFooterPanel .ngPagerContainer .ngPagerControl .ngGridMaxPagesNumber {
+  float: left;
+  line-height: 35px;
+  margin: 0 8px;
+}
+.ngGrid .ngFooterPanel .ngLabel {
+  margin: 0;
+  line-height: 30px;
 }
 .config-tab ul {
   margin-bottom: 15px;

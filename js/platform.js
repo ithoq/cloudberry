@@ -3,7 +3,7 @@
 
     /* Platform */
     cloudberry.platform.push({
-        setup: function(app, o) {
+        setup: function(app, o, gettext) {
             app.config(function($provide) {
                 $provide.factory('settings', function() {
                     return o.settings;
@@ -54,6 +54,12 @@
                         "");
 
                     // ng-grid footer
+                    gettext('grid_totalCount');
+                    gettext('grid_pageSize');
+                    gettext('grid_firstPage');
+                    gettext('grid_prevPage');
+                    gettext('grid_nextPage');
+                    gettext('grid_lastPage');
                     $templateCache.put('footerTemplate.html',
                         "<div ng-show=\"showFooter\" class=\"ngFooterPanel\" ng-class=\"{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}\" ng-style=\"footerStyle()\">\r" +
                         "\n" +
@@ -67,13 +73,13 @@
                         "\n" +
                         "    </div>\r" +
                         "\n" +
-                        "    <div class=\"ngPagerContainer\" style=\"float: right; margin-top: 10px;\" ng-show=\"enablePaging\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\">\r" +
+                        "    <div class=\"ngPagerContainer\" ng-show=\"enablePaging\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\">\r" +
                         "\n" +
-                        "        <div style=\"float:left; margin-right: 10px;\" class=\"ngRowCountPicker\">\r" +
+                        "        <div class=\"ngRowCountPicker\">\r" +
                         "\n" +
-                        "            <span style=\"float: left; margin-top: 3px;\" class=\"ngLabel\" translate>grid_pageSize</span>\r" +
+                        "            <span class=\"ngLabel\" translate>grid_pageSize</span>\r" +
                         "\n" +
-                        "            <select style=\"float: left;height: 27px; width: 100px\" ng-model=\"pagingOptions.pageSize\" >\r" +
+                        "            <select class=\"form-control\" ng-model=\"pagingOptions.pageSize\" >\r" +
                         "\n" +
                         "                <option ng-repeat=\"size in pagingOptions.pageSizes\">{{size}}</option>\r" +
                         "\n" +
@@ -81,21 +87,21 @@
                         "\n" +
                         "        </div>\r" +
                         "\n" +
-                        "        <div style=\"float:left; margin-right: 10px; line-height:25px;\" class=\"ngPagerControl\" style=\"float: left; min-width: 135px;\">\r" +
+                        "        <ul class=\"pagination ngPagerControl\">\r" +
                         "\n" +
-                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageToFirst()\" ng-disabled=\"cantPageBackward()\" title=\"{{i18n.ngPagerFirstTitle}}\"><div class=\"ngPagerFirstTriangle\"><div class=\"ngPagerFirstBar\"></div></div></button>\r" +
+                        "            <li ng-class=\"{'disabled':cantPageBackward()}\" class=\"first\"><a ng-click=\"pageToFirst()\" title=\"grid_firstPage | translate\"><i class=\"fa fa-fast-backward\"></i></a></li>\r" +
                         "\n" +
-                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageBackward()\" ng-disabled=\"cantPageBackward()\" title=\"{{i18n.ngPagerPrevTitle}}\"><div class=\"ngPagerFirstTriangle ngPagerPrevTriangle\"></div></button>\r" +
+                        "            <li ng-class=\"{'disabled':cantPageBackward()}\" class=\"prev\"><a ng-click=\"pageBackward()\" title=\"grid_prevPage | translate\"><i class=\"fa fa-backward\"></i></a></li>\r" +
                         "\n" +
-                        "            <input class=\"ngPagerCurrent\" min=\"1\" max=\"{{currentMaxPages}}\" type=\"number\" style=\"width:50px; height: 24px; margin-top: 1px; padding: 0 4px;\" ng-model=\"pagingOptions.currentPage\"/>\r" +
+                        "            <li class=\"current\"><input class=\"form-control ngPagerCurrent\" min=\"1\" max=\"{{currentMaxPages}}\" type=\"number\" ng-model=\"pagingOptions.currentPage\"/></li>\r" +
                         "\n" +
                         "            <span class=\"ngGridMaxPagesNumber\" ng-show=\"maxPages() > 0\">/ {{maxPages()}}</span>\r" +
                         "\n" +
-                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageForward()\" ng-disabled=\"cantPageForward()\" title=\"{{i18n.ngPagerNextTitle}}\"><div class=\"ngPagerLastTriangle ngPagerNextTriangle\"></div></button>\r" +
+                        "            <li ng-class=\"{'disabled':cantPageForward()}\" class=\"next\"><a ng-click=\"pageForward()\" title=\"grid_nextPage | translate\"><i class=\"fa fa-fast-forward\"></i></a></li>\r" +
                         "\n" +
-                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageToLast()\" ng-disabled=\"cantPageToLast()\" title=\"{{i18n.ngPagerLastTitle}}\"><div class=\"ngPagerLastTriangle\"><div class=\"ngPagerLastBar\"></div></div></button>\r" +
+                        "            <li ng-class=\"{'disabled':cantPageForward()}\" class=\"last\"><a ng-click=\"pageToLast()\" title=\"grid_lastPage | translate\"><i class=\"fa fa-forward\"></i></a></li>\r" +
                         "\n" +
-                        "        </div>\r" +
+                        "        </ul>\r" +
                         "\n" +
                         "    </div>\r" +
                         "\n" +

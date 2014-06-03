@@ -114,6 +114,7 @@
     }
 }
 .ngGrid {
+    line-height: 1;
     .ngHeaderContainer, .ngTopPanel {
         height: 34px !important;
     }
@@ -146,6 +147,49 @@
     }
     .ngCellAction {
         cursor: pointer;
+    }
+    .ngFooterPanel {
+        border: none;
+        .ngTotalSelectContainer {
+            margin-top: 10px;
+        }
+        .ngPagerContainer {
+            float: right;
+            margin-top: 10px;
+            .ngRowCountPicker {
+                float:left;
+                margin-right: 10px;
+                .ngLabel {
+                    float: left;
+                    margin-top: 3px;
+                }
+                select {
+                    float: left;
+                    width: 100px;
+                }
+            }
+            .ngPagerControl {
+                float: left;
+                margin: 0 10px 0 0;
+                line-height: 25px;
+                .ngPagerCurrent {
+                    float: left;
+                    width: 50px;
+                }
+                li.prev > a {
+                    margin-right: 4px;
+                }
+                .ngGridMaxPagesNumber {
+                    float: left;
+                    line-height: 35px;
+                    margin: 0 8px;
+                }
+            }
+        }
+        .ngLabel {
+            margin: 0;
+            line-height: 30px;
+        }
     }
 }
 .config-tab {

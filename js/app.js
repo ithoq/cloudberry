@@ -108,7 +108,7 @@
                 actions: actions,
                 dialogs: dialogs,
                 configDetails: configDetails
-            });
+            }, gettext_stub);
         });
 
         app.run(function($templateCache, $rootScope, $location, $state, $injector, gettextCatalog, service, session, filesystem) {

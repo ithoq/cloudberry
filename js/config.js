@@ -65,7 +65,7 @@
                                     if (scope.config.rowActions)
                                         cols.push({
                                             displayName: ' ',
-                                            cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></a></div>'
+                                            cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></i></a></div>'
                                         })
                                     scope._values = [];
                                     scope.total = 0;
