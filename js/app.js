@@ -115,16 +115,6 @@
             if (settings["localization-debug"])
                 gettextCatalog.debug = true;
 
-            $templateCache.put("template/popover/popover-template.html",
-                "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
-                "  <div class=\"arrow\"></div>\n" +
-                "  <div class=\"popover-inner\">\n" +
-                "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h3>\n" +
-                "      <div class=\"popover-content\"></div>\n" +
-                "  </div>\n" +
-                "</div>\n" +
-                "");
-
             $rootScope.plugins = settings.plugins;
 
             that._onStart($rootScope, $location, $state, $injector, gettextCatalog, session);

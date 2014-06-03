@@ -8,9 +8,7 @@
                 $provide.factory('settings', function() {
                     return o.settings;
                 });
-            });
 
-            app.config(function($provide) {
                 $provide.factory('views', function() {
                     return {
                         all: o.views,
@@ -23,9 +21,7 @@
                         }
                     };
                 });
-            });
 
-            app.config(function($provide) {
                 $provide.factory('actions', function() {
                     return {
                         getType: function(type) {
@@ -33,9 +29,7 @@
                         }
                     };
                 });
-            });
 
-            app.config(function($provide) {
                 $provide.factory('configDetails', function() {
                     return {
                         getDetails: function(parent) {
@@ -45,6 +39,72 @@
                     };
                 });
             });
+
+            app.run(['$templateCache',
+                function($templateCache) {
+                    //popover
+                    $templateCache.put("template/popover/popover-template.html",
+                        "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
+                        "  <div class=\"arrow\"></div>\n" +
+                        "  <div class=\"popover-inner\">\n" +
+                        "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h3>\n" +
+                        "      <div class=\"popover-content\"></div>\n" +
+                        "  </div>\n" +
+                        "</div>\n" +
+                        "");
+
+                    // ng-grid footer
+                    $templateCache.put('footerTemplate.html',
+                        "<div ng-show=\"showFooter\" class=\"ngFooterPanel\" ng-class=\"{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}\" ng-style=\"footerStyle()\">\r" +
+                        "\n" +
+                        "    <div class=\"ngTotalSelectContainer\" >\r" +
+                        "\n" +
+                        "        <div class=\"ngFooterTotalItems\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\" >\r" +
+                        "\n" +
+                        "            <span class=\"ngLabel\" translate>grid_totalCount {{maxRows()}}</span><span ng-show=\"filterText.length > 0\" class=\"ngLabel\" translate>(grid_filteredCount {{totalFilteredItemsLength()}})</span>\r" +
+                        "\n" +
+                        "        </div>\r" +
+                        "\n" +
+                        "    </div>\r" +
+                        "\n" +
+                        "    <div class=\"ngPagerContainer\" style=\"float: right; margin-top: 10px;\" ng-show=\"enablePaging\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\">\r" +
+                        "\n" +
+                        "        <div style=\"float:left; margin-right: 10px;\" class=\"ngRowCountPicker\">\r" +
+                        "\n" +
+                        "            <span style=\"float: left; margin-top: 3px;\" class=\"ngLabel\" translate>grid_pageSize</span>\r" +
+                        "\n" +
+                        "            <select style=\"float: left;height: 27px; width: 100px\" ng-model=\"pagingOptions.pageSize\" >\r" +
+                        "\n" +
+                        "                <option ng-repeat=\"size in pagingOptions.pageSizes\">{{size}}</option>\r" +
+                        "\n" +
+                        "            </select>\r" +
+                        "\n" +
+                        "        </div>\r" +
+                        "\n" +
+                        "        <div style=\"float:left; margin-right: 10px; line-height:25px;\" class=\"ngPagerControl\" style=\"float: left; min-width: 135px;\">\r" +
+                        "\n" +
+                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageToFirst()\" ng-disabled=\"cantPageBackward()\" title=\"{{i18n.ngPagerFirstTitle}}\"><div class=\"ngPagerFirstTriangle\"><div class=\"ngPagerFirstBar\"></div></div></button>\r" +
+                        "\n" +
+                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageBackward()\" ng-disabled=\"cantPageBackward()\" title=\"{{i18n.ngPagerPrevTitle}}\"><div class=\"ngPagerFirstTriangle ngPagerPrevTriangle\"></div></button>\r" +
+                        "\n" +
+                        "            <input class=\"ngPagerCurrent\" min=\"1\" max=\"{{currentMaxPages}}\" type=\"number\" style=\"width:50px; height: 24px; margin-top: 1px; padding: 0 4px;\" ng-model=\"pagingOptions.currentPage\"/>\r" +
+                        "\n" +
+                        "            <span class=\"ngGridMaxPagesNumber\" ng-show=\"maxPages() > 0\">/ {{maxPages()}}</span>\r" +
+                        "\n" +
+                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageForward()\" ng-disabled=\"cantPageForward()\" title=\"{{i18n.ngPagerNextTitle}}\"><div class=\"ngPagerLastTriangle ngPagerNextTriangle\"></div></button>\r" +
+                        "\n" +
+                        "            <button type=\"button\" class=\"ngPagerButton\" ng-click=\"pageToLast()\" ng-disabled=\"cantPageToLast()\" title=\"{{i18n.ngPagerLastTitle}}\"><div class=\"ngPagerLastTriangle\"><div class=\"ngPagerLastBar\"></div></div></button>\r" +
+                        "\n" +
+                        "        </div>\r" +
+                        "\n" +
+                        "    </div>\r" +
+                        "\n" +
+                        "</div>\r" +
+                        "\n"
+                    );
+
+                }
+            ]);
 
             // views
             app.
