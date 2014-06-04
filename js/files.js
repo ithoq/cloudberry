@@ -95,6 +95,8 @@
                             $scope.showPopupmenu(ctx.e, item, actions.getType('filesystem', item));
                         } else if (itemAction == "quickactions") {
                             $scope.showQuickactions(ctx.e, item, actions.getType('quick', item));
+                        } else if (itemAction == "details") {
+                            $scope.showItemDetails(item);
                         } else {
                             $scope.onAction(itemAction, item);
                         }
@@ -402,6 +404,74 @@
                                 });
                             }, 200);
                         }
+                    }
+                }
+            });
+
+            mod.directive('itemDetailsContainer', function($timeout) {
+                return function(scope, element, attributes) {
+                    var $details = element.find('.itemdetails-content');
+                    var _showTimeout = false;
+                    var _hideTimeout = false;
+                    /*var $popup = element.find('.quickaction-container');
+                    var hidePopup = function() {
+                        if (_hideTimeout) return;
+                        _hideTimeout = $timeout(function() {
+                            _hideTimeout = false;
+                            scope.quickactions = null;
+                            $popup.css("display", "none");
+                        }, 200);
+                    };
+                    element.bind("click", function() {
+                        if (_showTimeout) $timeout.cancel(_showTimeout);
+                        hidePopup();
+                    });*/
+                    var containerOffset = element.offset();
+
+                    scope.showItemDetails = function(item) {
+                        $details.hide();
+                        element.find(".item-details-container").hide();
+
+                        var $item = element.find('#item-' + item.id);
+                        if (!$item) return;
+
+                        var $itemDetailsTarget = $item.find(".item-details-container");
+                        if (!$itemDetailsTarget) return;
+
+                        $itemDetailsTarget.show();
+
+                        /*if (_showTimeout) $timeout.cancel(_showTimeout);
+
+                        if (_hideTimeout) {
+                            // if set to be hidden, cancel it
+                            $timeout.cancel(_hideTimeout);
+                            _hideTimeout = false;
+
+                            // if new parent is same as old, skip show
+                            if (scope.quickactions && parent === scope.quickactions.parent) {
+                                scope.quickactions.items = actions;
+                                return;
+                            }
+                        }
+
+                        var display;
+                        var $parent = $($event.target).closest(".quickaction-parent");
+                        if (!$parent || $parent.length === 0) {
+                            hidePopup();
+                        } else {*/
+                        scope.itemdetails = {
+                            item: item
+                        };
+                        var parentOffset = $itemDetailsTarget.offset();
+                        _showTimeout = $timeout(function() {
+                            _showTimeout = false;
+
+                            $details.css({
+                                top: (parentOffset.top - containerOffset.top) + 'px',
+                                left: (parentOffset.left - containerOffset.left) + 'px',
+                                display: "block"
+                            });
+                        }, 200);
                     }
                 }
             });

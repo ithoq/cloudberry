@@ -6,10 +6,11 @@
     </div>
 
     <div class="filelist-items">
-        <div class="filelist-item popupmenu-parent" ng-class="{'item-file item-file-{{item.extension}}' : item.is_file, 'item-folder' : !item.is_file}" ng-repeat="item in data.items" draggable="onDragItem(item)" droppable="onDropItem(item, dragObj)" canDrop="canDropItem(item, dragObj)" dropAcceptType="filesystemitem">
+        <div id="item-{{item.id}}" class="filelist-item popupmenu-parent" ng-class="{'item-file item-file-{{item.extension}}' : item.is_file, 'item-folder' : !item.is_file}" ng-repeat="item in data.items" draggable="onDragItem(item)" droppable="onDropItem(item, dragObj)" canDrop="canDropItem(item, dragObj)" dropAcceptType="filesystemitem">
             <div ng-click="onClick($event, item, col)" ng-right-click="onRightClick($event, item, col)" ng-dblclick="onDblClick($event, item, col)" ng-mouseenter="onMouseOver($event, item)" ng-mouseleave="onMouseOut($event, item)" class="filelist-item-value col col-{{col.id}}" ng-class="{'quickaction-parent' : (col.id == 'name')}" ng-repeat="col in cols">
                 {{ content(item, col) }}
             </div>
+            <div class="item-details-container" style="display: none"></div>
         </div>
     </div>
 </div>

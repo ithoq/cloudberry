@@ -1,4 +1,4 @@
-<div quickaction-container>
+<div quickaction-container item-details-container>
 	<div class="fileview" ui-view="files">
 	</div>
 
@@ -6,5 +6,8 @@
 		<ul class="quickaction-list">
 			<li class="quickaction-item" ng-repeat="item in quickactions.items" ng-click="onAction(item, quickactions.parent)"><i class="fa {{item.icon}}"></i></li>
 		</ul>
+	</div>
+	<div class="itemdetails-content">
+		itemdetails {{itemdetails.item.name}}
 	</div>
 </div>

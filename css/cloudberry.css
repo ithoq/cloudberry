@@ -7744,7 +7744,8 @@ button.close {
   width: 275px;
 }
 #cloudberry .main-view .popupmenu-container,
-#cloudberry .main-view .quickaction-container {
+#cloudberry .main-view .quickaction-container,
+#cloudberry .main-view .itemdetails-content {
   position: absolute;
   display: none;
 }

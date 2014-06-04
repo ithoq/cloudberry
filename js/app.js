@@ -24,7 +24,8 @@
             },
             "actions": {
                 "click": function(item) {
-                    return item.is_file ? "file/context" : "file/open";
+                    //return item.is_file ? "file/context" : "file/open";
+                    return "details";
                 },
                 "dbl-click": function(item) {
                     return "file/open";
