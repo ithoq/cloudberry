@@ -412,66 +412,68 @@
                 return function(scope, element, attributes) {
                     var $details = element.find('.itemdetails-content');
                     var _showTimeout = false;
-                    var _hideTimeout = false;
-                    /*var $popup = element.find('.quickaction-container');
-                    var hidePopup = function() {
-                        if (_hideTimeout) return;
-                        _hideTimeout = $timeout(function() {
-                            _hideTimeout = false;
-                            scope.quickactions = null;
-                            $popup.css("display", "none");
-                        }, 200);
+
+                    var hideDetails = function() {
+                        var df = $.Deferred();
+                        scope.itemdetails = null;
+                        $details.hide();
+                        var $all = $(element).find(".item-details-container").add($details);
+                        $all.animate({
+                            height: 0
+                        }, {
+                            duration: 100
+                        }).promise().done(function() {
+                            $all.hide();
+                            df.resolve();
+                        });
+                        return df.promise();
                     };
-                    element.bind("click", function() {
-                        if (_showTimeout) $timeout.cancel(_showTimeout);
-                        hidePopup();
-                    });*/
                     var containerOffset = element.offset();
 
                     scope.showItemDetails = function(item) {
-                        $details.hide();
-                        element.find(".item-details-container").hide();
-
-                        var $item = element.find('#item-' + item.id);
-                        if (!$item) return;
-
-                        var $itemDetailsTarget = $item.find(".item-details-container");
-                        if (!$itemDetailsTarget) return;
-
-                        $itemDetailsTarget.show();
-
-                        /*if (_showTimeout) $timeout.cancel(_showTimeout);
-
-                        if (_hideTimeout) {
-                            // if set to be hidden, cancel it
-                            $timeout.cancel(_hideTimeout);
-                            _hideTimeout = false;
-
-                            // if new parent is same as old, skip show
-                            if (scope.quickactions && parent === scope.quickactions.parent) {
-                                scope.quickactions.items = actions;
+                        //if (_showTimeout) $timeout.cancel(_showTimeout);
+                        var same = (scope.itemdetails && scope.itemdetails.item.id == item.id);
+                        hideDetails().done(function() {
+                            if (same) {
+                                // same as just closed, skip
                                 return;
                             }
-                        }
 
-                        var display;
-                        var $parent = $($event.target).closest(".quickaction-parent");
-                        if (!$parent || $parent.length === 0) {
-                            hidePopup();
-                        } else {*/
-                        scope.itemdetails = {
-                            item: item
-                        };
-                        var parentOffset = $itemDetailsTarget.offset();
-                        _showTimeout = $timeout(function() {
-                            _showTimeout = false;
+                            var $item = element.find('#item-' + item.id);
+                            if (!$item) return;
 
+                            var $itemDetailsTarget = $item.find(".item-details-container");
+                            if ($itemDetailsTarget.length === 0) return;
+
+                            scope.itemdetails = {
+                                item: item
+                            };
+                            if (!scope.$$phase)
+                                scope.$apply();
+
+                            var $t = $itemDetailsTarget.add($details);
+                            $t.css({
+                                height: '0px',
+                                display: "block"
+                            });
+
+                            var parentOffset = $itemDetailsTarget.offset();
                             $details.css({
                                 top: (parentOffset.top - containerOffset.top) + 'px',
                                 left: (parentOffset.left - containerOffset.left) + 'px',
+                                height: '0px',
                                 display: "block"
                             });
-                        }, 200);
+                            //var h = $details.outerHeight();
+                            //console.log(h);
+                            /*$t.css({
+                                height: '200px',
+                                display: "block"
+                            });*/
+                            $t.animate({
+                                height: 200
+                            }, 500);
+                        });
                     }
                 }
             });

@@ -7743,6 +7743,10 @@ button.close {
 #cloudberry .main-view .fileview .filelist-table .col-name {
   width: 275px;
 }
+#cloudberry .main-view .fileview .item-details-container {
+  float: left;
+  width: 100%;
+}
 #cloudberry .main-view .popupmenu-container,
 #cloudberry .main-view .quickaction-container,
 #cloudberry .main-view .itemdetails-content {
