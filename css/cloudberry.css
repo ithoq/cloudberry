@@ -7746,12 +7746,22 @@ button.close {
 #cloudberry .main-view .fileview .item-details-container {
   float: left;
   width: 100%;
+  background-color: #ababab;
 }
 #cloudberry .main-view .popupmenu-container,
 #cloudberry .main-view .quickaction-container,
 #cloudberry .main-view .itemdetails-content {
   position: absolute;
   display: none;
+}
+#cloudberry .main-view .itemdetails-content {
+  padding: 8px 8px 8px 24px;
+}
+#cloudberry .main-view .itemdetails-content-container {
+  background-color: white;
+  border: 1px solid #cdcdcd;
+  height: 100%;
+  overflow: auto;
 }
 #cloudberry .main-view ul.quickaction-list {
   float: left;

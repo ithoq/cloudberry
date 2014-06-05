@@ -1,13 +1,27 @@
 <div quickaction-container item-details-container>
-	<div class="fileview" ui-view="files">
-	</div>
+    <div class="fileview" ui-view="files">
+    </div>
 
-	<div class="quickaction-container">
-		<ul class="quickaction-list">
-			<li class="quickaction-item" ng-repeat="item in quickactions.items" ng-click="onAction(item, quickactions.parent)"><i class="fa {{item.icon}}"></i></li>
-		</ul>
-	</div>
-	<div class="itemdetails-content">
-		itemdetails {{itemdetails.item.name}}
-	</div>
-</div>
+    <div class="quickaction-container">
+        <ul class="quickaction-list">
+            <li class="quickaction-item" ng-repeat="item in quickactions.items" ng-click="onAction(item, quickactions.parent)"><i class="fa {{item.icon}}"></i>
+            </li>
+        </ul>
+    </div>
+    <div class="itemdetails-content" ng-controller="ItemDetailsCtrl">
+        <div class="itemdetails-content-container" ng-if="itemdetails.item">
+            <h3>{{itemdetails.item.name}}</h3>
+            <p>
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span translate>itemDetails_actions</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="ac in itemdetails.actions"><a href="#" ng-click="onAction(ac, itemdetails.item)"><span>{{ac.titleKey | translate}}</span></a>
+                        </li>
+                    </ul>
+            </p>
+            </div>
+        </div>
+    </div>

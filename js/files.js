@@ -411,7 +411,6 @@
             mod.directive('itemDetailsContainer', function($timeout) {
                 return function(scope, element, attributes) {
                     var $details = element.find('.itemdetails-content');
-                    var _showTimeout = false;
 
                     var hideDetails = function() {
                         var df = $.Deferred();
@@ -421,7 +420,7 @@
                         $all.animate({
                             height: 0
                         }, {
-                            duration: 100
+                            duration: 200
                         }).promise().done(function() {
                             $all.hide();
                             df.resolve();
@@ -431,7 +430,6 @@
                     var containerOffset = element.offset();
 
                     scope.showItemDetails = function(item) {
-                        //if (_showTimeout) $timeout.cancel(_showTimeout);
                         var same = (scope.itemdetails && scope.itemdetails.item.id == item.id);
                         hideDetails().done(function() {
                             if (same) {
@@ -458,25 +456,30 @@
                             });
 
                             var parentOffset = $itemDetailsTarget.offset();
+                            var h = 200;
                             $details.css({
                                 top: (parentOffset.top - containerOffset.top) + 'px',
                                 left: (parentOffset.left - containerOffset.left) + 'px',
+                                width: $itemDetailsTarget.outerWidth() + 12 + 'px', //TODO 12? padding?
                                 height: '0px',
                                 display: "block"
                             });
-                            //var h = $details.outerHeight();
-                            //console.log(h);
-                            /*$t.css({
-                                height: '200px',
-                                display: "block"
-                            });*/
                             $t.animate({
-                                height: 200
+                                height: h
                             }, 500);
                         });
                     }
                 }
             });
+
+            mod.controller('ItemDetailsCtrl', ['$scope', 'actions',
+                function($scope, actions) {
+                    $scope.$watch('itemdetails', function(nv, ov) {
+                        if (!$scope.itemdetails) return;
+                        $scope.itemdetails.actions = actions.getType('file');
+                    });
+                }
+            ]);
         }
     });
 }(window.cloudberry);
