@@ -416,7 +416,7 @@
                         var df = $.Deferred();
                         scope.itemdetails = null;
                         $details.hide();
-                        var $all = $(element).find(".item-details-container");//.add($details);
+                        var $all = $(element).find(".item-details-container"); //.add($details);
                         $all.animate({
                             height: 0
                         }, {
@@ -473,12 +473,50 @@
                 }
             });
 
-            mod.controller('ItemDetailsCtrl', ['$scope', 'actions',
-                function($scope, actions) {
+            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog', 
+                function($scope, actions, itemDetails, $controller, gettextCatalog) {
                     $scope.$watch('itemdetails', function(nv, ov) {
                         if (!$scope.itemdetails) return;
+
+                        cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, itemDetails.getDetails(), {
+                            item: $scope.itemdetails.item
+                        });
+
                         $scope.itemdetails.actions = actions.getType('file');
                     });
+                }
+            ]);
+
+
+            gettext("itemInfo_viewTitle");
+            h.registerItemDetails('item_info', {
+                controller: "ItemInfoCtrl",
+                titleKey: "itemInfo_viewTitle",
+                template: "iteminfo.html"
+            });
+
+            mod.controller('ItemInfoCtrl', ['$scope',
+                function($scope) {                    
+                    $scope.onItemInfoCtrl = function(ctx) {
+                        console.log('item info ' + ctx.item.id);
+                        $scope.item = ctx.item;
+                    };
+                }
+            ]);
+
+            gettext("itemComments_viewTitle");
+            h.registerItemDetails('item_comments', {
+                controller: "ItemCommentsCtrl",
+                titleKey: "itemComments_viewTitle",
+                template: "itemcomments.html"
+            });
+
+            mod.controller('ItemCommentsCtrl', ['$scope',
+                function($scope) {                    
+                    $scope.ItemCommentsCtrl = function(ctx) {
+                        console.log('item comments ' + ctx.item.id);
+                        $scope.item = ctx.item;
+                    };
                 }
             ]);
         }

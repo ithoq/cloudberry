@@ -7764,7 +7764,7 @@ button.close {
   height: 100%;
   padding: 8px;
 }
-#cloudberry .main-view .itemdetails-content-container h3 {
+#cloudberry .main-view .itemdetails-content-container h3.title {
   margin-top: 0;
 }
 #cloudberry .main-view ul.quickaction-list {

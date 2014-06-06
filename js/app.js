@@ -65,6 +65,7 @@
         };
         var dialogs = {};
         var configDetails = {};
+        var itemDetails = [];
 
         var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid'];
         var gettext_stub = function(s) {};
@@ -95,6 +96,10 @@
                     }
                     s.id = id;
                     configDetails[s.parent].push(s);
+                },
+                registerItemDetails: function(id, s) {
+                    s.id = id;
+                    itemDetails.push(s);
                 }
             }, mod, gettext_stub);
             deps.push(m.id);
@@ -108,7 +113,8 @@
                 views: views,
                 actions: actions,
                 dialogs: dialogs,
-                configDetails: configDetails
+                configDetails: configDetails,
+                itemDetails: itemDetails
             }, gettext_stub);
         });
 
@@ -252,7 +258,30 @@
             columns: []
         },
 
+        //TODO break utils
         utils: {
+            setupDetailsCtrl: function($scope, obj, $controller, gettextCatalog, details, ctx) {
+                obj.details = [];
+                $scope.onSelectDetails = function(d) {
+                    var fn = 'on' + d.controllerName;
+                    if ($scope[fn]) $scope[fn](ctx);
+                };
+                var params = $.extend({}, ctx, {
+                    '$scope': $scope
+                });
+
+                $.each(details, function(i, d) {
+                    var ctrl = $controller(d.controller, params);
+                    obj.details.push({
+                        title: gettextCatalog.getString(d.titleKey),
+                        controllerName: d.controller,
+                        controller: ctrl,
+                        template: "templates/" + d.template //TODO url
+                    });
+                });
+                $scope.onSelectDetails(obj.details[0]);
+            },
+
             breakUrl: function(u) {
                 var parts = u.split("?");
                 return {

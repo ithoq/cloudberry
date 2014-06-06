@@ -10,7 +10,7 @@
     </div>
     <div class="itemdetails-content" ng-controller="ItemDetailsCtrl">
         <div class="itemdetails-content-container" ng-if="itemdetails.item">
-            <h3>{{itemdetails.item.name}}</h3>
+            <h3 class="title">{{itemdetails.item.name}}</h3>
             <p>
                 <div class="btn-group" dropdown>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -18,10 +18,21 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="ac in itemdetails.actions"><a href="#" ng-click="onAction(ac, itemdetails.item)"><span>{{ac.titleKey | translate}}</span></a>
+                        <li ng-repeat="ac in itemdetails.actions">
+                            <a href="#" ng-click="onAction(ac, itemdetails.item)">
+                                <span>{{ac.titleKey | translate}}</span>
+                            </a>
                         </li>
                     </ul>
+                </div>
             </p>
-            </div>
+            <p>
+                <tabset class="itemdetails-tab">
+                    <tab ng-repeat="tab in itemdetails.details" heading="{{tab.title}}" ng-controller-controller="tab.controller" ng-click="onTab(tab)">
+                        <div class="itemdetails-tab-content" ng-include="tab.template">
+                        </div>
+                    </tab>
+                </tabset>
+            </p>
         </div>
     </div>

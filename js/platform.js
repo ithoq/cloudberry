@@ -38,6 +38,14 @@
                         }
                     };
                 });
+
+                $provide.factory('itemDetails', function() {
+                    return {
+                        getDetails: function() {
+                            return o.itemDetails;
+                        }
+                    };
+                });
             });
 
             app.run(['$templateCache',

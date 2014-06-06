@@ -114,28 +114,6 @@
         }
     });
 
-    var setupDetailsCtrl = function($scope, $controller, gettextCatalog, details, ctx) {
-        $scope.details = [];
-        $scope.onSelectDetails = function(d) {
-            var fn = 'on' + d.controllerName;
-            if ($scope[fn]) $scope[fn]();
-        };
-        var params = $.extend({}, ctx, {
-            '$scope': $scope
-        });
-
-        $.each(details, function(i, d) {
-            var ctrl = $controller(d.controller, params);
-            $scope.details.push({
-                title: gettextCatalog.getString(d.titleKey),
-                controllerName: d.controller,
-                controller: ctrl,
-                template: "templates/" + d.template //TODO url
-            });
-        });
-        $scope.onSelectDetails($scope.details[0]);
-    };
-
     var createQuery = function(paging) {
         return {
             start: (paging.pageSize * (paging.currentPage - 1)),
@@ -278,7 +256,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
 
-                    setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
+                    cloudberry.utils.setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
                         user: user
                     });
                 }
@@ -488,7 +466,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, folderRepository, dialogs, configDetails, folder) {
                     $scope.folder = folder;
 
-                    setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
+                    cloudberry.utils.setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
                         folder: folder
                     });
                 }
