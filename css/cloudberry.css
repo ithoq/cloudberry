@@ -7749,19 +7749,23 @@ button.close {
   background-color: #ababab;
 }
 #cloudberry .main-view .popupmenu-container,
-#cloudberry .main-view .quickaction-container,
-#cloudberry .main-view .itemdetails-content {
+#cloudberry .main-view .quickaction-container {
   position: absolute;
   display: none;
 }
 #cloudberry .main-view .itemdetails-content {
-  padding: 8px 8px 8px 24px;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
 }
 #cloudberry .main-view .itemdetails-content-container {
   background-color: white;
   border: 1px solid #cdcdcd;
   height: 100%;
-  overflow: auto;
+  padding: 8px;
+}
+#cloudberry .main-view .itemdetails-content-container h3 {
+  margin-top: 0;
 }
 #cloudberry .main-view ul.quickaction-list {
   float: left;

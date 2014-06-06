@@ -77,18 +77,24 @@
                 background-color: #ababab;
             }
         }
-        .popupmenu-container, .quickaction-container, .itemdetails-content {
+        .popupmenu-container, .quickaction-container {
             position: absolute;
             display: none;
         }
         .itemdetails-content {
-            padding: 8px 8px 8px 24px;
+            padding: 8px;
+            width: 100%;
+            height: 100%;
         }
         .itemdetails-content-container {
             background-color: white;
             border: 1px solid #cdcdcd;
             height: 100%;
-            overflow: auto;
+            padding: 8px;
+
+            & h3 {
+                margin-top: 0;
+            }
         }
         ul.quickaction-list {
             float: left;

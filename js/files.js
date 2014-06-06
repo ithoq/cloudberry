@@ -416,7 +416,7 @@
                         var df = $.Deferred();
                         scope.itemdetails = null;
                         $details.hide();
-                        var $all = $(element).find(".item-details-container").add($details);
+                        var $all = $(element).find(".item-details-container");//.add($details);
                         $all.animate({
                             height: 0
                         }, {
@@ -449,22 +449,23 @@
                             if (!scope.$$phase)
                                 scope.$apply();
 
-                            var $t = $itemDetailsTarget.add($details);
-                            $t.css({
+                            //var $t = $itemDetailsTarget.add($details);
+                            $itemDetailsTarget.css({
                                 height: '0px',
                                 display: "block"
                             });
 
                             var parentOffset = $itemDetailsTarget.offset();
                             var h = 200;
+                            $details.appendTo($itemDetailsTarget);
                             $details.css({
-                                top: (parentOffset.top - containerOffset.top) + 'px',
-                                left: (parentOffset.left - containerOffset.left) + 'px',
-                                width: $itemDetailsTarget.outerWidth() + 12 + 'px', //TODO 12? padding?
-                                height: '0px',
+                                //top: (parentOffset.top - containerOffset.top) + 'px',
+                                //left: (parentOffset.left - containerOffset.left) + 'px',
+                                //width: $itemDetailsTarget.outerWidth() + 12 + 'px', //TODO 12? padding?
+                                //height: '0px',
                                 display: "block"
                             });
-                            $t.animate({
+                            $itemDetailsTarget.animate({
                                 height: h
                             }, 500);
                         });
