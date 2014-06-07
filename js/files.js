@@ -75,6 +75,7 @@
                         view: viewData,
                         roots: filesystem.roots(),
                         root: data.hierarchy ? data.hierarchy[0] : null,
+                        hierarchy: data.hierarchy.slice(1),
                         data: data,
                         setViewType: function(t) {
                             viewData.type = t;
