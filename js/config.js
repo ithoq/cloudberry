@@ -256,7 +256,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
 
-                    cloudberry.utils.setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
+                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
                         user: user
                     });
                 }
@@ -466,7 +466,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, folderRepository, dialogs, configDetails, folder) {
                     $scope.folder = folder;
 
-                    cloudberry.utils.setupDetailsCtrl($scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
+                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
                         folder: folder
                     });
                 }

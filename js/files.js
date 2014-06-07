@@ -75,7 +75,7 @@
                         view: viewData,
                         roots: filesystem.roots(),
                         root: data.hierarchy ? data.hierarchy[0] : null,
-                        hierarchy: data.hierarchy.slice(1),
+                        hierarchy: data.hierarchy ? data.hierarchy.slice(1) : null,
                         data: data,
                         setViewType: function(t) {
                             viewData.type = t;
@@ -474,7 +474,7 @@
                 }
             });
 
-            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog', 
+            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog',
                 function($scope, actions, itemDetails, $controller, gettextCatalog) {
                     $scope.$watch('itemdetails', function(nv, ov) {
                         if (!$scope.itemdetails) return;
@@ -484,6 +484,9 @@
                         });
 
                         $scope.itemdetails.actions = actions.getType('file');
+
+                        if (!$scope.$$phase)
+                            $scope.$apply();
                     });
                 }
             ]);
@@ -497,7 +500,7 @@
             });
 
             mod.controller('ItemInfoCtrl', ['$scope',
-                function($scope) {                    
+                function($scope) {
                     $scope.onItemInfoCtrl = function(ctx) {
                         console.log('item info ' + ctx.item.id);
                         $scope.item = ctx.item;
@@ -513,7 +516,7 @@
             });
 
             mod.controller('ItemCommentsCtrl', ['$scope',
-                function($scope) {                    
+                function($scope) {
                     $scope.ItemCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
                         $scope.item = ctx.item;
