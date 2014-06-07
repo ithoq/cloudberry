@@ -103,6 +103,14 @@
                         }
                     };
 
+                    $scope.onQuickAction = function(qa, item) {
+                        if (!qa.handler && qa.id == "file/details") {
+                            $scope.showItemDetails(item);
+                        } else {
+                            $scope.onAction(qa, item);
+                        }
+                    };
+
                     $scope.onDragItem = function(item) {
                         return {
                             type: "filesystemitem",
@@ -181,6 +189,12 @@
                         $("#cloudberry-download-frame").attr("src", filesystem.getItemDownloadURL(item));
                     }
                 ]
+            });
+
+            h.registerAction({
+                id: 'file/details',
+                type: 'quick',
+                icon: "fa-info"
             });
 
             /* File list */
@@ -457,7 +471,7 @@
                             });
 
                             var parentOffset = $itemDetailsTarget.offset();
-                            
+
                             $details.appendTo($itemDetailsTarget);
                             $details.css({
                                 //top: (parentOffset.top - containerOffset.top) + 'px',
