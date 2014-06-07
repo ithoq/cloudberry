@@ -67,8 +67,22 @@
                 }
             ]);
 
-            mod.factory('filesystem', ['$rootScope', 'service', 'session',
-                function($rootScope, service, session) {
+            mod.factory('cache', [
+                function() {
+                    var _cache = {};
+                    return {
+                        get: function() {
+                            return false;
+                        },
+                        put: function() {
+
+                        }
+                    }
+                }
+            ]);
+
+            mod.factory('filesystem', ['$rootScope', 'service', 'session', 'cache',
+                function($rootScope, service, session, cache) {
                     var _roots = [];
                     var _rootsById = [];
                     $rootScope.$on('session/start', function(event, session) {
@@ -155,6 +169,15 @@
                                 if (r.hierarchy)
                                     r.hierarchy[0] = _rootsById[r.hierarchy[0].id];
                                 return data;
+                            });
+                        },
+                        itemInfo: function(item, data) {
+                            return service.post("filesystem/" + item.id + "/details/", {
+                                data: data
+                            }).done(function(r) {
+                                //TODO cache
+                                //cloudberry.filesystem.permissionCache[item.id] = r.permissions;
+                                //if (item.parent_id && r.parent_permissions) mollify.filesystem.permissionCache[item.parent_id] = r.parent_permissions;
                             });
                         },
                         getDownloadUrl: function(item) {

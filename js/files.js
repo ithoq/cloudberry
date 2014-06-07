@@ -496,14 +496,22 @@
             h.registerItemDetails('item_info', {
                 controller: "ItemInfoCtrl",
                 titleKey: "itemInfo_viewTitle",
-                template: "iteminfo.html"
+                template: "item-info.html"
             });
 
-            mod.controller('ItemInfoCtrl', ['$scope',
-                function($scope) {
+            mod.controller('ItemInfoCtrl', ['$scope', 'filesystem',
+                function($scope, filesystem) {
                     $scope.onItemInfoCtrl = function(ctx) {
                         console.log('item info ' + ctx.item.id);
+
                         $scope.item = ctx.item;
+                        $scope.item_info = null;
+
+                        filesystem.itemInfo($scope.item).done(function(i) {
+                            $scope.item_info = i;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                        });
                     };
                 }
             ]);
@@ -512,7 +520,7 @@
             h.registerItemDetails('item_comments', {
                 controller: "ItemCommentsCtrl",
                 titleKey: "itemComments_viewTitle",
-                template: "itemcomments.html"
+                template: "item-comments.html"
             });
 
             mod.controller('ItemCommentsCtrl', ['$scope',
