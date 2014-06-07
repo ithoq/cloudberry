@@ -7755,17 +7755,21 @@ button.close {
 }
 #cloudberry .main-view .itemdetails-content {
   padding: 8px;
+  float: left;
   width: 100%;
-  height: 100%;
 }
 #cloudberry .main-view .itemdetails-content-container {
   background-color: white;
   border: 1px solid #cdcdcd;
-  height: 100%;
   padding: 8px;
+  float: left;
+  width: 100%;
 }
 #cloudberry .main-view .itemdetails-content-container h3.title {
   margin-top: 0;
+}
+#cloudberry .main-view .itemdetails-content-container .itemdetails-plugins-tab {
+  height: 100px;
 }
 #cloudberry .main-view ul.quickaction-list {
   float: left;

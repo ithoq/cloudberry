@@ -457,7 +457,7 @@
                             });
 
                             var parentOffset = $itemDetailsTarget.offset();
-                            var h = 200;
+                            
                             $details.appendTo($itemDetailsTarget);
                             $details.css({
                                 //top: (parentOffset.top - containerOffset.top) + 'px',
@@ -466,6 +466,7 @@
                                 //height: '0px',
                                 display: "block"
                             });
+                            var h = 256;
                             $itemDetailsTarget.animate({
                                 height: h
                             }, 500);
@@ -528,6 +529,14 @@
                     $scope.ItemCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
                         $scope.item = ctx.item;
+
+                        $scope.comments = null;
+
+                        filesystem.itemInfo($scope.item).done(function(i) {
+                            $scope.item_info = i;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                        });
                     };
                 }
             ]);
