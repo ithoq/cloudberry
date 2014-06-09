@@ -8,6 +8,9 @@
             var viewData = {
                 type: 1
             };
+            var getRequestData = function(folderId) {
+                return {}; //TODO
+            };
 
             gettext("files_viewTitle");
             h.registerView('files', {
@@ -31,7 +34,8 @@
                 ],
                 resolve: {
                     data: function($stateParams, filesystem) {
-                        return filesystem.folderInfo($stateParams.id, true); //TODO request data
+                        var folderId = $stateParams.id;
+                        return filesystem.folderInfo(folderId, true, getRequestData(folderId));
                     }
                 },
                 subviews: {
@@ -464,48 +468,47 @@
                             if (!scope.$$phase)
                                 scope.$apply();
 
-                            //var $t = $itemDetailsTarget.add($details);
                             $itemDetailsTarget.css({
                                 height: '0px',
                                 display: "block"
                             });
 
-                            var parentOffset = $itemDetailsTarget.offset();
-
                             $details.appendTo($itemDetailsTarget);
-                            $details.css({
-                                //top: (parentOffset.top - containerOffset.top) + 'px',
-                                //left: (parentOffset.left - containerOffset.left) + 'px',
-                                //width: $itemDetailsTarget.outerWidth() + 12 + 'px', //TODO 12? padding?
-                                //height: '0px',
-                                display: "block"
-                            });
-                            var h = 256;
-                            $itemDetailsTarget.animate({
-                                height: h
-                            }, 500);
+
+                            $timeout(function() {
+                                $details.css({
+                                    display: "block"
+                                });
+                                var h = $details.outerHeight(); //256;
+                                $itemDetailsTarget.animate({
+                                    height: h
+                                }, 500);
+                            }, 100);    //TODO remove timeout, animate when ready (how?)
                         });
                     }
                 }
             });
 
-            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog',
-                function($scope, actions, itemDetails, $controller, gettextCatalog) {
+            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog', 'filesystem',
+                function($scope, actions, itemDetails, $controller, gettextCatalog, filesystem) {
                     $scope.$watch('itemdetails', function(nv, ov) {
                         if (!$scope.itemdetails) return;
 
-                        cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, itemDetails.getDetails(), {
-                            item: $scope.itemdetails.item
-                        });
-
                         $scope.itemdetails.actions = actions.getType('file');
+                        filesystem.itemInfo($scope.itemdetails.item).done(function(i) {
+                            $scope.itemdetails.item_info = i;
 
-                        if (!$scope.$$phase)
-                            $scope.$apply();
+                            cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, itemDetails.getDetails(), {
+                                item: $scope.itemdetails.item,
+                                item_info: i
+                            });
+
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+                        });
                     });
                 }
             ]);
-
 
             gettext("itemInfo_viewTitle");
             h.registerItemDetails('item_info', {
@@ -518,15 +521,8 @@
                 function($scope, filesystem) {
                     $scope.onItemInfoCtrl = function(ctx) {
                         console.log('item info ' + ctx.item.id);
-
                         $scope.item = ctx.item;
-                        $scope.item_info = null;
-
-                        filesystem.itemInfo($scope.item).done(function(i) {
-                            $scope.item_info = i;
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                        });
+                        $scope.item_info = ctx.item_info;
                     };
                 }
             ]);
@@ -543,14 +539,7 @@
                     $scope.ItemCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
                         $scope.item = ctx.item;
-
                         $scope.comments = null;
-
-                        filesystem.itemInfo($scope.item).done(function(i) {
-                            $scope.item_info = i;
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-                        });
                     };
                 }
             ]);
