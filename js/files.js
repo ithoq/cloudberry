@@ -463,28 +463,33 @@
                             if ($itemDetailsTarget.length === 0) return;
 
                             scope.itemdetails = {
-                                item: item
+                                item: item,
+                                _$e: $itemDetailsTarget
                             };
                             if (!scope.$$phase)
                                 scope.$apply();
+                        });
+                    }
 
-                            $itemDetailsTarget.css({
+                    scope.onItemDetailsReady = function() {
+                        if (!scope.itemdetails) return;
+
+                        var $t = scope.itemdetails._$e;
+                        $timeout(function() {
+                            $t.css({
                                 height: '0px',
                                 display: "block"
                             });
+                            $details.appendTo($t);
+                            $details.css({
+                                display: "block"
+                            });
 
-                            $details.appendTo($itemDetailsTarget);
-
-                            $timeout(function() {
-                                $details.css({
-                                    display: "block"
-                                });
-                                var h = $details.outerHeight(); //256;
-                                $itemDetailsTarget.animate({
-                                    height: h
-                                }, 500);
-                            }, 100);    //TODO remove timeout, animate when ready (how?)
-                        });
+                            var h = $details.outerHeight();
+                            $t.animate({
+                                height: h
+                            }, 500);
+                        }, 100);
                     }
                 }
             });
@@ -505,6 +510,8 @@
 
                             if (!$scope.$$phase)
                                 $scope.$apply();
+
+                            $scope.onItemDetailsReady();
                         });
                     });
                 }
