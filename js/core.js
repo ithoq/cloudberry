@@ -6,9 +6,17 @@
         id: 'cloudberry.core',
 
         setup: function(h, mod, gettext) {
-            mod.factory('formatters', ['gettextCatalog',
-                function(gettextCatalog) {
+            mod.factory('formatters', ['gettextCatalog', 'filesystem',
+                function(gettextCatalog, filesystem) {
+                    var _defaults = {
+                        decimalSeparator: gettextCatalog.getString('number_decimalSeparator')
+                    };
+                    var _predefined = {};
                     return {
+                        predefined: _predefined,
+                        setPredefined: function(id, f) {
+                            _predefined[id] = f;
+                        },
                         ByteSize: function(nf) {
                             this.format = function(b) {
                                 if (!window.def(b)) return "";
@@ -49,10 +57,12 @@
                             this.format = function(n) {
                                 if (!window.def(n) || typeof(n) !== 'number') return "";
 
+                                var _ds = ds || _defaults.decimalSeparator;
+                                var _precision = precision || 2; //TODO default?
                                 var s = Math.pow(10, precision);
                                 var v = Math.floor(n * s) / s;
                                 var sv = v.toString();
-                                if (ds) sv = sv.replace(".", ds);
+                                if (_ds) sv = sv.replace(".", _ds);
                                 if (unit) return sv + " " + unit;
                                 return sv;
                             };
@@ -60,9 +70,25 @@
                         FilesystemItemPath: function() {
                             this.format = function(item) {
                                 if (!item) return "";
-                                return this.filesystem.root(item.root_id).name + (item.path.length > 0 ? ":" + item.path : "");
+                                return filesystem.root(item.root_id).name + (item.path.length > 0 ? ":" + item.path : "");
                             }
                         }
+                    };
+                }
+            ]).filter('formatter', ['formatters',
+                function(formatters) {
+                    var getFormatter = function(name, args) {
+                        if (formatters.predefined[name]) return formatters.predefined[name];
+                        if (name == 'ByteSize') return new formatters.ByteSize(getFormatter('Number', args));
+                        if (name == 'Number') return cloudberry.utils.createObj(formatters.Number, args);
+                        return null;
+                    };
+                    return function(input, f) {
+                        input = input || '';
+                        var out = input;
+                        var fmt = getFormatter(f, Array.prototype.slice.call(arguments, 2));
+                        if (fmt) out = fmt.format(input);
+                        return out;
                     };
                 }
             ]);

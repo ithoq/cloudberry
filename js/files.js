@@ -65,8 +65,10 @@
                 }
             });
 
-            mod.controller('FilesCtrl', ['$scope', '$state', '$stateParams', 'settings', 'actions', 'filesystem', 'data',
-                function($scope, $state, $stateParams, settings, actions, filesystem, data) {
+            mod.controller('FilesCtrl', ['$scope', '$state', '$stateParams', 'settings', 'formatters', 'actions', 'filesystem', 'data',
+                function($scope, $state, $stateParams, settings, formatters, actions, filesystem, data) {
+                    formatters.setPredefined('fileSize', new formatters.ByteSize(new formatters.Number(2)));
+
                     var reload = function() {
                         $state.transitionTo($state.current, $stateParams, {
                             reload: true,
@@ -220,9 +222,6 @@
                 function($scope, $timeout, settings, filesystem, formatters) {
                     if (!cols) setupCols(settings);
 
-                    var fmt = {
-                        byteSize: new formatters.ByteSize(new formatters.Number(2))
-                    };
                     $scope.cols = cols;
                     $scope.selected = [];
                     $scope._click = false;
@@ -230,7 +229,7 @@
                     $scope.content = function(item, col) {
                         return col.content.apply({
                             filesystem: filesystem,
-                            formatters: fmt
+                            formatters: formatters.predefined
                         }, [item]);
                     };
                     var getCtx = function(e, col) {
@@ -293,8 +292,8 @@
                 id: "path",
                 titleKey: "filesList_colPath",
                 sort: function(i1, i2, sort, data) {
-                    var p1 = _m.filesystem.rootsById[i1.root_id].name + i1.path;
-                    var p2 = _m.filesystem.rootsById[i2.root_id].name + i2.path;
+                    var p1 = this.filesystem.rootsById[i1.root_id].name + i1.path;
+                    var p2 = this.filesystem.rootsById[i2.root_id].name + i2.path;
                     return p1.toLowerCase().localeCompare(p2.toLowerCase()) * sort;
                 },
                 html: true,
@@ -328,7 +327,7 @@
                     return (s1 - s2) * sort;
                 },
                 content: function(item, data) {
-                    return item.is_file ? this.formatters.byteSize.format(item.size) : '';
+                    return item.is_file ? this.formatters.fileSize.format(item.size) : '';
                 }
             });
             gettext("filesList_colLastModified");

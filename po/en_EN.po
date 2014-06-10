@@ -13,6 +13,69 @@ msgstr ""
 "X-Generator: Poedit 1.6.5\n"
 
 #: js/config.js
+msgid "configFolderUsers_addFolderUser_message"
+msgstr ""
+
+#: js/config.js
+msgid "configFolderUsers_addFolderUser_title"
+msgstr ""
+
+#: js/config.js
+msgid "configFolderUsers_list_email"
+msgstr ""
+
+#: js/config.js
+msgid "configFolderUsers_list_name"
+msgstr ""
+
+#: js/config.js
+#, fuzzy
+msgid "configFolderUsers_viewTitle"
+msgstr "Configuration"
+
+#: js/config.js
+#, fuzzy
+msgid "configFolders_list_name"
+msgstr "Name"
+
+#: js/config.js
+msgid "configFolders_list_path"
+msgstr ""
+
+#: js/config.js
+msgid "configFolders_openFolder"
+msgstr ""
+
+#: js/config.js
+#, fuzzy
+msgid "configFolders_viewTitle"
+msgstr "Configuration"
+
+#: js/config.js
+#, fuzzy
+msgid "configTable_id"
+msgstr "Configuration"
+
+#: js/config.js
+#, fuzzy
+msgid "configUserFolders_viewTitle"
+msgstr "Configuration"
+
+#: js/config.js
+#, fuzzy
+msgid "configUserGroups_viewTitle"
+msgstr "Configuration"
+
+#: js/config.js
+msgid "configUsers_list_name"
+msgstr ""
+
+#: js/config.js
+#, fuzzy
+msgid "configUsers_viewTitle"
+msgstr "Configuration"
+
+#: js/config.js
 msgid "config_viewTitle"
 msgstr "Configuration"
 
@@ -40,9 +103,21 @@ msgid_plural "fileSize_megabytes"
 msgstr[0] "mB"
 msgstr[1] "mB"
 
+#: js/core.js
+msgid "file_copy"
+msgstr ""
+
+#: js/files.js
+msgid "file_download"
+msgstr ""
+
+#: js/files.js
+msgid "file_open"
+msgstr ""
+
 #: js/files.js
 msgid "filesList_colLastModified"
-msgstr ""
+msgstr "Last modified"
 
 #: js/files.js
 msgid "filesList_colName"
@@ -50,15 +125,15 @@ msgstr "Name"
 
 #: js/files.js
 msgid "filesList_colPath"
-msgstr ""
+msgstr "Path"
 
 #: js/files.js
 msgid "filesList_colSize"
-msgstr ""
+msgstr "Size"
 
 #: js/files.js
 msgid "filesList_colType"
-msgstr ""
+msgstr "Type"
 
 #: js/files.js
 msgid "files_viewTitle"
@@ -67,6 +142,64 @@ msgstr "Files"
 #: templates/login.html
 msgid "forgotPassword_Email"
 msgstr "Email"
+
+#: js/platform.js
+msgid "grid_firstPage"
+msgstr ""
+
+#: js/platform.js
+msgid "grid_lastPage"
+msgstr ""
+
+#: js/platform.js
+msgid "grid_nextPage"
+msgstr ""
+
+#: js/platform.js
+msgid "grid_pageSize"
+msgstr ""
+
+#: js/platform.js
+msgid "grid_prevPage"
+msgstr ""
+
+#: js/platform.js
+msgid "grid_totalCount"
+msgstr ""
+
+#: js/files.js
+#, fuzzy
+msgid "itemComments_viewTitle"
+msgstr "Files"
+
+#: templates/files.html
+msgid "itemDetails_actions"
+msgstr ""
+
+#: templates/item-info.html
+msgid "itemInfo_lastAccessed"
+msgstr ""
+
+#: templates/item-info.html
+msgid "itemInfo_lastChanged"
+msgstr ""
+
+#: templates/item-info.html
+msgid "itemInfo_lastModified"
+msgstr ""
+
+#: templates/item-info.html
+msgid "itemInfo_path"
+msgstr ""
+
+#: templates/item-info.html
+msgid "itemInfo_size"
+msgstr ""
+
+#: js/files.js
+#, fuzzy
+msgid "itemInfo_viewTitle"
+msgstr "Files"
 
 #: templates/login.html
 msgid "login_Login"
@@ -91,6 +224,10 @@ msgstr "Reset password"
 #: templates/login.html
 msgid "login_Username"
 msgstr "Username"
+
+#: js/core.js
+msgid "number_decimalSeparator"
+msgstr "."
 
 #: js/core.js
 msgid "session_logout"

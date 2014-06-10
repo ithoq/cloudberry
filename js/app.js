@@ -282,6 +282,15 @@
                 $scope.onSelectDetails(obj.details[0]);
             },
 
+            createObj: function neu(constructor, args) {
+                // http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2
+                var instance = Object.create(constructor.prototype);
+                var result = constructor.apply(instance, args);
+
+                // The ECMAScript language types are Undefined, Null, Boolean, String, Number, and Object.
+                return (result !== null && typeof result === 'object') ? result : instance;
+            },
+
             breakUrl: function(u) {
                 var parts = u.split("?");
                 return {
