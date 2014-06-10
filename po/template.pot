@@ -215,6 +215,18 @@ msgstr ""
 msgid "session_logout"
 msgstr ""
 
+#: js/platform.js
+msgid "timestamp_shortDate"
+msgstr ""
+
+#: js/platform.js
+msgid "timestamp_shortDateTime"
+msgstr ""
+
+#: js/platform.js
+msgid "timestamp_time"
+msgstr ""
+
 #: js/main.js
 msgid "user_changePassword"
 msgstr ""

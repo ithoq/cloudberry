@@ -48,8 +48,8 @@
                 });
             });
 
-            app.run(['$templateCache',
-                function($templateCache) {
+            app.run(['$templateCache', 'formatters', 'gettextCatalog',
+                function($templateCache, formatters, gettextCatalog) {
                     //popover
                     $templateCache.put("template/popover/popover-template.html",
                         "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
@@ -117,6 +117,10 @@
                         "\n"
                     );
 
+                    //predefined formatters
+                    formatters.setPredefined('date', new formatters.Timestamp(gettextCatalog.getString('timestamp_shortDate')));
+                    formatters.setPredefined('time', new formatters.Timestamp(gettextCatalog.getString('timestamp_time')));
+                    formatters.setPredefined('datetime', new formatters.Timestamp(gettextCatalog.getString('timestamp_shortDateTime')));
                 }
             ]);
 

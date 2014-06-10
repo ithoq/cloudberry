@@ -16,15 +16,15 @@
         </dd>
         <dt translate>itemInfo_lastAccessed</dt>
         <dd>
-            {{item_info.last_accessed}}
+            {{item_info.last_accessed | formatter:'datetime'}}
         </dd>
         <dt translate>itemInfo_lastChanged</dt>
         <dd>
-            {{item_info.last_changed}}
+            {{item_info.last_changed | formatter:'datetime'}}
         </dd>
         <dt translate>itemInfo_lastModified</dt>
         <dd>
-            {{item_info.last_modified}}
+            {{item_info.last_modified | formatter:'datetime'}}
         </dd>
     </dl>
 </p>

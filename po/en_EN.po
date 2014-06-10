@@ -88,8 +88,8 @@ msgstr[1] "bytes"
 #: js/core.js
 msgid "fileSize_gigabyte"
 msgid_plural "fileSize_gigabytes"
-msgstr[0] "Gb"
-msgstr[1] "Gb"
+msgstr[0] "GB"
+msgstr[1] "GB"
 
 #: js/core.js
 msgid "fileSize_kilobyte"
@@ -100,8 +100,8 @@ msgstr[1] "kB"
 #: js/core.js
 msgid "fileSize_megabyte"
 msgid_plural "fileSize_megabytes"
-msgstr[0] "mB"
-msgstr[1] "mB"
+msgstr[0] "MB"
+msgstr[1] "MB"
 
 #: js/core.js
 msgid "file_copy"
@@ -232,6 +232,18 @@ msgstr "."
 #: js/core.js
 msgid "session_logout"
 msgstr "Logout"
+
+#: js/platform.js
+msgid "timestamp_shortDate"
+msgstr "M/D/YY"
+
+#: js/platform.js
+msgid "timestamp_shortDateTime"
+msgstr "M/D/YY hh:mm:ss A"
+
+#: js/platform.js
+msgid "timestamp_time"
+msgstr "hh:mm:ss A"
 
 #: js/main.js
 msgid "user_changePassword"

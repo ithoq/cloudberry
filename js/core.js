@@ -50,7 +50,7 @@
                             this.format = function(ts) {
                                 if (ts == null) return "";
                                 if (typeof(ts) === 'string') ts = cloudberry.utils.parseInternalTime(ts);
-                                return ts.toString(fmt);
+                                return moment(ts).format(fmt);
                             };
                         },
                         Number: function(precision, unit, ds) {
