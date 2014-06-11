@@ -10,6 +10,7 @@
         "view-url": false,
         "app-element-id": "cloudberry",
         "service-path": "backend/",
+        "templates-path": "templates/",
         "limited-http-methods": false,
         "file-view": {
             "default-view-mode": false,

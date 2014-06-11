@@ -4,9 +4,35 @@
     /* Platform */
     cloudberry.platform.push({
         setup: function(app, o, gettext) {
+            // resources
+            var _get = function(u) {
+                if (!o.settings["resource-map"]) return u;
+
+                var urlParts = cloudberry.utils.breakUrl(u);
+                if (!urlParts) return u;
+
+                var mapped = o.settings["resource-map"][urlParts.path];
+                if (mapped === undefined) return u;
+                if (mapped === false) return false;
+
+                return mapped + urlParts.paramsString;
+            };
+            var resources = {
+                url: function(u) {
+                    return _get(u);
+                },
+                templateUrl: function(t) {
+                    return _get(o.settings["templates-path"] + t);
+                }
+            };
+
             app.config(function($provide) {
                 $provide.factory('settings', function() {
                     return o.settings;
+                });
+
+                $provide.factory('resources', function() {
+                    return resources;
                 });
 
                 $provide.factory('views', function() {
@@ -156,7 +182,7 @@
                     var templateUrlFn = function(tpl) {
                         return function(stateParams) {
                             var tplName = angular.isFunction(tpl) ? tpl(stateParams) : tpl;
-                            return 'templates/' + tplName; //TODO path from params
+                            return resources.templateUrl(tplName);
                         };
                     };
 
@@ -242,8 +268,8 @@
 
             gettext('dialogOK');
             gettext('dialogCancel');
-            app.factory('dialogs', ['$rootScope', '$modal',
-                function($rootScope, $modal) {
+            app.factory('dialogs', ['$rootScope', 'resources', '$modal',
+                function($rootScope, resources, $modal) {
                     return {
                         confirmation: function(title, message) {
                             var df = $.Deferred();
@@ -294,7 +320,7 @@
                             }
 
                             var modalInstance = $modal.open({
-                                templateUrl: "templates/" + d.template, //TODO path
+                                templateUrl: resources.templateUrl(d.template),
                                 controller: d.controller,
                                 resolve: resolve
                             });
