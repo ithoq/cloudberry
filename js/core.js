@@ -241,7 +241,6 @@
                                 data: data || {}
                             }).pipe(function(r) {
                                 permissions.putFilesystemPermissions(id, r.permissions);
-                                //cloudberry.filesystem.permissionCache[id] = r.permissions;
 
                                 var folder = r.folder;
                                 var data = r;
@@ -255,9 +254,8 @@
                             return service.post("filesystem/" + item.id + "/details/", {
                                 data: data
                             }).done(function(r) {
-                                //TODO cache
-                                //cloudberry.filesystem.permissionCache[item.id] = r.permissions;
-                                //if (item.parent_id && r.parent_permissions) mollify.filesystem.permissionCache[item.parent_id] = r.parent_permissions;
+                                permissions.putFilesystemPermissions(item.id, r.permissions);
+                                if (item.parent_id && r.parent_permissions) permissions.putFilesystemPermissions(item.parent_id, r.parent_permissions);
                             });
                         },
                         getDownloadUrl: function(item) {

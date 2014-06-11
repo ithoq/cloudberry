@@ -118,14 +118,19 @@
             }, gettext_stub);
         });
 
-        app.run(function($templateCache, $rootScope, $location, $state, $injector, gettextCatalog, service, session, filesystem) {
-            if (settings["localization-debug"])
-                gettextCatalog.debug = true;
+        app.run(['$templateCache', '$rootScope', '$location', '$state', '$injector', 'gettextCatalog', 'service', 'session', 'filesystem', 'permissions',
+            function($templateCache, $rootScope, $location, $state, $injector, gettextCatalog, service, session, filesystem, permissions) {
+                if (settings["localization-debug"])
+                    gettextCatalog.debug = true;
 
-            $rootScope.plugins = settings.plugins;
+                $rootScope.cloudberry = {
+                    plugins: settings.plugins,
+                    permissions: permissions
+                };
 
-            that._onStart($rootScope, $location, $state, $injector, gettextCatalog, session);
-        });
+                that._onStart($rootScope, $location, $state, $injector, gettextCatalog, session);
+            }
+        ]);
 
         this.run = function() {
             // start

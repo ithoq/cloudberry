@@ -26,7 +26,7 @@
                     };
                     $scope.views = views.get('main');
                     updateViews($state.current);
-                    $scope.sessionActions = actions.getType('session');
+                    $scope.sessionActions = actions.getType('session', true);
 
                     $rootScope.$on('$stateChangeSuccess', function(e, to) {
                         updateViews(to);
@@ -45,7 +45,7 @@
                     $modalInstance.dismiss('cancel');
                 };
             };
-            
+
             h.registerDialog({
                 id: "changePassword",
                 template: 'main/change_password.html',
@@ -57,6 +57,9 @@
                 id: 'user/change_pw',
                 type: 'session',
                 titleKey: 'user_changePassword',
+                permissions: {
+                    'change_password': true
+                },
                 handler: ["dialogs",
                     function(user, dialogs) {
                         dialogs.custom('changePassword', user).done(function() {

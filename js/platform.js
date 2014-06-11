@@ -22,13 +22,31 @@
                     };
                 });
 
-                $provide.factory('actions', function() {
-                    return {
-                        getType: function(type) {
-                            return o.actions.byType[type];
-                        }
-                    };
-                });
+                $provide.factory('actions', ['permissions', 'session',
+                    function(permissions, session) {
+                        return {
+                            getType: function(type, applicable) {
+                                var list = o.actions.byType[type];
+                                if (!applicable) return list;
+
+                                var filtered = [];
+                                var u = session.get().user;
+                                
+                                $.each(list, function(i, a) {
+                                    var applicable = false;
+                                    if ((u && u.admin) || !a.permissions) applicable = true;
+                                    else {
+                                        $.each(cloudberry.utils.getKeys(a.permissions), function(j, pk) {
+                                            if (permissions.hasPermission(pk, a.permissions[pk])) applicable = true;
+                                        });
+                                    }
+                                    if (applicable) filtered.push(a);
+                                });
+                                return filtered;
+                            }
+                        };
+                    }
+                ]);
 
                 $provide.factory('configDetails', function() {
                     return {
