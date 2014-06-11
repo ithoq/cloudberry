@@ -23,6 +23,10 @@ msgstr ""
 msgid "configFolderUsers_viewTitle"
 msgstr ""
 
+#: templates/config/folder.html
+msgid "configFolder_Path"
+msgstr ""
+
 #: js/config.js
 msgid "configFolders_list_name"
 msgstr ""
@@ -35,6 +39,7 @@ msgstr ""
 msgid "configFolders_openFolder"
 msgstr ""
 
+#: templates/config/folders.html
 #: js/config.js
 msgid "configFolders_viewTitle"
 msgstr ""
@@ -44,23 +49,76 @@ msgid "configTable_id"
 msgstr ""
 
 #: js/config.js
+msgid "configUserFolders_listName"
+msgstr ""
+
+#: js/config.js
 msgid "configUserFolders_viewTitle"
+msgstr ""
+
+#: js/config.js
+msgid "configUserGroups_listName"
 msgstr ""
 
 #: js/config.js
 msgid "configUserGroups_viewTitle"
 msgstr ""
 
+#: templates/config/user.html
+msgid "configUser_Email"
+msgstr ""
+
+#: templates/config/user.html
+msgid "configUser_Name"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_defaultLang"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_email"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_generatePassword"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_language"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_name"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_password"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_title"
+msgstr ""
+
 #: js/config.js
 msgid "configUsers_list_name"
 msgstr ""
 
+#: templates/config/users.html
 #: js/config.js
 msgid "configUsers_viewTitle"
 msgstr ""
 
 #: js/config.js
 msgid "config_viewTitle"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "dialogCancel"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "dialogOK"
 msgstr ""
 
 #: js/core.js
@@ -181,6 +239,10 @@ msgstr ""
 
 #: js/files.js
 msgid "itemInfo_viewTitle"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "lang_{{lang}}"
 msgstr ""
 
 #: templates/login.html

@@ -281,6 +281,7 @@
                         //$scope['usergroups-table'].refresh();
                     };
 
+                    gettext("configUserFolders_listName");
                     $scope.userFoldersListConfig = {
                         noInitRefresh: true,
                         cols: [{
@@ -330,6 +331,7 @@
                         //$scope['usergroups-table'].refresh();
                     };
 
+                    gettext("configUserGroups_listName");
                     $scope.userGroupsListConfig = {
                         cols: [{
                             key: 'id',

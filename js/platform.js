@@ -31,7 +31,7 @@
 
                                 var filtered = [];
                                 var u = session.get().user;
-                                
+
                                 $.each(list, function(i, a) {
                                     var applicable = false;
                                     if ((u && u.admin) || !a.permissions) applicable = true;
@@ -93,7 +93,7 @@
                         "\n" +
                         "        <div class=\"ngFooterTotalItems\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\" >\r" +
                         "\n" +
-                        "            <span class=\"ngLabel\" translate>grid_totalCount {{maxRows()}}</span><span ng-show=\"filterText.length > 0\" class=\"ngLabel\" translate>(grid_filteredCount {{totalFilteredItemsLength()}})</span>\r" +
+                        "            <span class=\"ngLabel\"><span translate>grid_totalCount</span> {{maxRows()}}</span><span ng-show=\"filterText.length > 0\" class=\"ngLabel\" translate>(grid_filteredCount {{totalFilteredItemsLength()}})</span>\r" +
                         "\n" +
                         "        </div>\r" +
                         "\n" +
@@ -240,6 +240,8 @@
                 }
             ]);
 
+            gettext('dialogOK');
+            gettext('dialogCancel');
             app.factory('dialogs', ['$rootScope', '$modal',
                 function($rootScope, $modal) {
                     return {
@@ -292,7 +294,7 @@
                             }
 
                             var modalInstance = $modal.open({
-                                templateUrl: d.template, //TODO path
+                                templateUrl: "templates/" + d.template, //TODO path
                                 controller: d.controller,
                                 resolve: resolve
                             });

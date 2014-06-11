@@ -14,70 +14,119 @@ msgstr ""
 
 #: js/config.js
 msgid "configFolderUsers_addFolderUser_message"
-msgstr ""
+msgstr "Select folder users"
 
 #: js/config.js
 msgid "configFolderUsers_addFolderUser_title"
-msgstr ""
+msgstr "Add folder users"
 
 #: js/config.js
 msgid "configFolderUsers_list_email"
-msgstr ""
+msgstr "Email"
 
 #: js/config.js
 msgid "configFolderUsers_list_name"
-msgstr ""
+msgstr "Name"
 
 #: js/config.js
-#, fuzzy
 msgid "configFolderUsers_viewTitle"
-msgstr "Configuration"
+msgstr "Users"
+
+#: templates/config/folder.html
+msgid "configFolder_Path"
+msgstr "Path"
 
 #: js/config.js
-#, fuzzy
 msgid "configFolders_list_name"
 msgstr "Name"
 
 #: js/config.js
 msgid "configFolders_list_path"
-msgstr ""
+msgstr "Path"
 
 #: js/config.js
 msgid "configFolders_openFolder"
-msgstr ""
+msgstr "open"
 
-#: js/config.js
-#, fuzzy
+#: templates/config/folders.html js/config.js
 msgid "configFolders_viewTitle"
-msgstr "Configuration"
+msgstr "Folders"
 
 #: js/config.js
-#, fuzzy
 msgid "configTable_id"
-msgstr "Configuration"
+msgstr "id"
 
 #: js/config.js
-#, fuzzy
+msgid "configUserFolders_listName"
+msgstr "Name"
+
+#: js/config.js
 msgid "configUserFolders_viewTitle"
-msgstr "Configuration"
+msgstr "Folders"
 
 #: js/config.js
-#, fuzzy
+msgid "configUserGroups_listName"
+msgstr "Name"
+
+#: js/config.js
 msgid "configUserGroups_viewTitle"
-msgstr "Configuration"
+msgstr "Groups"
+
+#: templates/config/user.html
+msgid "configUser_Email"
+msgstr "Email"
+
+#: templates/config/user.html
+msgid "configUser_Name"
+msgstr "Name"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_defaultLang"
+msgstr "(Default)"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_email"
+msgstr "Email"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_generatePassword"
+msgstr "Generate"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_language"
+msgstr "Language"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_name"
+msgstr "Name"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_password"
+msgstr "Password"
+
+#: templates/config/addedit_user.html
+msgid "configUsers_addEdit_title"
+msgstr "Add User"
 
 #: js/config.js
 msgid "configUsers_list_name"
-msgstr ""
+msgstr "Name"
 
-#: js/config.js
-#, fuzzy
+#: templates/config/users.html js/config.js
 msgid "configUsers_viewTitle"
-msgstr "Configuration"
+msgstr "Users"
 
 #: js/config.js
 msgid "config_viewTitle"
 msgstr "Configuration"
+
+#: templates/config/addedit_user.html
+msgid "dialogCancel"
+msgstr ""
+
+#: templates/config/addedit_user.html
+msgid "dialogOK"
+msgstr ""
 
 #: js/core.js
 msgid "fileSize_byte"
@@ -105,15 +154,15 @@ msgstr[1] "MB"
 
 #: js/core.js
 msgid "file_copy"
-msgstr ""
+msgstr "Copy..."
 
 #: js/files.js
 msgid "file_download"
-msgstr ""
+msgstr "Download"
 
 #: js/files.js
 msgid "file_open"
-msgstr ""
+msgstr "Open"
 
 #: js/files.js
 msgid "filesList_colLastModified"
@@ -145,32 +194,31 @@ msgstr "Email"
 
 #: js/platform.js
 msgid "grid_firstPage"
-msgstr ""
+msgstr "First page"
 
 #: js/platform.js
 msgid "grid_lastPage"
-msgstr ""
+msgstr "Last page"
 
 #: js/platform.js
 msgid "grid_nextPage"
-msgstr ""
+msgstr "Next page"
 
 #: js/platform.js
 msgid "grid_pageSize"
-msgstr ""
+msgstr "Rows"
 
 #: js/platform.js
 msgid "grid_prevPage"
-msgstr ""
+msgstr "Previous page"
 
 #: js/platform.js
 msgid "grid_totalCount"
-msgstr ""
+msgstr "Total"
 
 #: js/files.js
-#, fuzzy
 msgid "itemComments_viewTitle"
-msgstr "Files"
+msgstr "Comments"
 
 #: templates/files.html
 msgid "itemDetails_actions"
@@ -178,28 +226,31 @@ msgstr ""
 
 #: templates/item-info.html
 msgid "itemInfo_lastAccessed"
-msgstr ""
+msgstr "Last accessed"
 
 #: templates/item-info.html
 msgid "itemInfo_lastChanged"
-msgstr ""
+msgstr "Last changed"
 
 #: templates/item-info.html
 msgid "itemInfo_lastModified"
-msgstr ""
+msgstr "Last modified"
 
 #: templates/item-info.html
 msgid "itemInfo_path"
-msgstr ""
+msgstr "Path"
 
 #: templates/item-info.html
 msgid "itemInfo_size"
-msgstr ""
+msgstr "Size"
 
 #: js/files.js
-#, fuzzy
 msgid "itemInfo_viewTitle"
-msgstr "Files"
+msgstr "??"
+
+#: templates/config/addedit_user.html
+msgid "lang_{{lang}}"
+msgstr ""
 
 #: templates/login.html
 msgid "login_Login"
