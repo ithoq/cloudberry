@@ -217,7 +217,6 @@
 
             $rootScope.$on('session/start', function(e, s) {
                 gettextCatalog.currentLanguage = (s.user && s.user.lang) ? s.user.lang : settings.language["default"];
-
                 resumeStateChange();
             });
             $rootScope.$on('session/end', function() {
@@ -240,7 +239,8 @@
                 fn.apply(null, args);
             };
 
-            session.init().done(function() {
+            // init
+            session.init().done(function(s) {
                 initialized = true;
             });
         };

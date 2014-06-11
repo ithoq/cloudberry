@@ -107,8 +107,61 @@
                 }
             ]);
 
-            mod.factory('filesystem', ['$rootScope', 'service', 'session', 'cache',
-                function($rootScope, service, session, cache) {
+            mod.factory('permissions', ['$rootScope', 'session',
+                function($rootScope, session) {
+                    var _types = null;
+
+                    var updatePermissions = function(list, permissions) {
+                        $.each(cloudberry.utils.getKeys(permissions), function(i, p) {
+                            list[p] = permissions[p];
+                        });
+                    };
+                    $rootScope.$on('session/start', function(e, s) {
+                        if (s.user) {
+                            _types = s.data.permission_types;
+                            updatePermissions(_permissions, s.data.permissions);
+                        }
+                    });
+
+                    var _filesystemPermissions = {};
+                    var _permissions = {};
+                    var hasPermission = function(list, name, required) {
+                        if (!list || list[name] === undefined) return false;
+                        var v = list[name];
+
+                        var options = _types.values[name];
+                        if (!required || !options) return v == "1";
+
+                        var ui = options.indexOf(v);
+                        var ri = options.indexOf(required);
+                        return (ui >= ri);
+                    };
+                    return {
+                        init: function(types) {
+                            _types = types;
+                        },
+                        putFilesystemPermissions: function(id, permissions) {
+                            if (!_filesystemPermissions[id]) _filesystemPermissions[id] = {};
+                            updatePermissions(_filesystemPermissions[id], permissions);
+                        },
+                        hasFilesystemPermission: function(item, name, required) {
+                            var user = session.get().user;
+                            if (!user) return false;
+                            if (user.admin) return true;
+                            return hasPermission(_filesystemPermissions[((typeof(item) === "string") ? item : item.id)], name, required);
+                        },
+                        hasPermission: function(name, required) {
+                            var user = session.get().user;
+                            if (!user) return false;
+                            if (user.admin) return true;
+                            return hasPermission(_permissions, name, required);
+                        }
+                    }
+                }
+            ]);
+
+            mod.factory('filesystem', ['$rootScope', 'service', 'session', 'permissions', 'cache',
+                function($rootScope, service, session, permissions, cache) {
                     var _roots = [];
                     var _rootsById = [];
                     $rootScope.$on('session/start', function(event, session) {
@@ -187,6 +240,7 @@
                             return service.post("filesystem/" + (id ? id : "roots") + "/info/" + (hierarchy ? "?h=1" : ""), {
                                 data: data || {}
                             }).pipe(function(r) {
+                                permissions.putFilesystemPermissions(id, r.permissions);
                                 //cloudberry.filesystem.permissionCache[id] = r.permissions;
 
                                 var folder = r.folder;
