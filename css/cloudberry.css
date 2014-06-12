@@ -7841,6 +7841,7 @@ button.close {
 }
 .ngGrid .ngCellAction {
   cursor: pointer;
+  margin-right: 8px;
 }
 .ngGrid .ngFooterPanel {
   border: none;
