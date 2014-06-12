@@ -8,10 +8,10 @@
             mod.factory('permissionRepository', ['$rootScope', 'c_service', 'cache',
                 function($rootScope, c_service, cache) {
                     return {
-                        getDefaultGenericPermissions: function(u) {
+                        getDefaultPermissions: function(u) {
                             return c_service.get("permissions/user/" + (u ? u.id : '0') + "/generic/");
                         },
-                        getUserGenericPermissions: function(u) {
+                        getUserPermissions: function(u) {
                             return c_service.get("permissions/user/" + u.id + "/generic/");
                         }
                     }
@@ -52,52 +52,87 @@
                         $scope.refreshUserPermissions();
                     };
 
-                    //gettext("configUserGroups_listName");
+                    gettext("pluginPermissions_permissionName");
+                    gettext("pluginPermissions_permissionValue");
+                    gettext("pluginPermissions_permissionSystemDefaultValue");
                     $scope.userPermissionsListConfig = {
                         cols: [{
                             key: 'name',
-                            titleKey: 'name'
+                            titleKey: 'pluginPermissions_permissionName'
                         }, {
                             key: 'value',
-                            titleKey: 'value'
+                            titleKey: 'pluginPermissions_permissionValue'
+                        }, {
+                            key: 'default_value',
+                            titleKey: 'pluginPermissions_permissionSystemDefaultValue'
                         }],
                         rowActions: [],
                         actions: [{
-                            icon: 'fa-plus',
+                            icon: 'fa-user',
+                            callback: function() {
+                                permissionRepository.getDefaultPermissions(user).done(function(r) {
+                                    dialogs.custom('pluginPermissions_editGenericPermissions', user, r.permissions).done(function(p) {
+                                        //userRepository.addUser(u).done($scope.refreshUsers);
+                                    });
+                                });
+                            }
+                        }, {
+                            icon: 'fa-globe',
                             callback: function() {
                                 var t = this;
                             }
                         }]
                     };
+                    var processPermissions = function(d, u) {
+                        var defaultPermissions = cloudberry.utils.mapByKey(d, "name", "value");
+                        var userPermissions = cloudberry.utils.mapByKey(u, "name");
+                        var result = [];
+
+                        $.each(permissions.getTypes().keys.all, function(i, t) {
+                            var p = userPermissions[t];
+                            if (!p) p = {
+                                name: t,
+                                value: undefined,
+                                subject: '',
+                                user_id: user.id
+                            };
+                            p.default_value = defaultPermissions[t];
+                            result.push(p);
+                        });
+                        return result;
+                    };
                     $scope.refreshUserPermissions = function() {
-                        cloudberry.utils.deferreds({
-                            'default': permissionRepository.getDefaultGenericPermissions(),
-                            'user': permissionRepository.getUserGenericPermissions(user)
+                        return cloudberry.utils.deferreds({
+                            systemDefault: permissionRepository.getDefaultPermissions(),
+                            user: permissionRepository.getUserPermissions(user)
                         }).done(function(r) {
                             var res = r.success;
-                            var defaultPermissions = cloudberry.utils.mapByKey(res['default'].permissions, "name", "value");
-                            var userPermissions = cloudberry.utils.mapByKey(res['user'].permissions, "name");
-                            var result = [];
-
-                            $.each(permissions.getTypes().keys.all, function(i, t) {
-                                var p = userPermissions[t];
-                                if (!p) p = {
-                                    name: t,
-                                    value: undefined,
-                                    subject: '',
-                                    user_id: user.id
-                                };
-                                p.default_value = defaultPermissions[t];
-                                result.push(p);
-                            });
-
-                            $scope.userPermissions = result;
+                            $scope.userPermissions = processPermissions(res.systemDefault.permissions, res.user.permissions);
                             if (!$scope.$$phase)
                                 $scope.$apply();
                         });
                     }
                 }
             ]);
+
+            h.registerDialog({
+                id: "pluginPermissions_editGenericPermissions",
+                template: 'config/permissions_editgeneric.html',
+                controller: function($scope, $modalInstance, settings, user, permissions) {
+                    $scope.edit = !! user;
+                    $scope.user = user;
+                    $scope.permissions = permissions;
+
+                    $scope.onSave = function() {
+                        $modalInstance.close($scope.user);
+                    };
+
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                params: ['user', 'permissions']
+            });
         }
     });
 }(window.cloudberry);
