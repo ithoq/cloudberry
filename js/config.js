@@ -163,11 +163,22 @@
                                     userId: u.id
                                 });
                             }
+                        }, {
+                            id: "pw",
+                            icon: 'fa-key',
+                            titleKey: 'configUsers_changePw',
+                            callback: function(u) {
+                                dialogs.custom('configUsers_changePw', u).done(function(r) {
+                                    userRepository.changePw(u, r.password).done(function() {
+                                        alert("TODO notification");
+                                    });
+                                });
+                            }
                         }],
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
-                                dialogs.custom('addEditUser', null).done(function(u) {
+                                dialogs.custom('configUsers_addEditUser', null).done(function(u) {
                                     userRepository.addUser(u).done($scope.refreshUsers);
                                 });
                             }
@@ -188,9 +199,32 @@
                 }
             ]);
 
+            var generatePassword = function() {
+                var length = 8;
+                var password = '';
+                var c;
+
+                for (var i = 0; i < length; i++) {
+                    while (true) {
+                        c = (parseInt(Math.random() * 1000, 10) % 94) + 33;
+                        if (isValidPasswordChar(c)) break;
+                    }
+                    password += String.fromCharCode(c);
+                }
+                return password;
+            };
+
+            var isValidPasswordChar = function(c) {
+                if (c >= 33 && c <= 47) return false;
+                if (c >= 58 && c <= 64) return false;
+                if (c >= 91 && c <= 96) return false;
+                if (c >= 123 && c <= 126) return false;
+                return true;
+            };
+
             h.registerDialog({
-                id: "addEditUser",
-                template: 'config/addedit_user.html',
+                id: "configUsers_addEditUser",
+                template: 'config/users_addedit.html',
                 controller: function($scope, $modalInstance, settings, user) {
                     $scope.edit = !! user;
                     $scope.user = user || {};
@@ -201,35 +235,35 @@
                         $modalInstance.close($scope.user);
                     };
 
-                    var generatePassword = function() {
-                        var length = 8;
-                        var password = '';
-                        var c;
-
-                        for (var i = 0; i < length; i++) {
-                            while (true) {
-                                c = (parseInt(Math.random() * 1000, 10) % 94) + 33;
-                                if (isValidPasswordChar(c)) break;
-                            }
-                            password += String.fromCharCode(c);
-                        }
-                        return password;
-                    }
-
-                    var isValidPasswordChar = function(c) {
-                        if (c >= 33 && c <= 47) return false;
-                        if (c >= 58 && c <= 64) return false;
-                        if (c >= 91 && c <= 96) return false;
-                        if (c >= 123 && c <= 126) return false;
-                        return true;
-                    }
-
                     $scope.generatePassword = function() {
                         $scope.user.password = generatePassword();
                     };
 
-                    $scope.ok = function() {
-                        $modalInstance.close();
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                params: ['user']
+            });
+
+            h.registerDialog({
+                id: "configUsers_changePw",
+                template: 'config/users-changepw.html',
+                controller: function($scope, $modalInstance, settings, user) {
+                    $scope.user = user;
+                    $scope.t = {
+                        password: ""
+                    };
+
+                    $scope.onSave = function() {
+                        $modalInstance.close({
+                            user: user,
+                            password: $scope.t.password
+                        });
+                    };
+
+                    $scope.generatePassword = function() {
+                        $scope.password = generatePassword();
                     };
 
                     $scope.cancel = function() {

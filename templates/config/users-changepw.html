@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h3 class="modal-title" translate>configUsers_changePw_title</h3>
+</div>
+<form novalidate class="form-horizontal" role="form" name="pwForm" ng-submit="pwForm.$valid && onSave()">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="userPassword" class="control-label col-sm-2" translate>configUsers_changePw_password</label>
+            <div class="col-sm-10">
+                <input type="text" id="userPassword" name="password" class="form-control" ng-model="t.password" required>
+                <a class="btn btn-default" ng-click="generatePassword()" translate>configUsers_changePw_generatePassword</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-disabled="pwForm.$invalid" translate>dialogOK</button>
+        <button class="btn btn-warning" ng-click="cancel()" translate>dialogCancel</button>
+    </div>
+</form>

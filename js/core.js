@@ -403,7 +403,12 @@
                             return service.del("configuration/users", {
                                 ids: cloudberry.utils.extractValue(f, "id")
                             });
-                        }
+                        },
+                        changePw: function(u, newPw) {
+                            return service.put('configuration/users/' + u.id + "/password", {
+                                "new": window.Base64.encode(newPw)
+                            });
+                        },
                     }
                 }
             ]);
