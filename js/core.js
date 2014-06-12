@@ -460,7 +460,16 @@
                                 var error = false;
                                 var data = false;
 
-                                if (xhr.responseText && xhr.responseText.startsWith('{')) error = JSON.parse($.trim(xhr.responseText));
+                                if (xhr.responseText && xhr.responseText.startsWith('{')) {
+                                    try {
+                                        error = JSON.parse($.trim(xhr.responseText));
+                                    } catch (e) {
+                                        error = {
+                                            code: 999,
+                                            details: "Could not parse error JSON, response: [" + xhr.responseText + "]"
+                                        };
+                                    }
+                                }
                                 if (!error) error = {
                                     code: 999
                                 }; //unknown

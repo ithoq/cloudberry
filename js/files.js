@@ -18,7 +18,7 @@
                 icon: "fa-folder",
                 parent: "main",
                 url: "^/files/{id}",
-                template: "files.html",
+                template: "files/files.html",
                 controller: "FilesCtrl",
                 redirect: ['filesystem',
                     function(to, filesystem) {
@@ -40,20 +40,20 @@
                 },
                 subviews: {
                     'header-nav': {
-                        template: 'files-header-nav.html'
+                        template: 'files/files-header-nav.html'
                     },
                     'header-tools': {
-                        template: 'files-header-tools.html'
+                        template: 'files/files-header-tools.html'
                     },
                     'sidebar': {
-                        template: 'files-sidebar.html'
+                        template: 'files/files-sidebar.html'
                     },
                     'files@files': {
                         template: function() {
                             if (viewData.type == 1)
-                                return 'files-list-table.html';
+                                return 'files/files-list-table.html';
                             else if (viewData.type == 2 || viewData.type == 3)
-                                return 'files-list-icon.html';
+                                return 'files/files-list-icon.html';
                         },
                         controller: function() {
                             if (viewData.type == 1)
@@ -520,7 +520,7 @@
             h.registerItemDetails('item_info', {
                 controller: "ItemInfoCtrl",
                 titleKey: "itemInfo_viewTitle",
-                template: "item-info.html"
+                template: "files/item-info.html"
             });
 
             mod.controller('ItemInfoCtrl', ['$scope', 'filesystem',
@@ -537,7 +537,7 @@
             h.registerItemDetails('item_comments', {
                 controller: "ItemCommentsCtrl",
                 titleKey: "itemComments_viewTitle",
-                template: "item-comments.html"
+                template: "files/item-comments.html"
             });
 
             mod.controller('ItemCommentsCtrl', ['$scope',

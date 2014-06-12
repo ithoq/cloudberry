@@ -11,7 +11,7 @@
                 icon: "fa-cog",
                 parent: "main",
                 url: "^/config",
-                template: "config.html",
+                template: "config/config.html",
                 controller: "ConfigCtrl",
                 redirect: ['views',
                     function(to, views) {
@@ -24,7 +24,7 @@
                 ],
                 subviews: {
                     'header-nav': {
-                        template: 'config-header-nav.html'
+                        template: 'config/config-header-nav.html'
                     }
                 }
             });
@@ -167,9 +167,8 @@
                         actions: [{
                             icon: 'fa-plus',
                             callback: function() {
-                                var t = this;
                                 dialogs.custom('addEditUser', null).done(function(u) {
-                                    userRepository.addUser(u).done(t.refresh);
+                                    userRepository.addUser(u).done($scope.refreshUsers);
                                 });
                             }
                         }]
@@ -555,7 +554,7 @@
 
             h.registerDialog({
                 id: "selectItem",
-                template: 'config/select_item.html',
+                template: 'core/select-item.html',
                 controller: function($scope, $modalInstance, gettextCatalog, spec) {
                     $scope.spec = spec;
                     $scope.list = spec.options;

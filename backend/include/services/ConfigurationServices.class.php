@@ -511,6 +511,7 @@
 				}
 					
 				$this->response()->success($f);
+				return;
 			} else if (count($this->path) == 3) {
 				switch ($this->path[2]) {
 					case 'users':
