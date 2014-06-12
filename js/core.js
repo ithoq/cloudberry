@@ -413,6 +413,20 @@
                 }
             ]);
 
+            mod.factory('c_service', ['$rootScope', 'cache', 'service',
+                function($rootScope, cache, service) {
+                    return {
+                        get: function(url, cacheKey) {
+                            var ck = cacheKey || url;
+                            if (cache.has(ck)) return $.Deferred().resolve(cache.get(ck));
+                            return service.get(url).done(function(r) {
+                                cache.put(ck, r);
+                            });
+                        }
+                    };
+                }
+            ]);
+
             mod.factory('service', ['$rootScope', 'settings',
                 function($rootScope, settings) {
                     var _sessionId = false;
