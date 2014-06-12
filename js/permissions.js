@@ -42,23 +42,24 @@
                 template: "config/userpermissions.html"
             });
 
-            mod.controller('ConfigUserPermissionsCtrl', ['$scope', 'permissionRepository', 'dialogs', 'user',
-                function($scope, permissionRepository, dialogs, user) {
+            mod.controller('ConfigUserPermissionsCtrl', ['$scope', 'permissionRepository', 'permissions', 'dialogs', 'user',
+                function($scope, permissionRepository, permissions, dialogs, user) {
                     $scope.user = user;
-                    $scope.userGroups = [];
-                    $scope.selectedUserGroups = [];
+                    $scope.userPermissions = [];
 
                     $scope.onConfigUserPermissionsCtrl = function() {
                         console.log("user permissions");
                         $scope.refreshUserPermissions();
-                        //$scope['usergroups-table'].refresh();
                     };
 
-                    gettext("configUserGroups_listName");
+                    //gettext("configUserGroups_listName");
                     $scope.userPermissionsListConfig = {
                         cols: [{
-                            key: 'id',
-                            titleKey: 'configTable_id'
+                            key: 'name',
+                            titleKey: 'name'
+                        }, {
+                            key: 'value',
+                            titleKey: 'value'
                         }],
                         rowActions: [],
                         actions: [{
@@ -69,12 +70,31 @@
                         }]
                     };
                     $scope.refreshUserPermissions = function() {
-                        var df = $.Deferred();
-                        var all = [permissionRepository.getDefaultGenericPermissions(), permissionRepository.getUserGenericPermissions(user)]
-                        $.when.apply($, all).then(function() {
-                            console.log('All done');
+                        cloudberry.utils.deferreds({
+                            'default': permissionRepository.getDefaultGenericPermissions(),
+                            'user': permissionRepository.getUserGenericPermissions(user)
+                        }).done(function(r) {
+                            var res = r.success;
+                            var defaultPermissions = cloudberry.utils.mapByKey(res['default'].permissions, "name", "value");
+                            var userPermissions = cloudberry.utils.mapByKey(res['user'].permissions, "name");
+                            var result = [];
+
+                            $.each(permissions.getTypes().keys.all, function(i, t) {
+                                var p = userPermissions[t];
+                                if (!p) p = {
+                                    name: t,
+                                    value: undefined,
+                                    subject: '',
+                                    user_id: user.id
+                                };
+                                p.default_value = defaultPermissions[t];
+                                result.push(p);
+                            });
+
+                            $scope.userPermissions = result;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
                         });
-                        return df.promise();
                     }
                 }
             ]);

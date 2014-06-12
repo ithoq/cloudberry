@@ -315,7 +315,6 @@
                     $scope.onConfigUserFoldersCtrl = function() {
                         console.log("user folders");
                         $scope.refreshUserFolders();
-                        //$scope['usergroups-table'].refresh();
                     };
 
                     gettext("configUserFolders_list_name");

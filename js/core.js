@@ -97,11 +97,14 @@
                 function() {
                     var _cache = {};
                     return {
-                        get: function() {
-                            return false;
+                        has: function(k) {
+                            return !!_cache[k];
                         },
-                        put: function() {
-
+                        get: function(k) {
+                            return _cache[k];
+                        },
+                        put: function(k, o) {
+                            _cache[k] = o;
                         }
                     }
                 }
@@ -139,6 +142,9 @@
                     return {
                         init: function(types) {
                             _types = types;
+                        },
+                        getTypes: function() {
+                            return _types;
                         },
                         putFilesystemPermissions: function(id, permissions) {
                             if (!_filesystemPermissions[id]) _filesystemPermissions[id] = {};

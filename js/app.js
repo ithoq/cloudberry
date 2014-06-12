@@ -207,7 +207,7 @@
                     var s = session.get();
                     var isAuthenticated = (s && s.user);
                     var requiresAuthenticated = (toState && toState.name != 'login');
-                    var requiresAdmin = (requiresAuthenticated && views[toState.name].requiresAdmin);
+                    var requiresAdmin = (requiresAuthenticated && !! views[toState.name].requiresAdmin);
                     var isAdmin = (isAuthenticated && s.user.admin);
 
                     if (requiresAuthenticated && !isAuthenticated) {
@@ -304,6 +304,29 @@
 
                 // The ECMAScript language types are Undefined, Null, Boolean, String, Number, and Object.
                 return (result !== null && typeof result === 'object') ? result : instance;
+            },
+
+            deferreds: function(m) {
+                var master = $.Deferred();
+                var res = {
+                    success: {},
+                    fail: {}
+                };
+                var all = cloudberry.utils.getKeys(m);
+                var count = all.length;
+                $.each(all, function(i, dk) {
+                    var df = m[dk];
+                    df.done(function(r) {
+                        res.success[dk] = r;
+                        count--;
+                        if (count === 0) master.resolve(res);
+                    }).fail(function(r) {
+                        res.fail[dk] = r;
+                        count--;
+                        if (count === 0) master.resolve(res);
+                    });
+                });
+                return master.promise();
             },
 
             breakUrl: function(u) {
