@@ -29,10 +29,13 @@
                 }
             });
 
-            mod.controller('ConfigCtrl', ['$scope', '$state', '$stateParams', 'views', 'actions',
-                function($scope, $state, $stateParams, views, actions) {
+            mod.controller('ConfigCtrl', ['$scope', '$state', '$stateParams', 'views', 'actions', 'session',
+                function($scope, $state, $stateParams, views, actions, session) {
+                    var user = session.get().user;
                     $scope.$parent.config = {
-                        views: views.get('config', function(v) { return !v.requiresAdmin; })
+                        views: views.get('config', user.admin ? false : function(v) {
+                            return !v.requiresAdmin;
+                        })
                     };
                 }
             ]);
@@ -315,15 +318,18 @@
                         //$scope['usergroups-table'].refresh();
                     };
 
-                    gettext("configUserFolders_listName");
+                    gettext("configUserFolders_list_name");
                     $scope.userFoldersListConfig = {
                         noInitRefresh: true,
                         cols: [{
                             key: 'id',
                             titleKey: 'configTable_id'
                         }, {
+                            key: 'default_name',
+                            titleKey: 'configUserFolders_list_defaultName'
+                        }, {
                             key: 'name',
-                            titleKey: 'configUserFolders_listName'
+                            titleKey: 'configUserFolders_list_name'
                         }],
                         rowActions: [],
                         actions: [{

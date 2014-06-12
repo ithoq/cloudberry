@@ -542,7 +542,8 @@
                                     id: s.user_id,
                                     type: s.user_type,
                                     name: s.username,
-                                    lang: s.lang
+                                    lang: s.lang,
+                                    admin: s.user_type == 'a'
                                 },
                                 data: s
                             }
