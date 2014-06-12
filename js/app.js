@@ -207,6 +207,8 @@
                     var s = session.get();
                     var isAuthenticated = (s && s.user);
                     var requiresAuthenticated = (toState && toState.name != 'login');
+                    var requiresAdmin = (requiresAuthenticated && views[toState.name].requiresAdmin);
+                    var isAdmin = (isAuthenticated && s.user.admin);
 
                     if (requiresAuthenticated && !isAuthenticated) {
                         console.log("STATECHANGE REJECTED: not authenticated");
@@ -218,6 +220,13 @@
                         $state.go("login");
                         return;
                     }
+                    if (requiresAdmin && !isAdmin) {
+                        console.log("STATECHANGE REJECTED: not allowed");
+                        event.preventDefault();
+                        $state.go("files"); //TODO default
+                        return;
+                    }
+
                     onBeforeStateChange(event, toState, toParams, fromState, fromParams);
                 });
 

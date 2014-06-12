@@ -32,7 +32,7 @@
             mod.controller('ConfigCtrl', ['$scope', '$state', '$stateParams', 'views', 'actions',
                 function($scope, $state, $stateParams, views, actions) {
                     $scope.$parent.config = {
-                        views: views.get('config')
+                        views: views.get('config', function(v) { return !v.requiresAdmin; })
                     };
                 }
             ]);
@@ -129,6 +129,7 @@
             gettext("configUsers_viewTitle");
             h.registerView('users', {
                 titleKey: "configUsers_viewTitle",
+                requiresAdmin: true,
                 icon: "fa-user",
                 parent: "config",
                 url: "/users",
@@ -401,6 +402,7 @@
             gettext("configFolders_viewTitle");
             h.registerView('folders', {
                 titleKey: "configFolders_viewTitle",
+                requiresAdmin: true,
                 icon: "fa-folder",
                 parent: "config",
                 url: "/folders",

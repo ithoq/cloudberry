@@ -38,10 +38,12 @@
                 $provide.factory('views', function() {
                     return {
                         all: o.views,
-                        get: function(parent) {
+                        get: function(parent, filter) {
                             var result = [];
                             $.each(o.views, function(i, v) {
-                                if (v.parent == parent) result.push(v);
+                                if (v.parent == parent) {
+                                    if (!filter || filter(v)) result.push(v);
+                                }
                             });
                             return result;
                         }
