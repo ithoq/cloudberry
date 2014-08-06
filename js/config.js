@@ -228,7 +228,7 @@
 
             h.registerDialog({
                 id: "configUsers_addEditUser",
-                template: 'config/users_addedit.html',
+                template: 'config/users-addedit.html',
                 controller: function($scope, $modalInstance, settings, user) {
                     $scope.edit = !! user;
                     $scope.user = user || {};
@@ -306,6 +306,8 @@
                 template: "config/userfolders.html"
             });
 
+            gettext("configUserFolders_list_defaultName");
+            gettext("configUserFolders_list_name");
             mod.controller('ConfigUserFoldersCtrl', ['$scope', 'userRepository', 'folderRepository', 'dialogs', 'user',
                 function($scope, userRepository, folderRepository, dialogs, user) {
                     $scope.user = user;
@@ -473,7 +475,7 @@
 
             h.registerDialog({
                 id: "addEditFolder",
-                template: 'config/addedit_folder.html',
+                template: 'config/folders-addedit.html',
                 controller: function($scope, $modalInstance, folder) {
                     $scope.folder = folder || {};
 
