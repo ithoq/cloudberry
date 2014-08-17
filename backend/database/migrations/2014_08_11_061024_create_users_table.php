@@ -11,9 +11,13 @@ class CreateUsersTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			$table->string('password', 64);
 			$table->string('email');
-			$table->dateTime('expires')->nullable();
-			$table->boolean('is_group');
+			$table->timestamp('expires')->nullable();
+			$table->boolean('is_group')->default(FALSE);
+			$table->char('type', 4)->nullable();
+			$table->char('lang', 4)->nullable();
+			$table->string('description');
 			$table->rememberToken();
 			$table->timestamps();
 		});

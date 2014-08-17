@@ -171,7 +171,7 @@
                     var _roots = [];
                     var _rootsById = [];
                     $rootScope.$on('session/start', function(event, session) {
-                        _roots = session.data ? session.data.folders : [];
+                        _roots = session.folders ? session.folders : [];
                         $.each(_roots, function(i, r) {
                             _rootsById[r.id] = r;
                         })
@@ -445,7 +445,7 @@
                     var limitedHttpMethods = !! settings['limited-http-methods'];
                     var urlFn = function(u, full) {
                         if (u.startsWith('http')) return u;
-                        var url = settings["rest-path"] + "r.php/" + u;
+                        var url = settings["rest-path"] + "r.php/api/v1/" + u;
                         if (!full) return url;
                         return "TODO" + url; //cloudberry.App.pageUrl + url;
                     };
@@ -463,7 +463,6 @@
                                 contentType: 'application/json',
                                 dataType: 'json',
                                 beforeSend: function(xhr) {
-                                    xhr.setRequestHeader("cloudberry-api-version", "2");
                                     if (sid)
                                         xhr.setRequestHeader("cloudberry-session-id", sid);
                                     if (limitedHttpMethods || diffMethod)
@@ -475,7 +474,7 @@
                                         code: 999
                                     });
                                 }
-                                return r.result;
+                                return r;
                             }, function(xhr) {
                                 var df = $.Deferred();
 
@@ -550,23 +549,14 @@
                     var _set = function(s) {
                         $rootScope.features = s.features;
 
-                        if (!s || !s.authenticated) {
+                        if (!s || !s.user) {
                             _session = {
                                 id: false,
                                 user: null
                             }
                         } else {
-                            _session = {
-                                id: s.session_id,
-                                user: {
-                                    id: s.user_id,
-                                    type: s.user_type,
-                                    name: s.username,
-                                    lang: s.lang,
-                                    admin: s.user_type == 'a'
-                                },
-                                data: s
-                            }
+                            _session = s;
+                            _session.user.admin = s.user.type == 'a';
                         }
                         $rootScope.session = _session;
                         $rootScope.$broadcast('session/start', _session);
@@ -594,9 +584,9 @@
                             return df.promise();
                         },
                         authenticate: function(username, pw, remember) {
-                            return service.post('session/authenticate', {
-                                username: username,
-                                password: window.Base64.encode(pw),
+                            return service.post('session/login', {
+                                name: username,
+                                password: pw,
                                 remember: !! remember
                             }).done(function(s) {
                                 _set(s);

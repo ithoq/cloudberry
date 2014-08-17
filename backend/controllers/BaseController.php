@@ -2,17 +2,25 @@
 
 class BaseController extends Controller {
 
-	/**
-	 * Setup the layout used by the controller.
-	 *
-	 * @return void
-	 */
-	protected function setupLayout()
-	{
-		if ( ! is_null($this->layout))
-		{
-			$this->layout = View::make($this->layout);
-		}
+	/*protected function setupLayout() {
+	if (!is_null($this->layout)) {
+	$this->layout = View::make($this->layout);
+	}
+	}*/
+
+	protected function invalidRequestJsonResponse($message = NULL) {
+		return Response::json([
+				'error'   => true,
+				'message' => $message != NULL?$message:"Invalid request"],
+			403
+		);
 	}
 
+	protected function unauthorizedJsonResponse() {
+		return Response::json([
+				'error'   => true,
+				'message' => 'Unauthorized Request'],
+			401
+		);
+	}
 }
