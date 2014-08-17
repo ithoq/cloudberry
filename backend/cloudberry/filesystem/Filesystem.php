@@ -3,12 +3,12 @@
 namespace Cloudberry\Filesystem;
 
 interface Filesystem {
-	public function getId();
+	public function getTypeId();
 }
 
 interface FilesystemItem {
 
-	function name();
+	function getName();
 
 	function isFile();
 }
@@ -18,11 +18,11 @@ abstract class AbstractFilesystemItem implements FilesystemItem {
 	private $name;
 	private $path;
 
-	public function name() {
+	public function getName() {
 		return $this->name;
 	}
 
-	public function path() {
+	public function getPath() {
 		return $this->path;
 	}
 
@@ -44,11 +44,21 @@ class Folder extends AbstractFilesystemItem {
 class RootFolder extends \Eloquent implements FilesystemItem {
 	protected $table = 'folders';
 
-	public function name() {
+	protected $hidden = array('pivot');
+
+	public function getNameAttribute() {
+		if ($this->pivot->attributes['name'] != NULL) {
+			return $this->pivot->attributes['name'];
+		}
+
 		return $this->attributes['name'];
 	}
 
-	public function path() {
+	public function getName() {
+		return $this->getNameAttribute();
+	}
+
+	public function getPath() {
 		return $this->attributes['path'];
 	}
 

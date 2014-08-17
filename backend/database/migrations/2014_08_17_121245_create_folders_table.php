@@ -16,17 +16,18 @@ class CreateFoldersTable extends Migration {
 		});
 
 		Schema::create('users_folders', function (Blueprint $table) {
-			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('folder_id')->unsigned();
+			$table->string('name')->nullable();
+			$table->primary(array('user_id', 'folder_id'));
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->foreign('folder_id')->references('id')->on('folders');
 		});
 	}
 
 	public function down() {
-		Schema::dropIfExists('folders');
 		Schema::dropIfExists('users_folders');
+		Schema::dropIfExists('folders');
 	}
 
 }
