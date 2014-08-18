@@ -77,7 +77,9 @@ class RootFolder extends \Eloquent {
 	}
 
 	public function getFsItem() {
-		return FS::getItemByPath($this, "/");
+		$rootItem       = FS::getItemByPath($this, "/", $this->getName());
+		$rootItem->name = $this->getName();
+		return $rootItem;
 	}
 
 }
