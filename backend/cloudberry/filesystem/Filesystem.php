@@ -3,20 +3,38 @@
 namespace Cloudberry\Filesystem;
 
 interface Filesystem {
-	public function getTypeId();
+	public function getId();
+
+	public function createItem($rootFolder, $itemId);
 }
 
 interface FilesystemItem {
 
+	function getId();
+
 	function getName();
+
+	function getPath();
 
 	function isFile();
 }
 
-abstract class AbstractFilesystemItem implements FilesystemItem {
+abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemItem {
 	private $rootFolder;
 	private $name;
 	private $path;
+
+	public function __construct($id, $rootFolder, $path, $name) {
+		$this->id          = $id;
+		$this->$rootFolder = $rootFolder;
+		$this->name        = $name;
+		$this->path        = $path;
+		$this->attributes  = array("id" => $id, "name" => $name, "path" => $path);
+	}
+
+	public function getId() {
+		return $this->id;
+	}
 
 	public function getName() {
 		return $this->name;
@@ -41,28 +59,29 @@ class Folder extends AbstractFilesystemItem {
 	}
 }
 
-class RootFolder extends \Eloquent implements FilesystemItem {
-	protected $table = 'folders';
+class LocalFilesystem implements Filesystem {
+	private $rootFolder;
 
-	protected $hidden = array('pivot');
-
-	public function getNameAttribute() {
-		if ($this->pivot->attributes['name'] != NULL) {
-			return $this->pivot->attributes['name'];
-		}
-
-		return $this->attributes['name'];
+	public function __construct($rootFolder) {
+		$this->rootFolder = $rootFolder;
 	}
 
-	public function getName() {
-		return $this->getNameAttribute();
+	public function getId() {
+		return "local";
 	}
 
-	public function getPath() {
-		return $this->attributes['path'];
+	public function createItem($rootFolder, $itemId) {
+		//$internalPath = $this->joinInternalPath($rootFolder->getPath(), $itemId->path);
+		$name = "TODO extract from path";
+
+		return new File($itemId->id, $rootFolder, $itemId->path, $name);
 	}
 
-	public function isFile() {
-		return FALSE;
+	private function joinInternalPath($p1, $p2) {
+		return $p1.$p2;//TODO
+	}
+
+	public function __toString() {
+		return "Local filesystem (".$this->rootFolder.")";
 	}
 }

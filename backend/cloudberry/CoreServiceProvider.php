@@ -29,10 +29,17 @@ class SessionController extends \BaseController {
 	public function getInfo() {
 		if (Auth::check()) {
 			$user = Auth::user();
+
+			$folders = array();
+			foreach ($user->rootFolders()->get() as $rf) {
+				$folders[] = $rf->getFsItem();
+			}
+			Log::debug($folders);
+
 			return array(
 				'id'          => \Session::getId(),
 				'user'        => $user,
-				'folders'     => $user->folders()->get(),
+				'folders'     => $folders,
 				'permissions' => array(), //TODO
 				'data' => array(
 					'permission_types' => array()//TODO

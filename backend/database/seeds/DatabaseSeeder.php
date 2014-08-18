@@ -23,7 +23,7 @@ class TestDataSeeder extends Seeder {
 				'type'     => 'a',
 			));
 
-		DB::table('folders')->delete();
+		DB::table('root_folders')->delete();
 		DB::table('users_folders')->delete();
 
 		$folder = new Cloudberry\Filesystem\RootFolder(array(
@@ -32,7 +32,7 @@ class TestDataSeeder extends Seeder {
 				'type' => 'local',
 			));
 
-		$user->folders()->save($folder);
+		$user->rootFolders()->save($folder);
 	}
 
 }
