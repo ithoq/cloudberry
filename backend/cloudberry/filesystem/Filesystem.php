@@ -93,7 +93,6 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	public function createItem($itemId) {
-		//$internalPath = $this->joinInternalPath($rootFolder->getPath(), $itemId->path);
 		$name = self::basename($itemId->path);
 		if ($this->_isFolderPath($itemId->path)) {
 			return new Folder($this, $itemId->id, $itemId->path, $name);
@@ -107,9 +106,7 @@ class LocalFilesystem implements Filesystem {
 	public function getChildren($folder) {
 		$this->assertFolder($folder);
 
-		//$parentPath = $folder->path;
 		$parentNativePath = $this->_getNativePath($folder);
-
 		$items = scandir($parentNativePath);
 		if (!$items) {
 			throw new Cloudberry\CloudberryException("Invalid folder: ".$folder);
@@ -121,15 +118,14 @@ class LocalFilesystem implements Filesystem {
 				continue;
 			}
 
-			//TODO charset conversion??
 			$nativePath = self::joinPath($parentNativePath, $name, FALSE);
 			$internalPath = $this->_getInternalPath($nativePath);
 			$id = ItemId::firstOrCreate(array('root_folder_id' => $this->rootFolder->id, "path" => $internalPath));//TODO cache
 
 			if (!is_dir($nativePath)) {
-				$result[] = new File($this, $id, $internalPath, $name);
+				$result[] = new File($this, $id->id, $internalPath, $name);
 			} else {
-				$result[] = new Folder($this, $id, $internalPath, $name);
+				$result[] = new Folder($this, $id->id, self::folderPath($internalPath), $name);
 			}
 		}
 
@@ -159,16 +155,25 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	private function _getNativePath($item) {
-		return self::joinPath($this->rootFolder->path, $item->path, FALSE);
+		$p = $item->path;
+		str_replace(DIRECTORY_SEPARATOR, Filesystem::DIRECTORY_SEPARATOR, $p);
+		return self::joinPath($this->rootFolder->path, $p, FALSE);
 	}
 
 	private function _getInternalPath($nativeFullPath) {
-		return ltrim(substr($nativeFullPath, strlen($this->rootFolder->path)), DIRECTORY_SEPARATOR);
+		$p = substr($nativeFullPath, strlen($this->rootFolder->path));
+		str_replace(DIRECTORY_SEPARATOR, Filesystem::DIRECTORY_SEPARATOR, $p);
+		return $p;
 	}
 
 	private function _isFolderPath($path, $internal = TRUE) {
 		$n = trim($path);
 		return (substr($n, -1) == ($internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR));
+	}
+
+	public static function folderPath($path, $internal = TRUE) {
+		$sp = $internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR;
+		return rtrim($path, $sp).$sp;
 	}
 
 	public static function joinPath($p1, $p2, $internal = TRUE) {
