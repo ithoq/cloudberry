@@ -27,28 +27,28 @@ class CoreServiceProvider extends ServiceProvider {
 class SessionController extends \BaseController {
 
 	public function getInfo() {
-		if (Auth::check()) {
-			$user = Auth::user();
-
-			$folders = array();
-			foreach ($user->rootFolders()->get() as $rf) {
-				$folders[] = $rf->getFsItem();
-			}
-			Log::debug($folders);
-
-			return array(
-				'id'          => \Session::getId(),
-				'user'        => $user,
-				'folders'     => $folders,
-				'permissions' => array(), //TODO
-				'data' => array(
-					'permission_types' => array()//TODO
-				)
-			);
+		// not logged
+		if (!Auth::check()) {
+			return array();
 		}
 
-		// not logged
-		return array();
+		$user = Auth::user();
+
+		$folders = array();
+		foreach ($user->rootFolders()->get() as $rf) {
+			$folders[] = $rf->getFsItem();
+		}
+		//Log::debug($folders);
+
+		return array(
+			'id' => \Session::getId(),
+			'user' => $user,
+			'folders' => $folders,
+			'permissions' => array(), //TODO
+			'data' => array(
+				'permission_types' => array()//TODO
+			)
+		);
 	}
 
 	public function postLogin() {
@@ -59,7 +59,7 @@ class SessionController extends \BaseController {
 
 		//TODO get user based on name or email, and attempt with that
 		$auth = array(
-			'name'     => Input::get("name"),
+			'name' => Input::get("name"),
 			'password' => Input::get("password")
 		);
 
@@ -77,3 +77,5 @@ class SessionController extends \BaseController {
 		return array();
 	}
 }
+
+class CloudberryException extends \Exception {}

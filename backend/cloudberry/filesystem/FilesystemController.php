@@ -13,32 +13,72 @@ class FS extends Facade {
 
 class FilesystemController {
 	public function getItem($itemId) {
-		return NULL;
+		$id = ItemId::find($itemId);//TODO cache
+		if ($id == NULL) {
+			throw new Cloudberry\CloudberryException("Invalid item id ".$itemId);
+		}
+
+		$rootFolder = RootFolder::find($id->root_folder_id);
+		if ($rootFolder == NULL) {
+			throw new Cloudberry\CloudberryException("Invalid item id ".$itemId.", no root found ".$id->root_folder_id);
+		}
+		$fs = $this->createFilesystem($rootFolder);
+		return $fs->createItem($id);
 	}
 
 	public function getItemByPath($root, $path) {
 		$fs = $this->createFilesystem($root);
-
 		$id = ItemId::firstOrCreate(array('root_folder_id' => $root->id, "path" => $path));//TODO cache
-		Log::debug("getItemByPath ROOT=".$root." FS=".$fs." ID=".$id);
+		//Log::debug("getItemByPath ROOT=".$root." FS=".$fs." ID=".$id);
 		return $fs->createItem($root, $id);
 	}
 
-	public function createFilesystem($root) {
+	protected function createFilesystem($root) {
+		//TODO register fs types
 		if ($root->type == 'local') {
 			return new LocalFilesystem($root);
 		}
 
 		return NULL;
 	}
+
+	/* operations */
+
+	public function getChildren($item) {
+		if ($item->isFile()) {
+			throw new Cloudberry\CloudberryException("Item not a folder: ".$itemId);
+		}
+		//TODO assert permissions & preload child permissions
+		return $item->getFS()->getChildren($item);
+	}
 }
 
 class FilesystemServiceController extends \BaseController {
 
 	public function getIndex($itemId) {
-		Log::debug('Index for '.$itemId);
-		$item = $this->getItem($itemId);
+		if ($itemId == 'roots') {
+			$user = \Auth::user();
+
+			$folders = array();
+			foreach ($user->rootFolders()->get() as $rf) {
+				$folders[] = $rf->getFsItem();
+			}
+			return $folders;
+		}
 		return array();
+	}
+
+	public function getRoots() {
+		//?
+		return array("roots" => TRUE);
+	}
+
+	public function getChildren($itemId) {
+
+		//TODO download etc
+		Log::debug('Index for '.$itemId);
+		$folder = $this->getFolder($itemId);
+		return $folder->getChildren();
 	}
 
 	public function getInfo($itemId) {
@@ -48,13 +88,34 @@ class FilesystemServiceController extends \BaseController {
 
 	protected function getItem($itemId) {
 		$item = FS::getItem($itemId);
+		if ($item == NULL) {
+			throw new \Cloudberry\CloudberryException("Invalid item id: ".$itemId);
+		}
+
+		return $item;
+	}
+
+	protected function getFolder($itemId) {
+		$item = FS::getItem($itemId);
+		if ($item->isFile()) {
+			throw new \Cloudberry\CloudberryException("Item not a folder: ".$itemId);
+		}
+		return $item;
+	}
+
+	protected function getFile($itemId) {
+		$item = FS::getItem($itemId);
+		if (!$item->isFile()) {
+			throw new \Cloudberry\CloudberryException("Item not a file: ".$itemId);
+		}
+		return $item;
 	}
 }
 
 class RootFolder extends \Eloquent {
 	protected $table = 'root_folders';
 
-	//protected $hidden = array('pivot');
+	protected $hidden = array('pivot');
 
 	public function getNameAttribute() {
 		if ($this->pivot->attributes['name'] != NULL) {
@@ -77,7 +138,7 @@ class RootFolder extends \Eloquent {
 	}
 
 	public function getFsItem() {
-		$rootItem       = FS::getItemByPath($this, "/", $this->getName());
+		$rootItem = FS::getItemByPath($this, "/", $this->getName());
 		$rootItem->name = $this->getName();
 		return $rootItem;
 	}
@@ -85,7 +146,7 @@ class RootFolder extends \Eloquent {
 }
 
 class ItemId extends \Eloquent {
-	protected $table    = 'item_ids';
+	protected $table = 'item_ids';
 	protected $fillable = array('root_folder_id', 'path');
 
 	public $incrementing = false;
@@ -94,14 +155,7 @@ class ItemId extends \Eloquent {
 		parent::boot();
 
 		static ::creating(function ($itemId) {
-			$itemId->{ $itemId->getKeyName()} = (string) ItemId::UUID();
+			$itemId->{ $itemId->getKeyName()} = uniqid("");//create unique id (UUID?)
 		});
-	}
-
-	public static function UUID() {
-		/*if (function_exists('com_create_guid') === true) {
-		return trim(com_create_guid(), '{}');
-		}*/
-		return uniqid("");
 	}
 }

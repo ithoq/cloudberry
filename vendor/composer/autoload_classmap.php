@@ -7,13 +7,15 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'BaseController' => $baseDir . '/backend/controllers/BaseController.php',
-    'CloudberryException' => $baseDir . '/backend/cloudberry/start.php',
+    'Cloudberry\\CloudberryException' => $baseDir . '/backend/cloudberry/CoreServiceProvider.php',
     'Cloudberry\\CoreServiceProvider' => $baseDir . '/backend/cloudberry/CoreServiceProvider.php',
     'Cloudberry\\Filesystem\\AbstractFilesystemItem' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
     'Cloudberry\\Filesystem\\FS' => $baseDir . '/backend/cloudberry/filesystem/FilesystemController.php',
     'Cloudberry\\Filesystem\\File' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
     'Cloudberry\\Filesystem\\Filesystem' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
     'Cloudberry\\Filesystem\\FilesystemController' => $baseDir . '/backend/cloudberry/filesystem/FilesystemController.php',
+    'Cloudberry\\Filesystem\\FilesystemFile' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
+    'Cloudberry\\Filesystem\\FilesystemFolder' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
     'Cloudberry\\Filesystem\\FilesystemItem' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
     'Cloudberry\\Filesystem\\FilesystemServiceController' => $baseDir . '/backend/cloudberry/filesystem/FilesystemController.php',
     'Cloudberry\\Filesystem\\Folder' => $baseDir . '/backend/cloudberry/filesystem/Filesystem.php',
