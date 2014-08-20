@@ -69,11 +69,11 @@ class File extends AbstractFilesystemItem implements FilesystemFile {
 
 class Folder extends AbstractFilesystemItem implements FilesystemFolder {
 	public function isRoot() {
-		return $this->path == "/";
+		return $this->path == Filesystem::DIRECTORY_SEPARATOR;
 	}
 
 	public function getChildren() {
-		return FS::getChildren($this);
+		return FSC::getChildren($this);
 	}
 
 	public function isFile() {
