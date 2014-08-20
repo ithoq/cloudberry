@@ -39,7 +39,7 @@ abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemIte
 	protected $hidden = array('fs');
 
 	public function __construct($fs, $id, $path, $name) {
-		$this->attributes = array("id" => $id, "name" => $name, "path" => $path, "fs" => $fs);
+		$this->attributes = array("id" => $id, "name" => $name, "path" => $path, "fs" => $fs, "is_file" => $this->isFile());
 	}
 
 	public function getFS() {
