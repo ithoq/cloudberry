@@ -13,7 +13,6 @@
             "backend/cloudberry",
             "backend/commands",
             "backend/controllers",
-            "backend/models",
             "backend/database/migrations",
             "backend/database/seeds",
             "backend/tests/TestCase.php"
