@@ -243,16 +243,16 @@
                             return _rootsById;
                         },
                         folderInfo: function(id, hierarchy, data) {
-                            return service.post("filesystem/" + (id ? id : "roots") + "/info/" + (hierarchy ? "?h=1" : ""), {
+                            return service.post("filesystem/" + (id ? id : "roots") + "/info" + (hierarchy ? "?h=1" : "") + (permissions ? "?p=1" : ""), {
                                 data: data || {}
                             }).pipe(function(r) {
                                 permissions.putFilesystemPermissions(id, r.permissions);
 
                                 var folder = r.folder;
                                 var data = r;
-                                data.items = r.folders.slice(0).concat(r.files);
-                                if (r.hierarchy)
-                                    r.hierarchy[0] = _rootsById[r.hierarchy[0].id];
+                                data.items = r.children;    //r.folders.slice(0).concat(r.files);
+                                //if (r.hierarchy)
+                                //    r.hierarchy[0] = _rootsById[r.hierarchy[0].id];
                                 return data;
                             });
                         },

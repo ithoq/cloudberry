@@ -162,7 +162,7 @@ class LocalFilesystem implements Filesystem {
 
 	private function _getInternalPath($nativeFullPath) {
 		$p = substr($nativeFullPath, strlen($this->rootFolder->path));
-		str_replace(DIRECTORY_SEPARATOR, Filesystem::DIRECTORY_SEPARATOR, $p);
+		str_replace(Filesystem::DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $p);
 		return $p;
 	}
 
