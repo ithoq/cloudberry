@@ -68,6 +68,11 @@ class File extends AbstractFilesystemItem implements FilesystemFile {
 }
 
 class Folder extends AbstractFilesystemItem implements FilesystemFolder {
+	public function __construct($fs, $id, $path, $name) {
+		parent::__construct($fs, $id, $path, $name);
+		$this->attributes["is_root"] = $this->isRoot();
+	}
+
 	public function isRoot() {
 		return $this->path == Filesystem::DIRECTORY_SEPARATOR;
 	}
