@@ -12,6 +12,18 @@ use \Route;
 class CoreServiceProvider extends ServiceProvider {
 
 	public function register() {
+		/*App::fatal(function ($e) {
+		Log::error($e);
+
+		return 'TODO fatal'.$e;
+		});*/
+
+		App::error(function (CloudberryException $ce) {
+			Log::error($ce);
+			return array("todo" => "ce:".$ce);
+			//App::abort($ce->getCode(), array());
+		});
+
 		App::bind('filesystemController', function () {
 			return new Filesystem\FilesystemController;
 		});
@@ -78,4 +90,26 @@ class SessionController extends \BaseController {
 	}
 }
 
-class CloudberryException extends \Exception {}
+class CloudberryException extends \Exception {
+	private $httpCode;
+	private $msg;
+
+	public function __construct($msg, $httpCode = 500) {
+		$this->httpCode = $httpCode;
+		$this->msg = $msg;
+	}
+
+	public function getHttpCode() {
+		return $this->httpCode;
+	}
+
+	public function getMsg() {
+		return $this->msg;
+	}
+}
+
+class NotAuthenticatedException extends CloudberryException {
+	public function __construct($msg) {
+		parent::__construct($msg, 401);
+	}
+}

@@ -5,15 +5,10 @@ namespace Cloudberry\Filesystem;
 class FilesystemServiceController extends \BaseController {
 
 	public function getIndex($itemId) {
-		$folders = array();
 		if ($itemId == 'roots') {
-			$user = \Auth::user();
-
-			foreach ($user->rootFolders()->get() as $rf) {
-				$folders[] = $rf->getFsItem();
-			}
+			return $this->getRoots();
 		}
-		return $folders;
+		return array();
 	}
 
 	public function getChildren($itemId) {
@@ -21,10 +16,16 @@ class FilesystemServiceController extends \BaseController {
 		return $folder->getChildren();
 	}
 
-	public function anyInfo($itemId) {
-		$children = ($itemId == 'roots')?$this->getIndex($itemId):$this->getChildren($itemId);
+	public function anyFolderInfo($itemId) {
+		$folder = ($itemId == 'roots')?NULL:$this->getFolder($itemId);
+		$children = ($itemId == 'roots')?$this->getRoots():$folder->getChildren();
 		//TODO permissions, hierarchy
-		return array("folder" => NULL, "children" => $children);
+		return array("folder" => $folder, "children" => $children);
+	}
+
+	public function getDetails($itemId) {
+		$folder = $this->getItem($itemId);
+		return array();
 	}
 
 	protected function getItem($itemId) {
@@ -50,5 +51,15 @@ class FilesystemServiceController extends \BaseController {
 			throw new \Cloudberry\CloudberryException("Item not a file: ".$itemId);
 		}
 		return $item;
+	}
+
+	protected function getRoots() {
+		$roots = array();
+		$user = \Auth::user();
+
+		foreach ($user->rootFolders()->get() as $rf) {
+			$roots[] = $rf->getFsItem();
+		}
+		return $roots;
 	}
 }

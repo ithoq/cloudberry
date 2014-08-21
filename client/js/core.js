@@ -243,7 +243,7 @@
                             return _rootsById;
                         },
                         folderInfo: function(id, hierarchy, data) {
-                            return service.post("filesystem/" + (id ? id : "roots") + "/info" + (hierarchy ? "?h=1" : "") + (permissions ? "?p=1" : ""), {
+                            return service.post("filesystem/" + (id ? id : "roots") + "/folder-info" + (hierarchy ? "?h=1" : "") + (permissions ? "?p=1" : ""), {
                                 data: data || {}
                             }).pipe(function(r) {
                                 permissions.putFilesystemPermissions(id, r.permissions);

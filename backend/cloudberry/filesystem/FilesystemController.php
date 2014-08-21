@@ -12,14 +12,19 @@ class FSC extends Facade {
 
 class FilesystemController {
 	public function getItem($itemId) {
-		$id = ItemId::find($itemId);//TODO cache
-		if ($id == NULL) {
-			throw new Cloudberry\CloudberryException("Invalid item id ".$itemId);
+		$user = \Auth::user();
+		if ($user == NULL) {
+			throw new \Cloudberry\NotAuthenticatedException("Cannot get item, no user folders: ".$itemId);
 		}
 
-		$rootFolder = RootFolder::find($id->root_folder_id);
+		$id = ItemId::find($itemId);//TODO cache
+		if ($id == NULL) {
+			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId);
+		}
+
+		$rootFolder = $user->rootFolders()->find($id->root_folder_id);
 		if ($rootFolder == NULL) {
-			throw new Cloudberry\CloudberryException("Invalid item id ".$itemId.", no root found ".$id->root_folder_id);
+			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId.", no root found ".$id->root_folder_id);
 		}
 		$fs = $this->createFilesystem($rootFolder);
 		return $fs->createItem($id);
