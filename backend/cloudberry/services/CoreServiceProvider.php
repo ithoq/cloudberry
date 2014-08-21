@@ -20,8 +20,9 @@ class CoreServiceProvider extends ServiceProvider {
 
 		App::error(function (CloudberryException $ce) {
 			Log::error($ce);
-			return array("todo" => "ce:".$ce);
-			//App::abort($ce->getCode(), array());
+			//return Response::make('Unauthorized', 401);
+			//return array("todo" => "ce:".$ce);
+			App::abort($ce->getHttpCode(), array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
 		});
 
 		App::bind('filesystemController', function () {
@@ -92,15 +93,21 @@ class SessionServiceController extends BaseServiceController {
 
 class CloudberryException extends \Exception {
 	private $httpCode;
+	private $errorCode;
 	private $msg;
 
-	public function __construct($msg, $httpCode = 500) {
+	public function __construct($msg, $errorCode = 999, $httpCode = 400) {
+		$this->errorCode = $errorCode;
 		$this->httpCode = $httpCode;
 		$this->msg = $msg;
 	}
 
 	public function getHttpCode() {
 		return $this->httpCode;
+	}
+
+	public function getErrorCode() {
+		return $this->errorCode;
 	}
 
 	public function getMsg() {
@@ -110,6 +117,6 @@ class CloudberryException extends \Exception {
 
 class NotAuthenticatedException extends CloudberryException {
 	public function __construct($msg) {
-		parent::__construct($msg, 401);
+		parent::__construct($msg, NULL, 401);
 	}
 }
