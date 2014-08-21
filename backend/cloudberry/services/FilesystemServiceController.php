@@ -1,8 +1,10 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry;
 
-class FilesystemServiceController extends \BaseController {
+use \Cloudberry\Filesystem\FSC;
+
+class FilesystemServiceController extends BaseServiceController {
 
 	public function getIndex($itemId) {
 		if ($itemId == 'roots') {

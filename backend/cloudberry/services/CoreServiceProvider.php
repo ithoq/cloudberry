@@ -29,14 +29,14 @@ class CoreServiceProvider extends ServiceProvider {
 		});
 
 		Route::group(array('prefix' => 'api/v1'), function () {
-			Route::controller('session', 'Cloudberry\SessionController');
-			Route::controller('filesystem/{item_id}', 'Cloudberry\Filesystem\FilesystemServiceController');
+			Route::controller('session', 'Cloudberry\SessionServiceController');
+			Route::controller('filesystem/{item_id}', 'Cloudberry\FilesystemServiceController');
 		});
 	}
 
 }
 
-class SessionController extends \BaseController {
+class SessionServiceController extends BaseServiceController {
 
 	public function getInfo() {
 		// not logged
