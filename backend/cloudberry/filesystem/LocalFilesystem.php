@@ -40,13 +40,19 @@ class LocalFilesystem implements Filesystem {
 			}
 
 			$nativePath = self::joinPath($parentNativePath, $name, FALSE);
+			$isFolder = is_dir($nativePath);
+
 			$internalPath = $this->_getInternalPath($nativePath);
+			if ($isFolder) {
+				$internalPath = self::folderPath($internalPath);
+			}
+
 			$id = ItemId::firstOrCreate(array('root_folder_id' => $this->rootFolder->id, "path" => $internalPath));//TODO cache
 
-			if (!is_dir($nativePath)) {
+			if (!$isFolder) {
 				$result[] = new File($this, $id->id, $internalPath, $name);
 			} else {
-				$result[] = new Folder($this, $id->id, self::folderPath($internalPath), $name);
+				$result[] = new Folder($this, $id->id, $internalPath, $name);
 			}
 		}
 
