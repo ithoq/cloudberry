@@ -79,7 +79,7 @@ class SessionServiceController extends BaseServiceController {
 		Log::debug('Logging with '.$auth["name"].'/'.$auth["password"]);
 
 		if (!Auth::attempt($auth)) {
-			return $this->unauthorizedJsonResponse();
+			throw new CloudberryException("Authentication failed", 1);//TODO error codes
 		}
 
 		return array();
