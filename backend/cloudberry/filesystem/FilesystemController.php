@@ -11,13 +11,19 @@ class FSC extends Facade {
 }
 
 class FilesystemController {
+	private $itemIdProvider;
+
+    public function __construct(ItemIdProvider $itemIdProvider) {
+        $this->itemIdProvider = $itemIdProvider;
+    }
+
 	public function getItem($itemId) {
 		$user = \Auth::user();
 		if ($user == NULL) {
 			throw new \Cloudberry\NotAuthenticatedException("Cannot get item, no user folders: ".$itemId);
 		}
 
-		$id = ItemId::find($itemId);//TODO cache
+		$id = $this->itemIdProvider->getItemId($itemId);
 		if ($id == NULL) {
 			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId);
 		}
@@ -32,8 +38,7 @@ class FilesystemController {
 
 	public function getItemByPath($root, $path) {
 		$fs = $this->createFilesystem($root);
-		$id = ItemId::firstOrCreate(array('root_folder_id' => $root->id, "path" => $path));//TODO cache
-		//Log::debug("getItemByPath ROOT=".$root." FS=".$fs." ID=".$id);
+		$id = $this->itemIdProvider->getItemIdByPath($root->id, $path);
 		return $fs->createItem($id);
 	}
 
@@ -42,8 +47,7 @@ class FilesystemController {
 		if ($root->type == 'local') {
 			return new LocalFilesystem($root);
 		}
-
-		return NULL;
+		throw new \Cloudberry\CloudberryException("Invalid root definition ".$root);
 	}
 
 	/* operations */

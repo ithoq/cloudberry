@@ -59,8 +59,10 @@ class FilesystemServiceController extends BaseServiceController {
 		$roots = array();
 		$user = \Auth::user();
 
-		foreach ($user->rootFolders()->get() as $rf) {
-			$roots[] = $rf->getFsItem();
+		if ($user != NULL) {
+			foreach ($user->rootFolders()->get() as $rf) {
+				$roots[] = $rf->getFsItem();
+			}
 		}
 		return $roots;
 	}

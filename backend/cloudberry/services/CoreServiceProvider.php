@@ -25,8 +25,10 @@ class CoreServiceProvider extends ServiceProvider {
 			App::abort($ce->getHttpCode(), array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
 		});
 
-		App::bind('filesystemController', function () {
-			return new Filesystem\FilesystemController;
+		App::bind('filesystemController', 'Cloudberry\Filesystem\FilesystemController');
+
+		App::singleton('itemIdProvider', function(){
+    		return new Filesystem\ItemIdProvider;
 		});
 
 		Route::group(array('prefix' => 'api/v1'), function () {
