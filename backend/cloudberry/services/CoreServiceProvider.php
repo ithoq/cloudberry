@@ -27,8 +27,8 @@ class CoreServiceProvider extends ServiceProvider {
 
 		App::bind('filesystemController', 'Cloudberry\Filesystem\FilesystemController');
 
-		App::singleton('itemIdProvider', function(){
-    		return new Filesystem\ItemIdProvider;
+		App::singleton('itemIdProvider', function () {
+			return new Filesystem\ItemIdProvider;
 		});
 
 		Route::group(array('prefix' => 'api/v1'), function () {
@@ -84,11 +84,11 @@ class SessionServiceController extends BaseServiceController {
 			throw new CloudberryException("Authentication failed", 1);//TODO error codes
 		}
 
-		return array();
+		return $this->getInfo();
 	}
 
 	public function anyLogout() {
-		Auth.logout();
+		Auth::logout();
 		return array();
 	}
 }
