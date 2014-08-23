@@ -14,11 +14,18 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	public function createItem($itemId) {
+		$path = $itemId->path;
+		$nativePath = $this->_getNativePath($path);
+		$parentNativePath = dirname($nativePath);
+
+		$rootId = $id = FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
+		$parentId = $id = FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
+
 		$name = self::basename($itemId->path);
 		if ($this->_isFolderPath($itemId->path)) {
-			return new Folder($this, $itemId->id, $itemId->path, $name);
+			return new Folder($this, $itemId->id, $parentId->id, $rootId->id, $itemId->path, $name);
 		} else {
-			return new File($this, $itemId->id, $itemId->path, $name);
+			return new File($this, $itemId->id, $parentId->id, $rootId->id, $itemId->path, $name);
 		}
 	}
 
@@ -27,11 +34,13 @@ class LocalFilesystem implements Filesystem {
 	public function getChildren($folder) {
 		$this->assertFolder($folder);
 
-		$parentNativePath = $this->_getNativePath($folder);
+		$parentNativePath = $this->_getNativePath($folder->path);
 		$items = scandir($parentNativePath);
 		if (!$items) {
 			throw new Cloudberry\CloudberryException("Invalid folder: ".$folder);
 		}
+
+		$rootId = $id = FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
 
 		$result = array();
 		foreach ($items as $i => $name) {
@@ -47,12 +56,12 @@ class LocalFilesystem implements Filesystem {
 				$internalPath = self::folderPath($internalPath);
 			}
 
-			$id = ItemId::firstOrCreate(array('root_folder_id' => $this->rootFolder->id, "path" => $internalPath));//TODO cache
+			$id = FSC::getItemIdByPath($this->rootFolder, $internalPath);
 
 			if (!$isFolder) {
-				$result[] = new File($this, $id->id, $internalPath, $name);
+				$result[] = new File($this, $id->id, $folder->id, $rootId->id, $internalPath, $name);
 			} else {
-				$result[] = new Folder($this, $id->id, $internalPath, $name);
+				$result[] = new Folder($this, $id->id, $folder->id, $rootId->id, $internalPath, $name);
 			}
 		}
 
@@ -81,10 +90,9 @@ class LocalFilesystem implements Filesystem {
 		}
 	}
 
-	private function _getNativePath($item) {
-		$p = $item->path;
-		str_replace(DIRECTORY_SEPARATOR, Filesystem::DIRECTORY_SEPARATOR, $p);
-		return self::joinPath($this->rootFolder->path, $p, FALSE);
+	private function _getNativePath($internalPath) {
+		str_replace(DIRECTORY_SEPARATOR, Filesystem::DIRECTORY_SEPARATOR, $internalPath);
+		return self::joinPath($this->rootFolder->path, $internalPath, FALSE);
 	}
 
 	private function _getInternalPath($nativeFullPath) {

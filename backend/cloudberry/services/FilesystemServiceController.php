@@ -6,6 +6,10 @@ use \Cloudberry\Filesystem\FSC;
 
 class FilesystemServiceController extends BaseServiceController {
 
+	public function __construct() {
+		$this->beforeFilter('auth');
+	}
+
 	public function getIndex($itemId) {
 		if ($itemId == 'roots') {
 			return $this->getRoots();

@@ -12,6 +12,12 @@ use \Route;
 class CoreServiceProvider extends ServiceProvider {
 
 	public function register() {
+		Route::filter('auth', function () {
+			if (Auth::guest()) {
+				return Response::make('Unauthorized', 401);
+			}
+		});
+
 		/*App::fatal(function ($e) {
 		Log::error($e);
 
@@ -99,6 +105,7 @@ class CloudberryException extends \Exception {
 	private $msg;
 
 	public function __construct($msg, $errorCode = 999, $httpCode = 400) {
+		parent::__construct($msg);
 		$this->errorCode = $errorCode;
 		$this->httpCode = $httpCode;
 		$this->msg = $msg;

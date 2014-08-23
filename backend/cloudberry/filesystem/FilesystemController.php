@@ -13,9 +13,9 @@ class FSC extends Facade {
 class FilesystemController {
 	private $itemIdProvider;
 
-    public function __construct(ItemIdProvider $itemIdProvider) {
-        $this->itemIdProvider = $itemIdProvider;
-    }
+	public function __construct(ItemIdProvider $itemIdProvider) {
+		$this->itemIdProvider = $itemIdProvider;
+	}
 
 	public function getItem($itemId) {
 		$user = \Auth::user();
@@ -28,18 +28,28 @@ class FilesystemController {
 			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId);
 		}
 
-		$rootFolder = $user->rootFolders()->find($id->root_folder_id);
+		$rootFolder = $user->rootFolders()->where('id', '=', $id->root_folder_id)->first();
 		if ($rootFolder == NULL) {
 			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId.", no root found ".$id->root_folder_id);
 		}
+
+		// get root fs item via root folder obj
+		if ($id->path == Filesystem::DIRECTORY_SEPARATOR) {
+			return $rootFolder->getFsItem();
+		}
+
 		$fs = $this->createFilesystem($rootFolder);
 		return $fs->createItem($id);
 	}
 
 	public function getItemByPath($root, $path) {
 		$fs = $this->createFilesystem($root);
-		$id = $this->itemIdProvider->getItemIdByPath($root->id, $path);
+		$id = $this->getItemIdByPath($root, $path);
 		return $fs->createItem($id);
+	}
+
+	public function getItemIdByPath($root, $path) {
+		return $this->itemIdProvider->getItemIdByPath($root->id, $path);
 	}
 
 	protected function createFilesystem($root) {
@@ -62,8 +72,10 @@ class FilesystemController {
 	}
 
 	public function parent($item) {
-		if (!$item->isFile() and $item->isRoot()) return NULL;
-		
+		if (!$item->isFile() and $item->isRoot()) {
+			return NULL;
+		}
+
 		//$parentPath = self::folderPath(dirname($item->internalPath()));
 		//return $this->itemWithPath($this->publicPath($parentPath));
 	}

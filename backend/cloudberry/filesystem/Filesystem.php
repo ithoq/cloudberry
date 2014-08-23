@@ -16,6 +16,10 @@ interface FilesystemItem {
 
 	function getId();
 
+	function getParentId();
+
+	function getRootId();
+
 	function getName();
 
 	function getPath();
@@ -38,8 +42,8 @@ interface FilesystemFolder extends FilesystemItem {
 abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemItem {
 	protected $hidden = array('fs');
 
-	public function __construct($fs, $id, $path, $name) {
-		$this->attributes = array("id" => $id, "name" => $name, "path" => $path, "fs" => $fs, "is_file" => $this->isFile());
+	public function __construct($fs, $id, $parentId, $rootId, $path, $name) {
+		$this->attributes = array("id" => $id, "parent_id" => $parentId, "root_id" => $rootId, "name" => $name, "path" => $path, "fs" => $fs, "is_file" => $this->isFile());
 	}
 
 	public function getFS() {
@@ -48,6 +52,25 @@ abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemIte
 
 	public function getId() {
 		return $this->id;
+	}
+
+	public function getParentId() {
+		return $this->parent_id;
+	}
+
+	public function getParent() {
+		if ($this->parent_id == NULL) {return NULL;
+		}
+
+		return FSC::getItem($this->parent_id);
+	}
+
+	public function getRootId() {
+		return $this->root_id;
+	}
+
+	public function getRoot() {
+		return FSC::getItem($this->root_id);
 	}
 
 	public function getName() {
@@ -68,8 +91,8 @@ class File extends AbstractFilesystemItem implements FilesystemFile {
 }
 
 class Folder extends AbstractFilesystemItem implements FilesystemFolder {
-	public function __construct($fs, $id, $path, $name) {
-		parent::__construct($fs, $id, $path, $name);
+	public function __construct($fs, $id, $parentId, $rootId, $path, $name) {
+		parent::__construct($fs, $id, $parentId, $rootId, $path, $name);
 		$this->attributes["is_root"] = $this->isRoot();
 	}
 
