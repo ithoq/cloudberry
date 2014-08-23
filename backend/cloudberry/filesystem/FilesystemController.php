@@ -44,10 +44,12 @@ class FilesystemController {
 
 	public function getItemByPath($root, $path) {
 		$p = $path;
-		if ($p == NULL) {$p = Filesystem::DIRECTORY_SEPARATOR;
+		if ($p == NULL) {
+			$p = Filesystem::DIRECTORY_SEPARATOR;
 		}
 
-		if (substr($p, 0, 1) != Filesystem::DIRECTORY_SEPARATOR) {$p = Filesystem::DIRECTORY_SEPARATOR.$p;
+		if (substr($p, 0, 1) != Filesystem::DIRECTORY_SEPARATOR) {
+			$p = Filesystem::DIRECTORY_SEPARATOR.$p;
 		}
 
 		$fs = $this->createFilesystem($root);
@@ -78,12 +80,16 @@ class FilesystemController {
 		return $item->getFS()->getChildren($item);
 	}
 
-	public function parent($item) {
-		if (!$item->isFile() and $item->isRoot()) {
-			return NULL;
+	public function getFolderHierarchy($item) {
+		$result = array();
+		if (!$item->isFile()) {
+			$result[] = $item;
 		}
-
-		//$parentPath = self::folderPath(dirname($item->internalPath()));
-		//return $this->itemWithPath($this->publicPath($parentPath));
+		$current = $item->parent();
+		while ($current != NULL) {
+			$result[] = $current;
+			$current = $current->parent();
+		}
+		return $result;
 	}
 }

@@ -24,9 +24,17 @@ class FilesystemServiceController extends BaseServiceController {
 
 	public function anyFolderInfo($itemId) {
 		$folder = ($itemId == 'roots')?NULL:$this->getFolder($itemId);
-		$children = ($itemId == 'roots')?$this->getRoots():$folder->getChildren();
-		//TODO permissions, hierarchy
-		return array("folder" => $folder, "children" => $children);
+
+		$result = array(
+			"folder" => $folder,
+			"children" => ($itemId == 'roots')?$this->getRoots():$folder->getChildren()
+		);
+		if (\Input::get('hierarchy') == '1') {$result["hierarchy"] = FSC::getFolderHierarchy($folder);
+		}
+
+		//TODO permissions
+
+		return $result;
 	}
 
 	public function getDetails($itemId) {

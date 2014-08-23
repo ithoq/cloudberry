@@ -242,9 +242,13 @@
                         rootsById: function() {
                             return _rootsById;
                         },
-                        folderInfo: function(id, hierarchy, data) {
-                            return service.post("filesystem/" + (id ? id : "roots") + "/folder-info" + (hierarchy ? "?h=1" : "") + (permissions ? "?p=1" : ""), {
-                                data: data || {}
+                        folderInfo: function(id, hierarchy, requestData) {
+                            var d = $.extend({}, requestData, {
+                                hierarchy: hierarchy,
+                                permissions: true
+                            });
+                            return service.post("filesystem/" + (id ? id : "roots") + "/folder-info", {
+                                data: d
                             }).pipe(function(r) {
                                 permissions.putFilesystemPermissions(id, r.permissions);
 
