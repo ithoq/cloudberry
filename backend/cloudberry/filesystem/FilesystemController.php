@@ -43,8 +43,15 @@ class FilesystemController {
 	}
 
 	public function getItemByPath($root, $path) {
+		$p = $path;
+		if ($p == NULL) {$p = Filesystem::DIRECTORY_SEPARATOR;
+		}
+
+		if (substr($p, 0, 1) != Filesystem::DIRECTORY_SEPARATOR) {$p = Filesystem::DIRECTORY_SEPARATOR.$p;
+		}
+
 		$fs = $this->createFilesystem($root);
-		$id = $this->getItemIdByPath($root, $path);
+		$id = $this->getItemIdByPath($root, $p);
 		return $fs->createItem($id);
 	}
 
