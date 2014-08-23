@@ -14,18 +14,22 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	public function createItem($itemId) {
-		$path = $itemId->path;
-		$nativePath = $this->_getNativePath($path);
-		$parentNativePath = dirname($nativePath);
+		if ($itemId->root_folder_id !== $this->rootFolder->id) {
+			throw new \Cloudberry\CloudberryException("Create item: Root does not match: ".$itemId->root_folder_id."/".$this->rootFolder->id);
+		}
 
-		$rootId = $id = FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
-		$parentId = $id = FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
+		$internalPath = $itemId->path;
+		$name = self::basename($internalPath);
+		$isRoot = ($internalPath == Filesystem::DIRECTORY_SEPARATOR);
+		$nativePath = $this->_getNativePath($internalPath);
 
-		$name = self::basename($itemId->path);
+		$rootId = $isRoot?$itemId:FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
+		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath(dirname($nativePath)));
+
 		if ($this->_isFolderPath($itemId->path)) {
-			return new Folder($this, $itemId->id, $parentId->id, $rootId->id, $itemId->path, $name);
+			return new Folder($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
 		} else {
-			return new File($this, $itemId->id, $parentId->id, $rootId->id, $itemId->path, $name);
+			return new File($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
 		}
 	}
 
@@ -37,7 +41,7 @@ class LocalFilesystem implements Filesystem {
 		$parentNativePath = $this->_getNativePath($folder->path);
 		$items = scandir($parentNativePath);
 		if (!$items) {
-			throw new Cloudberry\CloudberryException("Invalid folder: ".$folder);
+			throw new \Cloudberry\CloudberryException("Invalid folder: ".$folder);
 		}
 
 		$rootId = $id = FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
