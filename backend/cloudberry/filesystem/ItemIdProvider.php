@@ -19,4 +19,8 @@ class ItemIdProvider {
 		$this->cache[$itemId->id] = $itemId;
 		return $itemId;
 	}
+
+	public function preloadChildren($item) {
+		//TODO
+	}
 }

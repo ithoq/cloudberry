@@ -57,6 +57,14 @@ class FilesystemController {
 			throw new Cloudberry\CloudberryException("Item not a folder: ".$itemId);
 		}
 		//TODO assert permissions & preload child permissions
+		$this->itemIdProvider->preloadChildren($item);
 		return $item->getFS()->getChildren($item);
+	}
+
+	public function parent($item) {
+		if (!$item->isFile() and $item->isRoot()) return NULL;
+		
+		//$parentPath = self::folderPath(dirname($item->internalPath()));
+		//return $this->itemWithPath($this->publicPath($parentPath));
 	}
 }
