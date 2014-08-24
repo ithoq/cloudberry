@@ -11,10 +11,20 @@ class FilesystemServiceController extends BaseServiceController {
 	}
 
 	public function getIndex($itemId) {
-		if ($itemId == 'roots') {
-			return $this->_getRoots();
+		if (\Request::isAjax()) {
+			if ($itemId == 'roots') {
+				return $this->_getRoots();
+			} else {
+				$item = $this->_getItem($itemId);
+				if (!$item->isFile()) {
+					return $item->getChildren();
+				} else {
+					return $item;
+				}
+			}
+		} else {
+			//TODO download if file, folder??
 		}
-		return array();
 	}
 
 	public function getChildren($itemId) {
@@ -22,25 +32,35 @@ class FilesystemServiceController extends BaseServiceController {
 		return $folder->getChildren();
 	}
 
-	public function anyFolderInfo($itemId) {
-		$folder = ($itemId == 'roots')?NULL:$this->_getFolder($itemId);
+	public function getHierarchy($itemId) {
+		$item = $this->_getItem($itemId);
+		return FSC::getFolderHierarchy($item);
+	}
+
+	public function anyInfo($itemId) {
+		$data = \Input::json();
+		$item = ($itemId == 'roots')?NULL:$this->_getItem($itemId);
 
 		$result = array(
-			"folder" => $folder,
-			"children" => ($itemId == 'roots')?$this->_getRoots():$folder->getChildren()
+			"item" => $item,
 		);
-		if (\Input::json()->get("hierarchy")) {
-			$result["hierarchy"] = FSC::getFolderHierarchy($folder);
+		if ($data->get("children")) {
+			$children = NULL;
+			if ($itemId == 'roots') {
+				$children = $this->_getRoots();
+			} else if (!$item->isFile()) {
+				$children = $item->getChildren();
+			}
+
+			$result["children"] = $children;
+		}
+		if ($data->get("hierarchy")) {
+			$result["hierarchy"] = FSC::getFolderHierarchy($item);
 		}
 
 		//TODO permissions
 
 		return $result;
-	}
-
-	public function getDetails($itemId) {
-		$folder = $this->getItem($itemId);
-		return array();
 	}
 
 	/* utils */

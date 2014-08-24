@@ -245,10 +245,11 @@
                         folderInfo: function(id, hierarchy, requestData) {
                             var d = {
                                 hierarchy: hierarchy,
+                                children: true,
                                 permissions: true,
                                 data: requestData
                             };
-                            return service.post("filesystem/" + (id ? id : "roots") + "/folder-info", d).pipe(function(r) {
+                            return service.post("filesystem/" + (id ? id : "roots") + "/info", d).pipe(function(r) {
                                 permissions.putFilesystemPermissions(id, r.permissions);
 
                                 var folder = r.folder;
@@ -259,10 +260,13 @@
                                 return data;
                             });
                         },
-                        itemInfo: function(item, data) {
-                            return service.post("filesystem/" + item.id + "/details/", {
-                                data: data
-                            }).done(function(r) {
+                        itemInfo: function(item, requestData) {
+                            var d = {
+                                details: true,
+                                permissions: true,
+                                data: requestData
+                            };
+                            return service.post("filesystem/" + item.id + "/info/", d).done(function(r) {
                                 permissions.putFilesystemPermissions(item.id, r.permissions);
                                 if (item.parent_id && r.parent_permissions) permissions.putFilesystemPermissions(item.parent_id, r.parent_permissions);
                             });
