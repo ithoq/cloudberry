@@ -11,7 +11,7 @@ class FilesystemServiceController extends BaseServiceController {
 	}
 
 	public function getIndex($itemId) {
-		if (\Request::isAjax()) {
+		if (\Request::ajax()) {
 			if ($itemId == 'roots') {
 				return $this->_getRoots();
 			} else {
@@ -57,8 +57,12 @@ class FilesystemServiceController extends BaseServiceController {
 		if ($data->get("hierarchy")) {
 			$result["hierarchy"] = FSC::getFolderHierarchy($item);
 		}
-
-		//TODO permissions
+		if ($data->get("permissions")) {
+			//TODO permissions
+		}
+		if ($data->get("details")) {
+			$result["details"] = array();//TODO
+		}
 
 		return $result;
 	}
