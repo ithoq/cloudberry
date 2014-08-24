@@ -12,22 +12,22 @@ class FilesystemServiceController extends BaseServiceController {
 
 	public function getIndex($itemId) {
 		if ($itemId == 'roots') {
-			return $this->getRoots();
+			return $this->_getRoots();
 		}
 		return array();
 	}
 
 	public function getChildren($itemId) {
-		$folder = $this->getFolder($itemId);
+		$folder = $this->_getFolder($itemId);
 		return $folder->getChildren();
 	}
 
 	public function anyFolderInfo($itemId) {
-		$folder = ($itemId == 'roots')?NULL:$this->getFolder($itemId);
+		$folder = ($itemId == 'roots')?NULL:$this->_getFolder($itemId);
 
 		$result = array(
 			"folder" => $folder,
-			"children" => ($itemId == 'roots')?$this->getRoots():$folder->getChildren()
+			"children" => ($itemId == 'roots')?$this->_getRoots():$folder->getChildren()
 		);
 		if (\Input::json()->get("hierarchy")) {
 			$result["hierarchy"] = FSC::getFolderHierarchy($folder);
@@ -43,7 +43,9 @@ class FilesystemServiceController extends BaseServiceController {
 		return array();
 	}
 
-	protected function getItem($itemId) {
+	/* utils */
+
+	protected function _getItem($itemId) {
 		$item = FSC::getItem($itemId);
 		if ($item == NULL) {
 			throw new \Cloudberry\CloudberryException("Invalid item id: ".$itemId);
@@ -52,7 +54,7 @@ class FilesystemServiceController extends BaseServiceController {
 		return $item;
 	}
 
-	protected function getFolder($itemId) {
+	protected function _getFolder($itemId) {
 		$item = FSC::getItem($itemId);
 		if ($item->isFile()) {
 			throw new \Cloudberry\CloudberryException("Item not a folder: ".$itemId);
@@ -60,7 +62,7 @@ class FilesystemServiceController extends BaseServiceController {
 		return $item;
 	}
 
-	protected function getFile($itemId) {
+	protected function _getFile($itemId) {
 		$item = FSC::getItem($itemId);
 		if (!$item->isFile()) {
 			throw new \Cloudberry\CloudberryException("Item not a file: ".$itemId);
@@ -68,7 +70,7 @@ class FilesystemServiceController extends BaseServiceController {
 		return $item;
 	}
 
-	protected function getRoots() {
+	protected function _getRoots() {
 		$roots = array();
 		$user = \Auth::user();
 
