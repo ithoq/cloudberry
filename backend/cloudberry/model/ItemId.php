@@ -15,4 +15,8 @@ class ItemId extends \Eloquent {
 			$itemId->{ $itemId->getKeyName()} = uniqid("");//create unique id (UUID?)
 		});
 	}
+
+	public function getRootFolderId() {
+		return $this->root_folder_id;
+	}
 }

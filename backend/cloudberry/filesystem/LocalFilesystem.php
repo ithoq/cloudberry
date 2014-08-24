@@ -14,7 +14,7 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	public function createItem($itemId) {
-		if ($itemId->root_folder_id !== $this->rootFolder->id) {
+		if ($itemId->getRootFolderId() !== $this->rootFolder->id) {
 			throw new \Cloudberry\CloudberryException("Create item: Root does not match: ".$itemId->root_folder_id."/".$this->rootFolder->id);
 		}
 
@@ -22,9 +22,10 @@ class LocalFilesystem implements Filesystem {
 		$name = self::basename($internalPath);
 		$isRoot = ($internalPath == Filesystem::DIRECTORY_SEPARATOR);
 		$nativePath = $this->_getNativePath($internalPath);
+		\Log::debug("createItem: ".$itemId." path:".$nativePath." parent:".dirname($nativePath)." -> ".self::folderPath($this->_getInternalPath(dirname($nativePath))));
 
 		$rootId = $isRoot?$itemId:FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
-		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath(dirname($nativePath)));
+		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, self::folderPath($this->_getInternalPath(dirname($nativePath))));
 
 		if ($this->_isFolderPath($itemId->path)) {
 			return new Folder($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
@@ -117,14 +118,13 @@ class LocalFilesystem implements Filesystem {
 
 	public static function joinPath($p1, $p2, $internal = TRUE) {
 		$sp = $internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR;
-		return rtrim($p1, $sp).$sp.$p2;
+		return rtrim($p1, $sp).$sp.ltrim($p2, $sp);
 	}
 
 	public static function basename($path, $internal = TRUE) {
 		if ($internal) {
 			$name = strrchr(rtrim($path, Filesystem::DIRECTORY_SEPARATOR), Filesystem::DIRECTORY_SEPARATOR);
 		} else {
-
 			$name = strrchr(rtrim($path, DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
 		}
 

@@ -13,8 +13,8 @@ class CoreServiceProvider extends ServiceProvider {
 
 	public function register() {
 		Route::filter('auth', function () {
-			if (Auth::guest()) {
-				return Response::make('Unauthorized', 401);
+			if (\Auth::guest()) {
+				return \Response::make('Unauthorized', 401);
 			}
 		});
 

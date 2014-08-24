@@ -81,14 +81,16 @@ class FilesystemController {
 	}
 
 	public function getFolderHierarchy($item) {
+		\Log::debug("hierarchy:".$item);
 		$result = array();
+		$current = $item->getParent();
+		while ($current != NULL) {
+			\Log::debug("current:".$current);
+			array_unshift($result, $current);
+			$current = $current->getParent();
+		}
 		if (!$item->isFile()) {
 			$result[] = $item;
-		}
-		$current = $item->parent();
-		while ($current != NULL) {
-			$result[] = $current;
-			$current = $current->parent();
 		}
 		return $result;
 	}

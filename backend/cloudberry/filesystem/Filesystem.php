@@ -59,7 +59,8 @@ abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemIte
 	}
 
 	public function getParent() {
-		if ($this->parent_id == NULL) {return NULL;
+		if ($this->parent_id == NULL) {
+			return NULL;
 		}
 
 		return FSC::getItem($this->parent_id);
