@@ -73,6 +73,10 @@ class LocalFilesystem implements Filesystem {
 		return $result;
 	}
 
+	public function getItemLastModified($item) {
+		return filemtime($this->_getNativePath($item->path));
+	}
+
 	/* tools */
 
 	private function assertFile($item) {

@@ -98,4 +98,26 @@ class FilesystemController {
 		}
 		return $result;
 	}
+
+	public function getItemDetails($item, $data = NULL) {
+		$result = array();
+		//TODO details providers
+		$result["last_modified"] = $this->timestamp($item->getLastModified());
+		return $result;
+	}
+
+	public function getItemLastModified($item) {
+		$this->assertReadPermissions($item);
+		return $item->getFS()->getItemLastModified($item);
+	}
+
+	/* utils */
+
+	private function assertReadPermissions($item) {
+		//TODO
+	}
+
+	private function timestamp($ms) {
+		return \Carbon\Carbon::createFromTimeStamp($ms)->toDateTimeString();//TODO timezone
+	}
 }

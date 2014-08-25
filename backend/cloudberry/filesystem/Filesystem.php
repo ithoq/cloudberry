@@ -82,6 +82,10 @@ abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemIte
 		return $this->path;
 	}
 
+	public function getLastModified() {
+		return FSC::getItemLastModified($this);
+	}
+
 	abstract function isFile();
 }
 

@@ -61,7 +61,7 @@ class FilesystemServiceController extends BaseServiceController {
 			//TODO permissions
 		}
 		if ($data->get("details")) {
-			$result["details"] = array();//TODO
+			$result["details"] = FSC::getItemDetails($item, $data->get("data"));
 		}
 
 		return $result;
