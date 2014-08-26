@@ -73,8 +73,12 @@ class LocalFilesystem implements Filesystem {
 		return $result;
 	}
 
+	public function getFileSize($item) {
+		return filesize($this->_getNativePath($item->path));
+	}
+
 	public function getItemLastModified($item) {
-		return filemtime($this->_getNativePath($item->path));
+		return \Carbon\Carbon::createFromTimeStamp(filemtime($this->_getNativePath($item->path)));
 	}
 
 	/* tools */

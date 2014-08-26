@@ -500,11 +500,11 @@
 
                         $scope.itemdetails.actions = actions.getType('file');
                         filesystem.itemInfo($scope.itemdetails.item).done(function(i) {
-                            $scope.itemdetails.item_info = i;
+                            $scope.itemdetails.data = i.details;
 
                             cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, itemDetails.getDetails(), {
                                 item: $scope.itemdetails.item,
-                                item_info: i
+                                data: i.details
                             });
 
                             if (!$scope.$$phase)

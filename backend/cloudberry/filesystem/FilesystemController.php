@@ -102,8 +102,18 @@ class FilesystemController {
 	public function getItemDetails($item, $data = NULL) {
 		$result = array();
 		//TODO details providers
-		$result["last_modified"] = $this->timestamp($item->getLastModified());
+
+		if ($item->isFile()) {
+			$result["size"] = $item->getSize();
+		}
+		$result["last_modified"] = $item->getLastModified()->toDateTimeString();
+
 		return $result;
+	}
+
+	public function getFileSize($item) {
+		$this->assertReadPermissions($item);
+		return $item->getFS()->getFileSize($item);
 	}
 
 	public function getItemLastModified($item) {
@@ -115,9 +125,5 @@ class FilesystemController {
 
 	private function assertReadPermissions($item) {
 		//TODO
-	}
-
-	private function timestamp($ms) {
-		return \Carbon\Carbon::createFromTimeStamp($ms)->toDateTimeString();//TODO timezone
 	}
 }

@@ -28,7 +28,7 @@ interface FilesystemItem {
 }
 
 interface FilesystemFile extends FilesystemItem {
-
+	function getSize();
 }
 
 interface FilesystemFolder extends FilesystemItem {
@@ -92,6 +92,10 @@ abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemIte
 class File extends AbstractFilesystemItem implements FilesystemFile {
 	public function isFile() {
 		return TRUE;
+	}
+
+	public function getSize() {
+		return FSC::getFileSize($this);
 	}
 }
 

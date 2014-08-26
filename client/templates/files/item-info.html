@@ -2,32 +2,24 @@
     <dl class="dl-horizontal" ng-if="!item.is_file">
         <dt translate>itemInfo_path</dt>
         <dd>
-            {{item.path}}
+            {{itemdetails.item.path}}
         </dd>
      </dl>
      <dl class="dl-horizontal" ng-if="item.is_file">
         <dt translate>itemInfo_path</dt>
         <dd>
-            {{item.path}}
+            <span>{{itemdetails.item.path}}</span>
         </dd>
         <dt translate>itemInfo_size</dt>
         <dd>
-            {{item.size | formatter:'fileSize'}}
-        </dd>
-        <dt translate>itemInfo_lastAccessed</dt>
-        <dd>
-            {{item_info.last_accessed | formatter:'datetime'}}
-        </dd>
-        <dt translate>itemInfo_lastChanged</dt>
-        <dd>
-            {{item_info.last_changed | formatter:'datetime'}}
+            <span>{{itemdetails.data.size | formatter:'fileSize'}}</span>
         </dd>
         <dt translate>itemInfo_lastModified</dt>
         <dd>
-            {{item_info.last_modified | formatter:'datetime'}}
+            {{itemdetails.data.last_modified | formatter:'datetime'}}
         </dd>
     </dl>
 </p>
 <p>
-    {{item_info.description}}
+    {{data.description}}
 </p>
