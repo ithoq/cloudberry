@@ -28,9 +28,9 @@ class FilesystemController {
 			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId);
 		}
 
-		$rootFolder = $user->rootFolders()->where('id', '=', $id->root_folder_id)->first();
+		$rootFolder = $user->rootFolders()->where('id', '=', $id->getRootFolderId())->first();
 		if ($rootFolder == NULL) {
-			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId.", no root found ".$id->root_folder_id);
+			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId.", no user root found ".$id->getRootFolderId()." for user ".$user->id);
 		}
 
 		// get root fs item via root folder obj

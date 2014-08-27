@@ -312,7 +312,7 @@ module.exports = function(grunt) {
         nggettext_extract: {
             pot: {
                 files: {
-                    'po/template.pot': ['templates/**/*.html', 'js/**/*.js']
+                    'client/po/template.pot': ['client/templates/**/*.html', 'client/js/**/*.js']
                 }
             }
         },
@@ -322,7 +322,7 @@ module.exports = function(grunt) {
                     //module: 'cloudberry'
                 },
                 files: {
-                    'js/translations.js': ['po/*.po']
+                    'client/js/translations.js': ['client/po/*.po']
                 }
             },
         }

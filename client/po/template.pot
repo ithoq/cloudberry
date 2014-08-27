@@ -3,292 +3,357 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolderUsers_addFolderUser_message"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolderUsers_addFolderUser_title"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolderUsers_list_email"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolderUsers_list_name"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolderUsers_viewTitle"
 msgstr ""
 
-#: templates/config/folder.html
+#: client/templates/config/folder.html
 msgid "configFolder_Path"
 msgstr ""
 
-#: js/config.js
+#: client/templates/config/folders-addedit.html
+msgid "configFolders_addEditTitle"
+msgstr ""
+
+#: client/templates/config/folders-addedit.html
+msgid "configFolders_addEdit_Name"
+msgstr ""
+
+#: client/templates/config/folders-addedit.html
+msgid "configFolders_addEdit_Path"
+msgstr ""
+
+#: client/js/config.js
 msgid "configFolders_list_name"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolders_list_path"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configFolders_openFolder"
 msgstr ""
 
-#: templates/config/folders.html
-#: js/config.js
+#: client/templates/config/folders.html
+#: client/js/config.js
 msgid "configFolders_viewTitle"
 msgstr ""
 
-#: js/config.js
+#: client/templates/config/permissions.html
+#: client/js/permissions.js
+msgid "configPermissions_viewTitle"
+msgstr ""
+
+#: client/js/config.js
 msgid "configTable_id"
 msgstr ""
 
-#: js/config.js
-msgid "configUserFolders_listName"
+#: client/js/config.js
+msgid "configUserFolders_list_defaultName"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
+msgid "configUserFolders_list_name"
+msgstr ""
+
+#: client/js/config.js
 msgid "configUserFolders_viewTitle"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configUserGroups_listName"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "configUserGroups_viewTitle"
 msgstr ""
 
-#: templates/config/user.html
+#: client/js/permissions.js
+msgid "configUserPermissions_viewTitle"
+msgstr ""
+
+#: client/templates/config/user.html
 msgid "configUser_Email"
 msgstr ""
 
-#: templates/config/user.html
+#: client/templates/config/user.html
 msgid "configUser_Name"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_defaultLang"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_email"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_generatePassword"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_language"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_name"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_password"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "configUsers_addEdit_title"
 msgstr ""
 
-#: js/config.js
+#: client/templates/config/users-changepw.html
+msgid "configUsers_changePw_generatePassword"
+msgstr ""
+
+#: client/templates/config/users-changepw.html
+msgid "configUsers_changePw_password"
+msgstr ""
+
+#: client/templates/config/users-changepw.html
+msgid "configUsers_changePw_title"
+msgstr ""
+
+#: client/js/config.js
 msgid "configUsers_list_name"
 msgstr ""
 
-#: templates/config/users.html
-#: js/config.js
+#: client/templates/config/users.html
+#: client/js/config.js
 msgid "configUsers_viewTitle"
 msgstr ""
 
-#: js/config.js
+#: client/js/config.js
 msgid "config_viewTitle"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/folders-addedit.html
+#: client/templates/config/permissions_editgeneric.html
+#: client/templates/config/users-addedit.html
+#: client/templates/config/users-changepw.html
+#: client/templates/core/select-item.html
+#: client/js/platform.js
 msgid "dialogCancel"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/folders-addedit.html
+#: client/templates/config/permissions_editgeneric.html
+#: client/templates/config/users-addedit.html
+#: client/templates/config/users-changepw.html
+#: client/templates/core/select-item.html
+#: client/js/platform.js
 msgid "dialogOK"
 msgstr ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "fileSize_byte"
 msgid_plural "fileSize_bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "fileSize_gigabyte"
 msgid_plural "fileSize_gigabytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "fileSize_kilobyte"
 msgid_plural "fileSize_kilobytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "fileSize_megabyte"
 msgid_plural "fileSize_megabytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "file_copy"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "file_download"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "file_open"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "filesList_colLastModified"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "filesList_colName"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "filesList_colPath"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "filesList_colSize"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "filesList_colType"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "files_viewTitle"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "forgotPassword_Email"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_firstPage"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_lastPage"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_nextPage"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_pageSize"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_prevPage"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "grid_totalCount"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "itemComments_viewTitle"
 msgstr ""
 
-#: templates/files.html
+#: client/templates/files/files.html
 msgid "itemDetails_actions"
 msgstr ""
 
-#: templates/item-info.html
-msgid "itemInfo_lastAccessed"
-msgstr ""
-
-#: templates/item-info.html
-msgid "itemInfo_lastChanged"
-msgstr ""
-
-#: templates/item-info.html
+#: client/templates/files/item-info.html
 msgid "itemInfo_lastModified"
 msgstr ""
 
-#: templates/item-info.html
+#: client/templates/files/item-info.html
 msgid "itemInfo_path"
 msgstr ""
 
-#: templates/item-info.html
+#: client/templates/files/item-info.html
 msgid "itemInfo_size"
 msgstr ""
 
-#: js/files.js
+#: client/js/files.js
 msgid "itemInfo_viewTitle"
 msgstr ""
 
-#: templates/config/addedit_user.html
+#: client/templates/config/addedit-user.html
+#: client/templates/config/users-addedit.html
 msgid "lang_{{lang}}"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Login"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Password"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Register"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Remember me"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Reset password"
 msgstr ""
 
-#: templates/login.html
+#: client/templates/login.html
 msgid "login_Username"
 msgstr ""
 
-#: js/core.js
+#: client/js/core.js
 msgid "number_decimalSeparator"
 msgstr ""
 
-#: js/core.js
+#: client/templates/config/permissions_editgeneric.html
+msgid "pluginPermissions_editGeneric_title"
+msgstr ""
+
+#: client/js/permissions.js
+msgid "pluginPermissions_permissionName"
+msgstr ""
+
+#: client/js/permissions.js
+msgid "pluginPermissions_permissionSystemDefaultValue"
+msgstr ""
+
+#: client/js/permissions.js
+msgid "pluginPermissions_permissionValue"
+msgstr ""
+
+#: client/js/core.js
 msgid "session_logout"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "timestamp_shortDate"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "timestamp_shortDateTime"
 msgstr ""
 
-#: js/platform.js
+#: client/js/platform.js
 msgid "timestamp_time"
 msgstr ""
 
-#: js/main.js
+#: client/js/main.js
 msgid "user_changePassword"
 msgstr ""
