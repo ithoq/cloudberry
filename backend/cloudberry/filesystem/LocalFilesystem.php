@@ -22,10 +22,11 @@ class LocalFilesystem implements Filesystem {
 		$name = self::basename($internalPath);
 		$isRoot = ($internalPath == Filesystem::DIRECTORY_SEPARATOR);
 		$nativePath = $this->_getNativePath($internalPath);
-		\Log::debug("createItem: ".$itemId." path:".$nativePath." parent:".dirname($nativePath)." -> ".self::folderPath($this->_getInternalPath(dirname($nativePath))));
+		$parentNativePath = self::folderPath(dirname($nativePath), FALSE);
+		//\Log::debug("createItem: ".$itemId." path:".$nativePath." parent:".dirname($nativePath)." -> ".self::folderPath($this->_getInternalPath(dirname($nativePath))));
 
 		$rootId = $isRoot?$itemId:FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
-		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, self::folderPath($this->_getInternalPath(dirname($nativePath))));
+		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
 
 		if ($this->_isFolderPath($itemId->path)) {
 			return new Folder($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
@@ -109,9 +110,11 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	private function _getInternalPath($nativeFullPath) {
-		$p = substr($nativeFullPath, strlen($this->rootFolder->path));
-		str_replace(Filesystem::DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $p);
-		return $p;
+		$l = strlen($this->rootFolder->path);
+		if (substr($nativeFullPath, 0, $l) != $this->rootFolder->path) {
+			throw new CloudberryException("Invalid path, not under root:".$nativeFullPath." (root ".$this->rootFolder->path.")");
+		}
+		return str_replace(Filesystem::DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, substr($nativeFullPath, $l));
 	}
 
 	private function _isFolderPath($path, $internal = TRUE) {
