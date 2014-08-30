@@ -4,6 +4,7 @@ namespace Cloudberry\Core;
 
 use Illuminate\Support\ServiceProvider;
 use \App;
+use \Log;
 use \Route;
 
 class CoreServiceProvider extends ServiceProvider {
@@ -15,6 +16,8 @@ class CoreServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
+		\Illuminate\Foundation\AliasLoader::getInstance()->alias('FSC', 'Cloudberry\Core\Facades\FSC');
+
 		Route::filter('auth', function () {
 			if (\Auth::guest()) {
 				return \Response::make('Unauthorized', 401);
@@ -31,7 +34,8 @@ class CoreServiceProvider extends ServiceProvider {
 			Log::error($ce);
 			//return Response::make('Unauthorized', 401);
 			//return array("todo" => "ce:".$ce);
-			App::abort($ce->getHttpCode(), array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
+			App::abort($ce->getHttpCode(), $ce->getMsg());
+			//array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
 		});
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');

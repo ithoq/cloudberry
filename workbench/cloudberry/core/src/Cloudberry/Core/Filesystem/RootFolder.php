@@ -30,7 +30,7 @@ class RootFolder extends \Eloquent {
 	}
 
 	public function getFsItem() {
-		$rootItem = App::make('filesystemController')->getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
+		$rootItem = FSC->getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
 		$rootItem->name = $this->getName();
 		return $rootItem;
 	}
