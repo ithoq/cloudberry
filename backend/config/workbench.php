@@ -11,9 +11,9 @@ return array(
 	| name is needed to generate the composer.json file for your package.
 	| You may specify it now so it is used for all of your workbenches.
 	|
-	*/
+	 */
 
-	'name' => '',
+	'name' => 'cloudberry',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -24,8 +24,8 @@ return array(
 	| workbench packages. The e-mail is placed in your composer.json file
 	| automatically after the package is created by the workbench tool.
 	|
-	*/
+	 */
 
-	'email' => '',
+	'email' => 'cloudberry@cloudberryapp.com',
 
 );

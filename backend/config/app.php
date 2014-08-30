@@ -5,8 +5,8 @@ return array(
 	'url' => 'http://localhost:8888/cloudberry/',
 	'timezone' => 'Europe/Helsinki',
 	'locale' => 'en',
-
 	'fallback_locale' => 'en',
+
 	'key' => 'h7AHudeKpeDW4FMiNMbuOK7IdiYqnZ42',
 	'cipher' => MCRYPT_RIJNDAEL_128,
 

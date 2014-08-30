@@ -1,9 +1,12 @@
 {
     "name": "cloudberry",
     "description": "Cloudberry is application for managing and sharing documents in the web",
-    "keywords": ["mollify"],
+    "keywords": ["cloudberry"],
     "homepage": "http://www.cloudberryapp.com",
-    "author": "Samuli Järvelä",
+    "authors": [{
+        "name": "Samuli Järvelä",
+        "email": "samuli@jarvela.com"
+    }],
     "license": "GPLv2",
     "require": {
         "laravel/framework": "4.2.*"
