@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry\Core\Filesystem;
 
 interface Filesystem {
 	const DIRECTORY_SEPARATOR = "/";

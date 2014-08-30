@@ -1,10 +1,9 @@
 <?php
 
-namespace Cloudberry;
-
-use \Cloudberry\Filesystem\FSC;
+namespace Cloudberry\Core\Services;
 
 class FilesystemServiceController extends BaseServiceController {
+	private $fsc;
 
 	public function __construct() {
 		$this->beforeFilter('auth');
@@ -39,7 +38,7 @@ class FilesystemServiceController extends BaseServiceController {
 
 	public function anyInfo($itemId) {
 		$data = \Input::json();
-		$item = ($itemId == 'roots')?NULL:$this->_getItem($itemId);
+		$item = ($itemId == 'roots') ? NULL : $this->_getItem($itemId);
 
 		$result = array(
 			"item" => $item,
@@ -70,9 +69,9 @@ class FilesystemServiceController extends BaseServiceController {
 	/* utils */
 
 	protected function _getItem($itemId) {
-		$item = FSC::getItem($itemId);
+		$item = $this->fsc->getItem($itemId);
 		if ($item == NULL) {
-			throw new \Cloudberry\CloudberryException("Invalid item id: ".$itemId);
+			throw new \Cloudberry\CloudberryException("Invalid item id: " . $itemId);
 		}
 
 		return $item;
@@ -81,7 +80,7 @@ class FilesystemServiceController extends BaseServiceController {
 	protected function _getFolder($itemId) {
 		$item = FSC::getItem($itemId);
 		if ($item->isFile()) {
-			throw new \Cloudberry\CloudberryException("Item not a folder: ".$itemId);
+			throw new \Cloudberry\CloudberryException("Item not a folder: " . $itemId);
 		}
 		return $item;
 	}
@@ -89,7 +88,7 @@ class FilesystemServiceController extends BaseServiceController {
 	protected function _getFile($itemId) {
 		$item = FSC::getItem($itemId);
 		if (!$item->isFile()) {
-			throw new \Cloudberry\CloudberryException("Item not a file: ".$itemId);
+			throw new \Cloudberry\CloudberryException("Item not a file: " . $itemId);
 		}
 		return $item;
 	}

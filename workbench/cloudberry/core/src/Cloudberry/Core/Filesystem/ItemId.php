@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry\Core\Filesystem;
 
 class ItemId extends \Eloquent {
 	protected $table = 'item_ids';
@@ -11,7 +11,7 @@ class ItemId extends \Eloquent {
 	protected static function boot() {
 		parent::boot();
 
-		static ::creating(function ($itemId) {
+		static::creating(function ($itemId) {
 			$itemId->{ $itemId->getKeyName()} = uniqid("");//create unique id (UUID?)
 		});
 	}

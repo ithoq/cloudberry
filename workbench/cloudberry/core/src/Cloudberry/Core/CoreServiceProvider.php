@@ -1,44 +1,84 @@
-<?php namespace Cloudberry\Core;
+<?php
+
+namespace Cloudberry\Core;
 
 use Illuminate\Support\ServiceProvider;
+use \App;
+use \Route;
 
 class CoreServiceProvider extends ServiceProvider {
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
 	protected $defer = false;
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
+	public function boot() {
 		$this->package('cloudberry/core');
 	}
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
+	public function register() {
+		Route::filter('auth', function () {
+			if (\Auth::guest()) {
+				return \Response::make('Unauthorized', 401);
+			}
+		});
+
+		/*App::fatal(function ($e) {
+		Log::error($e);
+
+		return 'TODO fatal'.$e;
+		});*/
+
+		App::error(function (CloudberryException $ce) {
+			Log::error($ce);
+			//return Response::make('Unauthorized', 401);
+			//return array("todo" => "ce:".$ce);
+			App::abort($ce->getHttpCode(), array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
+		});
+
+		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
+
+		App::singleton('itemIdProvider', function () {
+			return new Filesystem\ItemIdProvider;
+		});
+
+		Route::group(array('prefix' => 'api/v1'), function () {
+			Route::controller('session', 'Cloudberry\Core\Services\SessionServiceController');
+			Route::controller('filesystem/{item_id}', 'Cloudberry\Core\Services\FilesystemServiceController');
+		});
 	}
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
+	public function provides() {
 		return array();
 	}
 
+}
+
+class CloudberryException extends \Exception {
+	private $httpCode;
+	private $errorCode;
+	private $msg;
+
+	public function __construct($msg, $errorCode = 999, $httpCode = 400) {
+		parent::__construct($msg);
+		$this->errorCode = $errorCode;
+		$this->httpCode = $httpCode;
+		$this->msg = $msg;
+	}
+
+	public function getHttpCode() {
+		return $this->httpCode;
+	}
+
+	public function getErrorCode() {
+		return $this->errorCode;
+	}
+
+	public function getMsg() {
+		return $this->msg;
+	}
+}
+
+class NotAuthenticatedException extends CloudberryException {
+	public function __construct($msg) {
+		parent::__construct($msg, NULL, 401);
+	}
 }

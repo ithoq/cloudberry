@@ -38,10 +38,10 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-		'Cloudberry\CoreServiceProvider',
+		'Cloudberry\Core\CoreServiceProvider',
 	),
 
-	'manifest' => storage_path().'/meta',
+	'manifest' => storage_path() . '/meta',
 
 	'aliases' => array(
 

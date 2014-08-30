@@ -1,6 +1,8 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry\Core\Filesystem;
+
+use \App;
 
 class RootFolder extends \Eloquent {
 	protected $table = 'root_folders';
@@ -28,7 +30,7 @@ class RootFolder extends \Eloquent {
 	}
 
 	public function getFsItem() {
-		$rootItem = FSC::getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
+		$rootItem = App::make('filesystemController')->getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
 		$rootItem->name = $this->getName();
 		return $rootItem;
 	}

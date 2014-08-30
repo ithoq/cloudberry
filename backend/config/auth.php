@@ -28,7 +28,7 @@ return array(
 	|
 	 */
 
-	'model' => 'Cloudberry\User',
+	'model' => 'Cloudberry\Core\User',
 
 	/*
 	|--------------------------------------------------------------------------

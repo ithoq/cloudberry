@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry\Core\Filesystem;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -20,17 +20,17 @@ class FilesystemController {
 	public function getItem($itemId) {
 		$user = \Auth::user();
 		if ($user == NULL) {
-			throw new \Cloudberry\NotAuthenticatedException("Cannot get item, no user folders: ".$itemId);
+			throw new \Cloudberry\NotAuthenticatedException("Cannot get item, no user folders: " . $itemId);
 		}
 
 		$id = $this->itemIdProvider->getItemId($itemId);
 		if ($id == NULL) {
-			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId);
+			throw new \Cloudberry\CloudberryException("Invalid item id " . $itemId);
 		}
 
 		$rootFolder = $user->rootFolders()->where('id', '=', $id->getRootFolderId())->first();
 		if ($rootFolder == NULL) {
-			throw new \Cloudberry\CloudberryException("Invalid item id ".$itemId.", no user root found ".$id->getRootFolderId()." for user ".$user->id);
+			throw new \Cloudberry\CloudberryException("Invalid item id " . $itemId . ", no user root found " . $id->getRootFolderId() . " for user " . $user->id);
 		}
 
 		// get root fs item via root folder obj
@@ -49,7 +49,7 @@ class FilesystemController {
 		}
 
 		if (substr($p, 0, 1) != Filesystem::DIRECTORY_SEPARATOR) {
-			$p = Filesystem::DIRECTORY_SEPARATOR.$p;
+			$p = Filesystem::DIRECTORY_SEPARATOR . $p;
 		}
 
 		$fs = $this->createFilesystem($root);
@@ -66,14 +66,14 @@ class FilesystemController {
 		if ($root->type == 'local') {
 			return new LocalFilesystem($root);
 		}
-		throw new \Cloudberry\CloudberryException("Invalid root definition ".$root);
+		throw new \Cloudberry\CloudberryException("Invalid root definition " . $root);
 	}
 
 	/* operations */
 
 	public function getChildren($item) {
 		if ($item->isFile()) {
-			throw new Cloudberry\CloudberryException("Item not a folder: ".$itemId);
+			throw new Cloudberry\CloudberryException("Item not a folder: " . $itemId);
 		}
 		//TODO assert permissions & preload child permissions
 		$this->itemIdProvider->preloadChildren($item);

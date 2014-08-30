@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry\Filesystem;
+namespace Cloudberry\Core\Filesystem;
 
 class LocalFilesystem implements Filesystem {
 	private $rootFolder;
@@ -15,7 +15,7 @@ class LocalFilesystem implements Filesystem {
 
 	public function createItem($itemId) {
 		if ($itemId->getRootFolderId() !== $this->rootFolder->id) {
-			throw new \Cloudberry\CloudberryException("Create item: Root does not match: ".$itemId->root_folder_id."/".$this->rootFolder->id);
+			throw new \Cloudberry\CloudberryException("Create item: Root does not match: " . $itemId->root_folder_id . "/" . $this->rootFolder->id);
 		}
 
 		$internalPath = $itemId->path;
@@ -25,13 +25,13 @@ class LocalFilesystem implements Filesystem {
 		$parentNativePath = self::folderPath(dirname($nativePath), FALSE);
 		//\Log::debug("createItem: ".$itemId." path:".$nativePath." parent:".dirname($nativePath)." -> ".self::folderPath($this->_getInternalPath(dirname($nativePath))));
 
-		$rootId = $isRoot?$itemId:FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
-		$parentId = $isRoot?NULL:FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
+		$rootId = $isRoot ? $itemId : FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
+		$parentId = $isRoot ? NULL : FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
 
 		if ($this->_isFolderPath($itemId->path)) {
-			return new Folder($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
+			return new Folder($this, $itemId->id, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
 		} else {
-			return new File($this, $itemId->id, ($parentId != NULL?$parentId->id:NULL), $rootId->id, $internalPath, $name);
+			return new File($this, $itemId->id, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
 		}
 	}
 
@@ -43,7 +43,7 @@ class LocalFilesystem implements Filesystem {
 		$parentNativePath = $this->_getNativePath($folder->path);
 		$items = scandir($parentNativePath);
 		if (!$items) {
-			throw new \Cloudberry\CloudberryException("Invalid folder: ".$folder);
+			throw new \Cloudberry\CloudberryException("Invalid folder: " . $folder);
 		}
 
 		$rootId = $id = FSC::getItemIdByPath($this->rootFolder, Filesystem::DIRECTORY_SEPARATOR);
@@ -87,20 +87,20 @@ class LocalFilesystem implements Filesystem {
 	private function assertFile($item) {
 		$this->assertFS($item);
 		if (!$item->isFile()) {
-			throw new Cloudberry\CloudberryException("Not a file: ".$item);
+			throw new Cloudberry\CloudberryException("Not a file: " . $item);
 		}
 	}
 
 	private function assertFolder($item) {
 		$this->assertFS($item);
 		if ($item->isFile()) {
-			throw new Cloudberry\CloudberryException("Not a folder: ".$item);
+			throw new Cloudberry\CloudberryException("Not a folder: " . $item);
 		}
 	}
 
 	private function assertFS($item) {
 		if ($item->fs !== $this) {
-			throw new Cloudberry\CloudberryException("FS does not match: ".$item."/".$this);
+			throw new Cloudberry\CloudberryException("FS does not match: " . $item . "/" . $this);
 		}
 	}
 
@@ -112,24 +112,24 @@ class LocalFilesystem implements Filesystem {
 	private function _getInternalPath($nativeFullPath) {
 		$l = strlen($this->rootFolder->path);
 		if (substr($nativeFullPath, 0, $l) != $this->rootFolder->path) {
-			throw new CloudberryException("Invalid path, not under root:".$nativeFullPath." (root ".$this->rootFolder->path.")");
+			throw new CloudberryException("Invalid path, not under root:" . $nativeFullPath . " (root " . $this->rootFolder->path . ")");
 		}
 		return str_replace(Filesystem::DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, substr($nativeFullPath, $l));
 	}
 
 	private function _isFolderPath($path, $internal = TRUE) {
 		$n = trim($path);
-		return (substr($n, -1) == ($internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR));
+		return (substr($n, -1) == ($internal ? Filesystem::DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR));
 	}
 
 	public static function folderPath($path, $internal = TRUE) {
-		$sp = $internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR;
-		return rtrim($path, $sp).$sp;
+		$sp = $internal ? Filesystem::DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR;
+		return rtrim($path, $sp) . $sp;
 	}
 
 	public static function joinPath($p1, $p2, $internal = TRUE) {
-		$sp = $internal?Filesystem::DIRECTORY_SEPARATOR:DIRECTORY_SEPARATOR;
-		return rtrim($p1, $sp).$sp.ltrim($p2, $sp);
+		$sp = $internal ? Filesystem::DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR;
+		return rtrim($p1, $sp) . $sp . ltrim($p2, $sp);
 	}
 
 	public static function basename($path, $internal = TRUE) {
@@ -147,6 +147,6 @@ class LocalFilesystem implements Filesystem {
 	}
 
 	public function __toString() {
-		return "Local filesystem (".$this->rootFolder.")";
+		return "Local filesystem (" . $this->rootFolder . ")";
 	}
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace Cloudberry\Filesystem;
-
+namespace Cloudberry\Core\Filesystem;
 
 class ItemIdProvider {
 	private $cache = array();
 
 	public function getItemId($id) {
-		if (array_key_exists($id, $this->cache)) return $this->cache[$id];
+		if (array_key_exists($id, $this->cache)) {return $this->cache[$id];
+		}
+
 		$itemId = ItemId::find($id);
 		$this->cache[$id] = $itemId;
 		return $itemId;

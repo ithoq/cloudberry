@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry;
+namespace Cloudberry\Core\Services;
 
 class BaseServiceController extends \Controller {
 

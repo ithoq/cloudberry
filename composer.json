@@ -13,7 +13,6 @@
     },
     "autoload": {
         "classmap": [
-            "backend/cloudberry",
             "backend/commands",
             "backend/controllers",
             "backend/database/migrations",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudberry;
+namespace Cloudberry\Core;
 
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
@@ -16,7 +16,7 @@ class User extends \Eloquent implements UserInterface, RemindableInterface {
 	protected $hidden = array('password', 'remember_token');
 
 	public function rootFolders() {
-		return $this->belongsToMany('Cloudberry\Filesystem\RootFolder', 'users_folders', 'user_id', 'root_folder_id')->withPivot('name');
+		return $this->belongsToMany('Cloudberry\Core\Filesystem\RootFolder', 'users_folders', 'user_id', 'root_folder_id')->withPivot('name');
 	}
 
 }
