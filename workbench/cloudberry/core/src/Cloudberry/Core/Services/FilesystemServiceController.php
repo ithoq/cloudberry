@@ -2,8 +2,9 @@
 
 namespace Cloudberry\Core\Services;
 
+use \FSC;
+
 class FilesystemServiceController extends BaseServiceController {
-	private $fsc;
 
 	public function __construct() {
 		$this->beforeFilter('auth');
@@ -69,7 +70,7 @@ class FilesystemServiceController extends BaseServiceController {
 	/* utils */
 
 	protected function _getItem($itemId) {
-		$item = $this->fsc->getItem($itemId);
+		$item = FSC::getItem($itemId);
 		if ($item == NULL) {
 			throw new \Cloudberry\CloudberryException("Invalid item id: " . $itemId);
 		}

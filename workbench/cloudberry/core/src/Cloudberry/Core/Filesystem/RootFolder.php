@@ -2,7 +2,7 @@
 
 namespace Cloudberry\Core\Filesystem;
 
-use \App;
+use \FSC;
 
 class RootFolder extends \Eloquent {
 	protected $table = 'root_folders';
@@ -30,7 +30,7 @@ class RootFolder extends \Eloquent {
 	}
 
 	public function getFsItem() {
-		$rootItem = FSC->getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
+		$rootItem = FSC::getItemByPath($this, Filesystem::DIRECTORY_SEPARATOR);
 		$rootItem->name = $this->getName();
 		return $rootItem;
 	}

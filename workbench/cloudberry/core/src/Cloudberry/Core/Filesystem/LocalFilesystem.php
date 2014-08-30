@@ -2,6 +2,8 @@
 
 namespace Cloudberry\Core\Filesystem;
 
+use \FSC;
+
 class LocalFilesystem implements Filesystem {
 	private $rootFolder;
 

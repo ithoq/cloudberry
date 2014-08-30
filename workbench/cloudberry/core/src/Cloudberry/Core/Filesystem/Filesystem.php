@@ -2,6 +2,8 @@
 
 namespace Cloudberry\Core\Filesystem;
 
+use \FSC;
+
 interface Filesystem {
 	const DIRECTORY_SEPARATOR = "/";
 
