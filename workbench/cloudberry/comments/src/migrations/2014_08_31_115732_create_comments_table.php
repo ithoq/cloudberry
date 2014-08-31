@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration {
 			$table->integer('comment_id')->unsigned();
 			$table->char('item_id', 36);
 			$table->foreign('comment_id')->references('id')->on('comments');
+			$table->foreign('item_id')->references('id')->on('item_ids');
 		});
 	}
 

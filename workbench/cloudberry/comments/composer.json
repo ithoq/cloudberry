@@ -1,6 +1,6 @@
 {
     "name": "cloudberry/comments",
-    "description": "",
+    "description": "Comments package for Cloudberry",
     "authors": [
         {
             "name": "cloudberry",
@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "illuminate/support": "4.2.*",
+        "cloudberry/core": ">=1.0.0"
     },
     "autoload": {
         "classmap": [

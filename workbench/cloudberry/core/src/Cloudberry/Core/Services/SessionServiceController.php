@@ -2,6 +2,7 @@
 
 namespace Cloudberry\Core\Services;
 
+use Cloudberry\Core\Facades\Cloudberry;
 use Cloudberry\Core\User;
 use \Auth;
 use \Input;
@@ -25,6 +26,7 @@ class SessionServiceController extends BaseServiceController {
 
 		return array(
 			'id' => \Session::getId(),
+			'plugins' => Cloudberry::getPlugins(),
 			'user' => $user,
 			'folders' => $folders,
 			'permissions' => array(), //TODO
@@ -49,7 +51,7 @@ class SessionServiceController extends BaseServiceController {
 		Log::debug('Logging with ' . $auth["name"] . '/' . $auth["password"]);
 
 		if (!Auth::attempt($auth)) {
-			throw new CloudberryException("Authentication failed", 1);//TODO error codes
+			throw new \Cloudberry\Core\CloudberryException("Authentication failed", 1);//TODO error codes
 		}
 
 		return $this->getInfo();

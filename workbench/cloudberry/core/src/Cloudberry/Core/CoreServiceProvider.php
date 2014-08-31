@@ -24,15 +24,15 @@ class CoreServiceProvider extends ServiceProvider {
 			}
 		});
 
-		App::fatal(function ($e) {
-			Log::error($e);
+		/*App::fatal(function ($e) {
+		Log::error($e);
 
-			return \Response::json([
-					'error' => 999,
-					'message' => 'Unexpected application error: ' . $e],
-				500
-			);
-		});
+		return \Response::json([
+		'error' => 999,
+		'message' => 'Unexpected application error: ' . $e],
+		500
+		);
+		});*/
 
 		App::error(function (CloudberryException $ce) {
 			Log::error($ce);
@@ -43,6 +43,8 @@ class CoreServiceProvider extends ServiceProvider {
 				$ce->getHttpCode()
 			);
 		});
+
+		App::singleton('cloudberry', 'Cloudberry\Core\CloudberryController');
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
 
