@@ -24,18 +24,24 @@ class CoreServiceProvider extends ServiceProvider {
 			}
 		});
 
-		/*App::fatal(function ($e) {
-		Log::error($e);
+		App::fatal(function ($e) {
+			Log::error($e);
 
-		return 'TODO fatal'.$e;
-		});*/
+			return \Response::json([
+					'error' => 999,
+					'message' => 'Unexpected application error: ' . $e],
+				500
+			);
+		});
 
 		App::error(function (CloudberryException $ce) {
 			Log::error($ce);
-			//return Response::make('Unauthorized', 401);
-			//return array("todo" => "ce:".$ce);
-			App::abort($ce->getHttpCode(), $ce->getMsg());
-			//array("code" => $ce->getErrorCode(), "message" => $ce->getMsg()));
+
+			return \Response::json([
+					'error' => $ce->getErrorCode(),
+					'message' => $ce->getMsg()],
+				$ce->getHttpCode()
+			);
 		});
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
