@@ -39,6 +39,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Cloudberry\Core\CoreServiceProvider',
+		'Cloudberry\Comments\CommentsServiceProvider',
 	),
 
 	'manifest' => storage_path() . '/meta',
