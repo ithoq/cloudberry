@@ -69,7 +69,7 @@ class CloudberryException extends \Exception {
 	private $errorCode;
 	private $msg;
 
-	public function __construct($msg, $errorCode = 999, $httpCode = 400) {
+	public function __construct($msg, $errorCode = ErrorCodes::UNKNOWN, $httpCode = 400) {
 		parent::__construct($msg);
 		$this->errorCode = $errorCode;
 		$this->httpCode = $httpCode;
@@ -93,4 +93,13 @@ class NotAuthenticatedException extends CloudberryException {
 	public function __construct($msg) {
 		parent::__construct($msg, NULL, 401);
 	}
+}
+
+class ErrorCodes {
+
+	const REQUEST_FAILED = 1;
+
+	const AUTHENTICATION_FAILED = 101;
+
+	const UNKNOWN = 999;
 }

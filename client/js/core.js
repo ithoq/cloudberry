@@ -2,7 +2,7 @@
     'use strict';
 
     /* Core */
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.core',
 
         setup: function(h, mod, gettext) {
@@ -632,7 +632,7 @@
     });
 
     /* Login */
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.login',
 
         setup: function(h, mod) {

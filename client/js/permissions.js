@@ -1,7 +1,7 @@
 ! function(cloudberry) {
     'use strict';
 
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.plugin.permissions',
 
         setup: function(h, mod, gettext) {

@@ -1,7 +1,7 @@
 ! function(cloudberry) {
     'use strict';
 
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.main.config',
 
         setup: function(h, mod, gettext) {
@@ -125,7 +125,7 @@
     }
 
     /* Users */
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.config.users',
 
         setup: function(h, mod, gettext) {
@@ -402,7 +402,7 @@
     });
 
     / * Folders * /
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.config.folders',
 
         setup: function(h, mod, gettext) {

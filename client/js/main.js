@@ -2,7 +2,7 @@
     'use strict';
 
     /* Main */
-    cloudberry.modules.push({
+    cloudberry.modules.register({
         id: 'cloudberry.main',
 
         setup: function(h, mod, gettext) {

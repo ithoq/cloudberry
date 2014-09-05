@@ -13,7 +13,10 @@ class CommentsServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
-		Cloudberry::registerPlugin("comments");
+		//Log::info(__DIR__ . "/../");
+		Cloudberry::registerPlugin("cloudberry/comments", array(
+				"client" => "cloudberry/comments/public/js/plugin.js",
+			));
 
 		Route::group(array('prefix' => 'comments/v1'), function () {
 			Route::controller('items/{item_id}', 'Cloudberry\Comments\Services\CommentsServiceController');

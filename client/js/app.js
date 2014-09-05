@@ -68,11 +68,10 @@
         var configDetails = {};
         var itemDetails = [];
 
-        var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid'];
+        var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid', 'oc.lazyLoad'];
         var gettext_stub = function(s) {};
 
-        // create modules
-        $.each(cloudberry.modules, function(i, m) {
+        var setupModule = function(m) {
             var mod = ng.module(m.id, m.dependencies || []);
             m.setup({
                 registerView: function(id, v) {
@@ -103,8 +102,14 @@
                     itemDetails.push(s);
                 }
             }, mod, gettext_stub);
+        }
+
+        // create modules
+        $.each(cloudberry.modules.list, function(i, m) {
+            setupModule(m);
             deps.push(m.id);
         });
+        cloudberry.modules.register = setupModule;
 
         var app = ng.module('cloudberry', deps);
         // setup app module
@@ -119,8 +124,8 @@
             }, gettext_stub);
         });
 
-        app.run(['$templateCache', '$rootScope', '$location', '$state', '$injector', 'gettextCatalog', 'service', 'session', 'filesystem', 'permissions',
-            function($templateCache, $rootScope, $location, $state, $injector, gettextCatalog, service, session, filesystem, permissions) {
+        app.run(['$templateCache', '$rootScope', '$location', '$state', '$injector', '$ocLazyLoad', 'gettextCatalog', 'service', 'session', 'filesystem', 'permissions',
+            function($templateCache, $rootScope, $location, $state, $injector, $ocLazyLoad, gettextCatalog, service, session, filesystem, permissions) {
                 if (settings["localization-debug"])
                     gettextCatalog.debug = true;
 
@@ -129,7 +134,7 @@
                     permissions: permissions
                 };
 
-                that._onStart($rootScope, $location, $state, $injector, gettextCatalog, session);
+                that._onStart($rootScope, $location, $state, $injector, $ocLazyLoad, gettextCatalog, session);
             }
         ]);
 
@@ -139,7 +144,7 @@
             ng.bootstrap($root, ['cloudberry']);
         };
 
-        this._onStart = function($rootScope, $location, $state, $injector, gettextCatalog, session) {
+        this._onStart = function($rootScope, $location, $state, $injector, $loader, gettextCatalog, session) {
             var initialized = false;
             var pendingStateChange = false;
             console.log("cloudberry started");
@@ -207,7 +212,7 @@
                     var s = session.get();
                     var isAuthenticated = (s && s.user);
                     var requiresAuthenticated = (toState && toState.name != 'login');
-                    var requiresAdmin = (requiresAuthenticated && !! views[toState.name].requiresAdmin);
+                    var requiresAdmin = (requiresAuthenticated && !!views[toState.name].requiresAdmin);
                     var isAdmin = (isAuthenticated && s.user.admin);
 
                     if (requiresAuthenticated && !isAuthenticated) {
@@ -232,6 +237,11 @@
 
             $rootScope.$on('session/start', function(e, s) {
                 gettextCatalog.currentLanguage = (s.user && s.user.lang) ? s.user.lang : settings.language["default"];
+
+                $loader.load({
+                    name: 'cloudberry.comments',
+                    files: ['workbench/cloudberry/comments/public/js/plugin.js']
+                });
                 resumeStateChange();
             });
             $rootScope.$on('session/end', function() {
@@ -266,7 +276,12 @@
             var _m = new cloudberryApp(angular, $.extend({}, cloudberryDefaults, opt));
             _m.run();
         },
-        modules: [],
+        modules: {
+            list: [],
+            register: function(m) {
+                cloudberry.modules.list.push(m);
+            }
+        },
         platform: [],
         actions: [],
         filelist: {

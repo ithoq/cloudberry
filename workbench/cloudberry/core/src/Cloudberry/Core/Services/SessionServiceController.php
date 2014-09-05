@@ -51,7 +51,7 @@ class SessionServiceController extends BaseServiceController {
 		Log::debug('Logging with ' . $auth["name"] . '/' . $auth["password"]);
 
 		if (!Auth::attempt($auth)) {
-			throw new \Cloudberry\Core\CloudberryException("Authentication failed", 1);//TODO error codes
+			throw new \Cloudberry\Core\CloudberryException("Authentication failed", \Cloudberry\Core\ErrorCodes::AUTHENTICATION_FAILED);
 		}
 
 		return $this->getInfo();
