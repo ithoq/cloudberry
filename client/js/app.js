@@ -77,6 +77,9 @@
                 registerView: function(id, v) {
                     v.id = id;
                     views[id] = v;
+                    if (cloudberry._setupView) {
+                        cloudberry._setupView(id, v);
+                    }
                 },
                 registerAction: function(ac) {
                     actions.all.push(ac);

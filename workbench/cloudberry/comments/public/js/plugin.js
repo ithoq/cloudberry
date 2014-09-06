@@ -6,15 +6,21 @@
 
         setup: function(h, mod, gettext) {
             gettext("comments_configViewTitle");
-            h.registerView('config_comments', {
-                titleKey: "comments_configViewTitle",
+            h.registerView('comments', {
+                titleKey: "comments_adminViewTitle",
                 requiresAdmin: true,
                 icon: "fa-comment",
                 parent: "config",
                 url: "/comments",
-                template: "config/users.html",
-                controller: "ConfigCommentsCtrl"
+                template: "comments/admin.html",
+                controller: "CommentsAdminCtrl"
             });
+
+            mod.controller('CommentsAdminCtrl', ['$scope', '$controller',
+                function($scope, $controller) {
+
+                }
+            ]);
         }
     });
 }(window.cloudberry);

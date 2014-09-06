@@ -189,8 +189,7 @@
                     };
 
                     var rd = [];
-                    $.each(cloudberry.utils.getKeys(o.views), function(i, vk) {
-                        var v = o.views[vk];
+                    var setupView = function(vk, v) {
                         var vp = {};
                         var subviews = false;
                         if (v.abstract) vp.abstract = true;
@@ -247,7 +246,12 @@
                                 deps: deps
                             });
                         }
+                    };
+                    $.each(cloudberry.utils.getKeys(o.views), function(i, vk) {
+                        var v = o.views[vk];
+                        setupView(vk, v);
                     });
+                    cloudberry._setupView = setupView;
 
                     if (rd.length > 0) $urlRouterProvider.rule(function($injector, $location) {
                         var res = undefined;
