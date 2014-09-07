@@ -493,8 +493,8 @@
                 }
             });
 
-            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog', 'filesystem',
-                function($scope, actions, itemDetails, $controller, gettextCatalog, filesystem) {
+            mod.controller('ItemDetailsCtrl', ['$scope', 'actions', 'itemDetails', '$controller', 'gettextCatalog', 'resources', 'filesystem',
+                function($scope, actions, itemDetails, $controller, gettextCatalog, resources, filesystem) {
                     $scope.$watch('itemdetails', function(nv, ov) {
                         if (!$scope.itemdetails) return;
 
@@ -502,7 +502,7 @@
                         filesystem.itemInfo($scope.itemdetails.item).done(function(i) {
                             $scope.itemdetails.data = i.details;
 
-                            cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, itemDetails.getDetails(), {
+                            cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, resources, itemDetails.getDetails(), {
                                 item: $scope.itemdetails.item,
                                 data: i.details
                             });

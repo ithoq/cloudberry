@@ -293,7 +293,7 @@
 
         //TODO break utils
         utils: {
-            setupDetailsCtrl: function($scope, obj, $controller, gettextCatalog, details, ctx) {
+            setupDetailsCtrl: function($scope, obj, $controller, gettextCatalog, resources, details, ctx) {
                 obj.details = [];
                 $scope.onSelectDetails = function(d) {
                     var fn = 'on' + d.controllerName;
@@ -309,7 +309,7 @@
                         title: gettextCatalog.getString(d.titleKey),
                         controllerName: d.controller,
                         controller: ctrl,
-                        template: "templates/" + d.template //TODO url
+                        template: resources.templateUrl(d.template)
                     });
                 });
                 $scope.onSelectDetails(obj.details[0]);

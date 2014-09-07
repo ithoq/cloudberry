@@ -289,11 +289,11 @@
                 }
             });
 
-            mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'userRepository', 'dialogs', 'configDetails', 'user',
-                function($scope, $controller, $stateParams, gettextCatalog, userRepository, dialogs, configDetails, user) {
+            mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'resources', 'userRepository', 'dialogs', 'configDetails', 'user',
+                function($scope, $controller, $stateParams, gettextCatalog, resources, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
 
-                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, configDetails.getDetails('user'), {
+                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, resources, configDetails.getDetails('user'), {
                         user: user
                     });
                 }
