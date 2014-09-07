@@ -12,13 +12,30 @@
                 icon: "fa-comment",
                 parent: "config",
                 url: "/comments",
-                template: "comments/admin.html",
+                template: "cloudberry.comments:admin.html",
                 controller: "CommentsAdminCtrl"
             });
 
             mod.controller('CommentsAdminCtrl', ['$scope', '$controller',
                 function($scope, $controller) {
 
+                }
+            ]);
+
+            gettext("comments_itemDetails_viewTitle");
+            h.registerItemDetails('itemDetails_comments', {
+                controller: "ItemDetailsCommentsCtrl",
+                titleKey: "comments_itemDetails_viewTitle",
+                template: "cloudberry.comments:itemdetails.html"
+            });
+
+            mod.controller('ItemDetailsCommentsCtrl', ['$scope',
+                function($scope) {
+                    $scope.ItemDetailsCommentsCtrl = function(ctx) {
+                        console.log('item comments ' + ctx.item.id);
+                        $scope.item = ctx.item;
+                        $scope.comments = null;
+                    };
                 }
             ]);
         }

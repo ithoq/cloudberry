@@ -533,7 +533,7 @@
                 }
             ]);
 
-            gettext("itemComments_viewTitle");
+            /*gettext("itemComments_viewTitle");
             h.registerItemDetails('item_comments', {
                 controller: "ItemCommentsCtrl",
                 titleKey: "itemComments_viewTitle",
@@ -548,7 +548,7 @@
                         $scope.comments = null;
                     };
                 }
-            ]);
+            ]);*/
         }
     });
 }(window.cloudberry);

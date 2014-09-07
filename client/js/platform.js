@@ -22,7 +22,17 @@
                     return _get(u);
                 },
                 templateUrl: function(t) {
-                    return _get(o.settings["templates-path"] + t);
+                    var tu = t;
+                    if (t.indexOf(':') >= 0) {
+                        var parts = t.split(':');
+                        var module = parts[0];
+                        tu = parts[1];
+                        tu = 'workbench/' + module.replace('.', '/') + '/public/' + o.settings["templates-path"] + tu;
+                    } else {
+                        tu = o.settings["templates-path"] + tu;
+                    }
+                    //return 'workbench/cloudberry/core/public/' + _get(o.settings["templates-path"]) + t;
+                    return _get(tu);
                 }
             };
 
