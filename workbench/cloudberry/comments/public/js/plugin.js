@@ -16,6 +16,21 @@
                 controller: "CommentsAdminCtrl"
             });
 
+            mod.factory('commentsRepository', ['$rootScope', 'c_service', 'cache',
+                function($rootScope, c_service, cache) {
+                    return {
+                        getCommentsForItem: function(item) {
+                            return c_service.get("comments/item/" + item.id);
+                        },
+                        addItemComment: function(item, comment) {
+                        	c_service.post("comments/item/"+ item.id, {
+                        		comment: comment
+                        	});
+                        }
+                    }
+                }
+            ]);
+
             mod.controller('CommentsAdminCtrl', ['$scope', '$controller',
                 function($scope, $controller) {
 
@@ -29,12 +44,12 @@
                 template: "cloudberry.comments:itemdetails.html"
             });
 
-            mod.controller('ItemDetailsCommentsCtrl', ['$scope',
-                function($scope) {
-                    $scope.ItemDetailsCommentsCtrl = function(ctx) {
+            mod.controller('ItemDetailsCommentsCtrl', ['$scope', 'commentsRepository',
+                function($scope, commentsRepository) {
+                    $scope.onItemDetailsCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
                         $scope.item = ctx.item;
-                        $scope.comments = null;
+                        $scope.comments = commentsRepository.getCommentsForItem(ctx.item);
                     };
                 }
             ]);
