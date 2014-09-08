@@ -502,10 +502,10 @@
                         filesystem.itemInfo($scope.itemdetails.item).done(function(i) {
                             $scope.itemdetails.data = i.details;
 
-                            cloudberry.utils.setupDetailsCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, resources, itemDetails.getDetails(), {
+                            cloudberry.utils.setupTabCtrl($scope, $scope.itemdetails, $controller, gettextCatalog, resources, itemDetails.getDetails(), {
                                 item: $scope.itemdetails.item,
                                 data: i.details
-                            });
+                            }, 'itemdetails');
 
                             if (!$scope.$$phase)
                                 $scope.$apply();

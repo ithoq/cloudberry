@@ -293,9 +293,10 @@
 
         //TODO break utils
         utils: {
-            setupDetailsCtrl: function($scope, obj, $controller, gettextCatalog, resources, details, ctx) {
-                obj.details = [];
-                $scope.onSelectDetails = function(d) {
+            setupTabCtrl: function($scope, obj, $controller, gettextCatalog, resources, tabs, ctx, selectCbId) {
+                obj.tabs = [];
+                var _selectCbId = 'on' + (selectCbId || 'tab');
+                $scope[_selectCbId] = function(d) {
                     var fn = 'on' + d.controllerName;
                     if ($scope[fn]) $scope[fn](ctx);
                 };
@@ -303,16 +304,16 @@
                     '$scope': $scope
                 });
 
-                $.each(details, function(i, d) {
+                $.each(tabs, function(i, d) {
                     var ctrl = $controller(d.controller, params);
-                    obj.details.push({
+                    obj.tabs.push({
                         title: gettextCatalog.getString(d.titleKey),
                         controllerName: d.controller,
                         controller: ctrl,
                         template: resources.templateUrl(d.template)
                     });
                 });
-                $scope.onSelectDetails(obj.details[0]);
+                $scope[_selectCbId](obj.tabs[0]);
             },
 
             createObj: function neu(constructor, args) {
