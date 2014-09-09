@@ -16,16 +16,18 @@
                 controller: "CommentsAdminCtrl"
             });
 
-            mod.factory('commentsRepository', ['$rootScope', 'c_service', 'cache',
-                function($rootScope, c_service, cache) {
+            mod.factory('commentsRepository', ['$rootScope', 'service', 'cache',
+                function($rootScope, service, cache) {
+                    var commentService = service.withPrefix("comments/v1/");
+
                     return {
                         getCommentsForItem: function(item) {
-                            return c_service.get("comments/item/" + item.id);
+                            return commentService.get("items/" + item.id);
                         },
                         addItemComment: function(item, comment) {
-                        	c_service.post("comments/item/"+ item.id, {
-                        		comment: comment
-                        	});
+                            commentService.post("items/" + item.id, {
+                                comment: comment
+                            });
                         }
                     }
                 }
@@ -48,8 +50,15 @@
                 function($scope, commentsRepository) {
                     $scope.onItemDetailsCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
-                        $scope.item = ctx.item;
-                        $scope.comments = commentsRepository.getCommentsForItem(ctx.item);
+                        //$scope.item = ctx.item;
+                        $scope.comments = {
+                            list: commentsRepository.getCommentsForItem(ctx.item),
+                            newComment: "",
+                            onAddComment: function() {
+                                if ($scope.comments.newComment.length < 1) return;
+                                commentsRepository.addItemComment(ctx.item, $scope.comments.newComment);
+                            }
+                        }
                     };
                 }
             ]);
