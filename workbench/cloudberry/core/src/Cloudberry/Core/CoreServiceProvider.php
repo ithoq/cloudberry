@@ -4,6 +4,7 @@ namespace Cloudberry\Core;
 
 use Illuminate\Support\ServiceProvider;
 use \App;
+use \Event;
 use \Log;
 use \Route;
 
@@ -16,6 +17,11 @@ class CoreServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
+		Event::listen("illuminate.query", function ($query, $bindings, $time, $name) {
+			\Log::debug($query . "\n");
+			\Log::debug(json_encode($bindings) . "\n");
+		});
+
 		\Illuminate\Foundation\AliasLoader::getInstance()->alias('FSC', 'Cloudberry\Core\Facades\FSC');
 
 		Route::filter('auth', function () {

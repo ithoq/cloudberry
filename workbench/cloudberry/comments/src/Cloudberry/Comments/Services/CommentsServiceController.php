@@ -2,6 +2,7 @@
 
 namespace Cloudberry\Comments\Services;
 
+use \Auth;
 use \Cloudberry\Comments\Comment;
 use \Input;
 
@@ -18,9 +19,10 @@ class CommentsServiceController extends \Cloudberry\Core\Services\BaseServiceCon
 		}
 		$item = $this->_getItem($itemId);
 
-		$comment = Comments::create(array(
+		$comment = Comment::create(array(
 				'comment' => Input::get("comment"),
+				'user_id' => Auth::user()->id
 			));
-		$comment->item()->save($comment);
+		$comment->item()->save($item->getItemId());
 	}
 }

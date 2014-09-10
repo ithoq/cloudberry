@@ -31,9 +31,9 @@ class LocalFilesystem implements Filesystem {
 		$parentId = $isRoot ? NULL : FSC::getItemIdByPath($this->rootFolder, $this->_getInternalPath($parentNativePath));
 
 		if ($this->_isFolderPath($itemId->path)) {
-			return new Folder($this, $itemId->id, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
+			return new Folder($this, $itemId, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
 		} else {
-			return new File($this, $itemId->id, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
+			return new File($this, $itemId, ($parentId != NULL ? $parentId->id : NULL), $rootId->id, $internalPath, $name);
 		}
 	}
 
@@ -67,9 +67,9 @@ class LocalFilesystem implements Filesystem {
 			$id = FSC::getItemIdByPath($this->rootFolder, $internalPath);
 
 			if (!$isFolder) {
-				$result[] = new File($this, $id->id, $folder->id, $rootId->id, $internalPath, $name);
+				$result[] = new File($this, $id, $folder->id, $rootId->id, $internalPath, $name);
 			} else {
-				$result[] = new Folder($this, $id->id, $folder->id, $rootId->id, $internalPath, $name);
+				$result[] = new Folder($this, $id, $folder->id, $rootId->id, $internalPath, $name);
 			}
 		}
 

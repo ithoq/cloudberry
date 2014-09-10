@@ -48,16 +48,22 @@
 
             mod.controller('ItemDetailsCommentsCtrl', ['$scope', 'commentsRepository',
                 function($scope, commentsRepository) {
+                    $scope.comments = {
+                        list: [],
+                        newComment: ""
+                    };
+
                     $scope.onItemDetailsCommentsCtrl = function(ctx) {
                         console.log('item comments ' + ctx.item.id);
                         //$scope.item = ctx.item;
-                        $scope.comments = {
-                            list: commentsRepository.getCommentsForItem(ctx.item),
-                            newComment: "",
-                            onAddComment: function() {
-                                if ($scope.comments.newComment.length < 1) return;
-                                commentsRepository.addItemComment(ctx.item, $scope.comments.newComment);
-                            }
+                        commentsRepository.getCommentsForItem(ctx.item).done(function(l) {
+                        	$scope.comments.list = l;
+	                        //if (!$scope.$$phase)
+	                        //    $scope.$apply();
+                        })
+                        $scope.onAddComment = function() {
+                            if ($scope.comments.newComment.length < 1) return;
+                            commentsRepository.addItemComment(ctx.item, $scope.comments.newComment);
                         }
                     };
                 }

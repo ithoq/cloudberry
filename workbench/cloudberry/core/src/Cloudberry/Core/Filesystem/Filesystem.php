@@ -42,14 +42,18 @@ interface FilesystemFolder extends FilesystemItem {
 }
 
 abstract class AbstractFilesystemItem extends \Eloquent implements FilesystemItem {
-	protected $hidden = array('fs');
+	protected $hidden = array('fs', 'item_id');
 
-	public function __construct($fs, $id, $parentId, $rootId, $path, $name) {
-		$this->attributes = array("id" => $id, "parent_id" => $parentId, "root_id" => $rootId, "name" => $name, "path" => $path, "fs" => $fs, "is_file" => $this->isFile());
+	public function __construct($fs, $itemId, $parentId, $rootId, $path, $name) {
+		$this->attributes = array("id" => $itemId->id, "item_id" => $itemId, "parent_id" => $parentId, "root_id" => $rootId, "name" => $name, "path" => $path, "fs" => $fs, "is_file" => $this->isFile());
 	}
 
 	public function getFS() {
 		return $this->fs;
+	}
+
+	public function getItemId() {
+		return $this->item_id;
 	}
 
 	public function getId() {
@@ -102,8 +106,8 @@ class File extends AbstractFilesystemItem implements FilesystemFile {
 }
 
 class Folder extends AbstractFilesystemItem implements FilesystemFolder {
-	public function __construct($fs, $id, $parentId, $rootId, $path, $name) {
-		parent::__construct($fs, $id, $parentId, $rootId, $path, $name);
+	public function __construct($fs, $itemId, $parentId, $rootId, $path, $name) {
+		parent::__construct($fs, $itemId, $parentId, $rootId, $path, $name);
 		$this->attributes["is_root"] = $this->isRoot();
 	}
 
