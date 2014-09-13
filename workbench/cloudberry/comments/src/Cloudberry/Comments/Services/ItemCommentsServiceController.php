@@ -2,11 +2,9 @@
 
 namespace Cloudberry\Comments\Services;
 
-use \Auth;
 use \Cloudberry\Comments\Comment;
-use \Input;
 
-class CommentsServiceController extends \Cloudberry\Core\Services\BaseServiceController {
+class ItemCommentsServiceController extends \Cloudberry\Core\Services\BaseServiceController {
 
 	public function getIndex($itemId) {
 		$item = $this->_getItem($itemId);
@@ -24,5 +22,18 @@ class CommentsServiceController extends \Cloudberry\Core\Services\BaseServiceCon
 				'user_id' => Auth::user()->id
 			));
 		$comment->item()->save($item->getItemId());
+		return array();
+	}
+
+	public function deleteIndex($itemId, $commentId) {
+		//TODO permissions
+		//TODO own comment/admin
+		$item = $this->_getItem($itemId);
+		$comment = Comment::find($commentId);
+		//TODO validate comment from right item? find via comment->item?
+		if ($comment != NULL) {
+			$comment->delete();
+		}
+		return array();
 	}
 }

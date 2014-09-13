@@ -25,9 +25,12 @@
                             return commentService.get("items/" + item.id);
                         },
                         addItemComment: function(item, comment) {
-                            commentService.post("items/" + item.id, {
+                            return commentService.post("items/" + item.id, {
                                 comment: comment
                             });
+                        },
+                        removeItemComment: function(item, comment) {
+                            return commentService.del("items/" + item.id + "/" + comment.id);
                         }
                     }
                 }
@@ -54,17 +57,27 @@
                     };
 
                     $scope.onItemDetailsCommentsCtrl = function(ctx) {
-                        console.log('item comments ' + ctx.item.id);
-                        //$scope.item = ctx.item;
-                        commentsRepository.getCommentsForItem(ctx.item).done(function(l) {
-                        	$scope.comments.list = l;
-	                        //if (!$scope.$$phase)
-	                        //    $scope.$apply();
-                        })
-                        $scope.onAddComment = function() {
-                            if ($scope.comments.newComment.length < 1) return;
-                            commentsRepository.addItemComment(ctx.item, $scope.comments.newComment);
+                        $scope.comments.refresh = function() {
+                            commentsRepository.getCommentsForItem(ctx.item).done(function(l) {
+                                $scope.comments.list = l;
+
+                                if (!$scope.$$phase)
+                                    $scope.$apply();
+                            });
                         }
+                        $scope.comments.onAddComment = function() {
+                            if ($scope.comments.newComment.length < 1) return;
+                            commentsRepository.addItemComment(ctx.item, $scope.comments.newComment).done(function() {
+                                $scope.comments.newComment = "";
+                                $scope.comments.refresh();
+                            });
+                        }
+                        $scope.comments.onRemoveComment = function(c) {
+                            commentsRepository.removeItemComment(ctx.item, c).done(function() {
+                                $scope.comments.refresh();
+                            });
+                        }
+                        $scope.comments.refresh();
                     };
                 }
             ]);

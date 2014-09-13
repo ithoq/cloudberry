@@ -1,10 +1,10 @@
-comments {{item.name}}
-
 <ul>
 	<li ng-repeat="c in comments.list">
 		{{c.created_at}}
 		{{c.user_id}}
 	    {{c.comment}}
+
+	    <a ng-click="comments.onRemoveComment(c)">REMOVE</a>
 	</li>
 </ul>
 

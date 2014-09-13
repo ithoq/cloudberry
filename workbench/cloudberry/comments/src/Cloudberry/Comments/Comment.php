@@ -15,7 +15,7 @@ class Comment extends \Eloquent {
 
 	public static function forItem($item) {
 		$id = is_string($item) ? $item : $item->getId();
-		return Comment::with("item")->whereHas('item', function ($query) use ($id) {
+		return Comment::whereHas('item', function ($query) use ($id) {
 			$query->where('item_id', '=', $id);
 		})->get();
 	}
