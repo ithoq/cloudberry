@@ -32,6 +32,7 @@ class ItemCommentsServiceController extends \Cloudberry\Core\Services\BaseServic
 		$comment = Comment::find($commentId);
 		//TODO validate comment from right item? find via comment->item?
 		if ($comment != NULL) {
+			$comment->item()->detach();
 			$comment->delete();
 		}
 		return array();
