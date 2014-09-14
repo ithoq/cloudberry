@@ -4,10 +4,10 @@
 		{{c.user_id}}
 	    
 	    <div ng-if="comments.canEdit(c)">
-	    	<span editable-text="c.comment" e-form="c.commentForm">
+	    	<span editable-text="c.comment" e-form="commentForm">
 	    		{{ c.comment }}
 	    	</span>
-			<button class="btn btn-default" ng-click="c.commentForm.$show()" ng-hide="c.commentForm.$visible">
+			<button class="btn btn-default" ng-click="commentForm.$show()" ng-hide="commentForm.$visible">
 				EDIT
 			</button>
 	    	<a ng-click="comments.onRemoveComment(c)">REMOVE</a>

@@ -68,7 +68,7 @@
         var configDetails = {};
         var itemDetails = [];
 
-        var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid', 'oc.lazyLoad'];
+        var deps = ['ui.bootstrap', 'ui.router', 'gettext', 'ngGrid', 'oc.lazyLoad', 'xeditable'];
         var gettext_stub = function(s) {};
 
         var setupModule = function(m) {
