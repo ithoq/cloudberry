@@ -15,7 +15,8 @@
     "angular-bootstrap": "*",
     "font-awesome": "4.1",
     "moment": "*",
-    "oclazyload": "*"
+    "oclazyload": "*",
+    "x-editable": "*"
   },
   "resolutions": {
     "angular": "1.3.x"

@@ -12,14 +12,14 @@ class ItemCommentsServiceController extends \Cloudberry\Core\Services\BaseServic
 	}
 
 	public function postIndex($itemId) {
-		if (!Input::has("comment")) {
+		if (!\Input::has("comment")) {
 			$this->invalidRequestJsonResponse("Missing comment");
 		}
 		$item = $this->_getItem($itemId);
 
 		$comment = Comment::create(array(
-				'comment' => Input::get("comment"),
-				'user_id' => Auth::user()->id
+				'comment' => \Input::get("comment"),
+				'user_id' => \Auth::user()->id
 			));
 		$comment->item()->save($item->getItemId());
 		return array();

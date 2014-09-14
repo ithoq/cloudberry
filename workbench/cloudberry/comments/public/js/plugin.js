@@ -49,11 +49,15 @@
                 template: "cloudberry.comments:itemdetails.html"
             });
 
-            mod.controller('ItemDetailsCommentsCtrl', ['$scope', 'commentsRepository',
-                function($scope, commentsRepository) {
+            mod.controller('ItemDetailsCommentsCtrl', ['$scope', 'commentsRepository', 'session',
+                function($scope, commentsRepository, session) {
                     $scope.comments = {
                         list: [],
-                        newComment: ""
+                        newComment: "",
+                        canEdit: function(c) {
+                        	if (session.get().user.admin) return true;
+                        	return session.get().user.id == c.user_id;
+                        }
                     };
 
                     $scope.onItemDetailsCommentsCtrl = function(ctx) {

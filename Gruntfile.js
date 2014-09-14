@@ -77,7 +77,7 @@ module.exports = function(grunt) {
                     //sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
                 },
                 files: {
-                    'css/<%= pkg.name %>.css': 'less/app.less'
+                    'client/css/<%= pkg.name %>.css': 'client/less/app.less'
                 }
             },
             /*compileTheme: {
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
                     report: 'min'
                 },
                 files: {
-                    'css/<%= pkg.name %>.min.css': 'css/<%= pkg.name %>.css',
+                    'client/css/<%= pkg.name %>.min.css': 'client/css/<%= pkg.name %>.css',
                     //'dist/css/<%= pkg.name %>-theme.min.css': 'dist/css/<%= pkg.name %>-theme.css'
                 }
             }
@@ -304,7 +304,7 @@ module.exports = function(grunt) {
                 tasks: ['jshint:test', 'qunit']
             },
             less: {
-                files: 'less/*.less',
+                files: 'client/less/*.less',
                 tasks: 'less'
             }
         },
