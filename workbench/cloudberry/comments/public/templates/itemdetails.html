@@ -4,12 +4,23 @@
 		{{c.user_id}}
 	    
 	    <div ng-if="comments.canEdit(c)">
-	    	<span editable-text="c.comment" e-form="commentForm">
+	    	<span editable-text="c.comment" e-name="comment" e-form="editCommentForm">
 	    		{{ c.comment }}
 	    	</span>
-			<button class="btn btn-default" ng-click="commentForm.$show()" ng-hide="commentForm.$visible">
-				EDIT
-			</button>
+
+			<form editable-form name="editCommentForm" onbeforesave="comments.editComment($data, c)" ng-show="editCommentForm.$visible">
+			    <button type="submit" ng-disabled="editCommentForm.$waiting" class="btn btn-primary">
+			        SAVE
+			    </button>
+			    <button type="button" ng-disabled="editCommentForm.$waiting" ng-click="editCommentForm.$cancel()" class="btn btn-default">
+			        CANCEL
+			    </button>
+			</form>
+			
+			<div class="buttons" ng-show="!editCommentForm.$visible">
+			    <button class="btn btn-default" ng-click="editCommentForm.$show()">EDIT</button>
+			</div>
+
 	    	<a ng-click="comments.onRemoveComment(c)">REMOVE</a>
 	    </div>
 

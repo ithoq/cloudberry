@@ -29,6 +29,11 @@
                                 comment: comment
                             });
                         },
+                        editComment: function(id, newComment) {
+                            return commentService.put(id, {
+                                comment: newComment
+                            });
+                        },
                         removeItemComment: function(item, comment) {
                             return commentService.del("items/" + item.id + "/" + comment.id);
                         }
@@ -57,6 +62,10 @@
                         canEdit: function(c) {
                         	if (session.get().user.admin) return true;
                         	return session.get().user.id == c.user_id;
+                        },
+                        editComment: function(data, c) {
+                        	if (data.comment.length < 1) return;
+                        	commentsRepository.editComment(c.id, data.comment);
                         }
                     };
 

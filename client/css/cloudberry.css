@@ -1,4 +1,5 @@
 @import url(../bower_components/ng-grid/ng-grid.css);
+@import url(../bower_components/angular-xeditable/dist/css/xeditable.css);
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;

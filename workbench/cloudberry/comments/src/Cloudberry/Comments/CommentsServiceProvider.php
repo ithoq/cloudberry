@@ -18,11 +18,11 @@ class CommentsServiceProvider extends ServiceProvider {
 			));
 
 		Route::group(array('prefix' => 'comments/v1'), function () {
-			//Route::controller('items/{item_id}', 'Cloudberry\Comments\Services\ItemCommentsListServiceController');
-			//Route::controller('items/{item_id}/{comment_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController');
-			Route::get('items/{item_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@getIndex');
-			Route::post('items/{item_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@postIndex');
-			Route::delete('items/{item_id}/{comment_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@deleteIndex');
+			Route::put('{comment_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@editComment');
+
+			Route::get('items/{item_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@getItemComments');
+			Route::post('items/{item_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@addItemComment');
+			Route::delete('items/{item_id}/{comment_id}', 'Cloudberry\Comments\Services\ItemCommentsServiceController@deleteItemComment');
 		});
 	}
 

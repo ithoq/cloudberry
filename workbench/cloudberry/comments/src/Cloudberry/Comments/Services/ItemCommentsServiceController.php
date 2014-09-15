@@ -6,12 +6,12 @@ use \Cloudberry\Comments\Comment;
 
 class ItemCommentsServiceController extends \Cloudberry\Core\Services\BaseServiceController {
 
-	public function getIndex($itemId) {
+	public function getItemComments($itemId) {
 		$item = $this->_getItem($itemId);
 		return Comment::forItem($itemId);
 	}
 
-	public function postIndex($itemId) {
+	public function addItemComment($itemId) {
 		if (!\Input::has("comment")) {
 			$this->invalidRequestJsonResponse("Missing comment");
 		}
@@ -25,7 +25,22 @@ class ItemCommentsServiceController extends \Cloudberry\Core\Services\BaseServic
 		return array();
 	}
 
-	public function deleteIndex($itemId, $commentId) {
+	public function editComment($commentId) {
+		if (!\Input::has("comment")) {
+			$this->invalidRequestJsonResponse("Missing comment");
+		}
+		//TODO permissions
+		//TODO own comment/admin
+		$comment = Comment::find($commentId);
+		//TODO validate comment from right item? find via comment->item?
+		if ($comment != NULL) {
+			$comment->comment = \Input::get("comment");
+			$comment->save();
+		}
+		return array();
+	}
+
+	public function deleteItemComment($itemId, $commentId) {
 		//TODO permissions
 		//TODO own comment/admin
 		$item = $this->_getItem($itemId);
