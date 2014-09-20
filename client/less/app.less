@@ -75,6 +75,7 @@
             .item-details-container {
                 float: left;
                 width: 100%;
+                height: 100%;
                 background-color: #ababab;
             }
         }
@@ -86,6 +87,7 @@
             padding: 8px;
             float: left;
             width: 100%;
+            height: 100%;
         }
         .itemdetails-content-container {
             background-color: white;
@@ -93,14 +95,17 @@
             padding: 8px;
             float: left;
             width: 100%;
+            height: 100%;
 
             & h3.title {
                 margin-top: 0;
             }
 
-            .itemdetails-plugins-tab {
-                height: 100px;
-                overflow-y: scroll;
+            .tabset {
+                .tab-content {
+                    height: 150px;
+                    overflow-y: scroll;
+                }
             }
         }
         ul.quickaction-list {
@@ -227,4 +232,7 @@
 }
 .select-list.ngGrid {
     height: 200px;
+}
+.tabset {
+    
 }

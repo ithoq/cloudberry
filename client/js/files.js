@@ -484,10 +484,15 @@
                                 display: "block"
                             });
 
-                            var h = $details.outerHeight();
+                            var h = 310; //TODO resolve? $details.outerHeight();
                             $t.animate({
                                 height: h
-                            }, 500);
+                            }, {
+                                duration: 500,
+                                complete: function() {
+                                    $t.css('height', 'auto');
+                                }
+                            });
                         }, 100);
                     }
                 }
