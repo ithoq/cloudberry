@@ -4,9 +4,11 @@ namespace Cloudberry\Core\Filesystem;
 
 class FilesystemController {
 	private $itemIdProvider;
+	private $permissions;
 
-	public function __construct(ItemIdProvider $itemIdProvider) {
+	public function __construct(ItemIdProvider $itemIdProvider, PermissionController $permissionController) {
 		$this->itemIdProvider = $itemIdProvider;
+		$this->permissions = $permissionController;
 	}
 
 	public function getItem($itemId) {
@@ -104,18 +106,34 @@ class FilesystemController {
 	}
 
 	public function getFileSize($item) {
-		$this->assertReadPermissions($item);
+		$this->assertPermission($item);
 		return $item->getFS()->getFileSize($item);
 	}
 
 	public function getItemLastModified($item) {
-		$this->assertReadPermissions($item);
+		$this->assertPermission($item);
 		return $item->getFS()->getItemLastModified($item);
 	}
 
 	/* utils */
 
-	private function assertReadPermissions($item) {
-		//TODO
+	private function assertPermission($i, $required = "r") {
+		if (!$this->hasRights($item, $required)) {
+			throw new ServiceException("INSUFFICIENT_PERMISSIONS", $desc . ", required: " . $required);
+		}
+	}
+
+	private function hasPermission($i, $required = "r") {
+		if (is_array($i)) {
+			foreach ($i as $item) {
+				if (!$this->permissions->hasFilesystemPermission("filesystem_item_access", $i, $required)) {
+					return FALSE;
+				}
+			}
+
+			return TRUE;
+		}
+
+		return $this->permissions->hasFilesystemPermission("filesystem_item_access", $i, $required);
 	}
 }

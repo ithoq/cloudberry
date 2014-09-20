@@ -44,8 +44,8 @@ class CoreServiceProvider extends ServiceProvider {
 			Log::error($ce);
 
 			return \Response::json([
-					'error' => $ce->getErrorCode(),
-					'message' => $ce->getMsg()],
+				'error' => $ce->getErrorCode(),
+				'message' => $ce->getMsg()],
 				$ce->getHttpCode()
 			);
 		});
@@ -53,6 +53,8 @@ class CoreServiceProvider extends ServiceProvider {
 		App::singleton('cloudberry', 'Cloudberry\Core\CloudberryController');
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
+
+		App::singleton('permissionController', 'Cloudberry\Core\Permissions\PermissionController');
 
 		App::singleton('itemIdProvider', function () {
 			return new Filesystem\ItemIdProvider;
