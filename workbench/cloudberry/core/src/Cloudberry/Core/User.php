@@ -19,4 +19,8 @@ class User extends \Eloquent implements UserInterface, RemindableInterface {
 		return $this->belongsToMany('Cloudberry\Core\Filesystem\RootFolder', 'users_folders', 'user_id', 'root_folder_id')->withPivot('name');
 	}
 
+	public function isAdmin() {
+		return ($this->type == 'a');
+	}
+
 }

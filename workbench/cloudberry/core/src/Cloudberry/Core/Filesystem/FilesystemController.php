@@ -2,13 +2,27 @@
 
 namespace Cloudberry\Core\Filesystem;
 
+use \Cloudberry\Core\Permissions\PermissionController;
+
 class FilesystemController {
+	const PERMISSION_LEVEL_NONE = "n";
+	const PERMISSION_LEVEL_READ = "r";
+	const PERMISSION_LEVEL_READWRITE = "rw";
+	const PERMISSION_LEVEL_READWRITEDELETE = "rwd";
+
 	private $itemIdProvider;
 	private $permissions;
 
 	public function __construct(ItemIdProvider $itemIdProvider, PermissionController $permissionController) {
 		$this->itemIdProvider = $itemIdProvider;
 		$this->permissions = $permissionController;
+
+		$this->permissions->registerFilesystemPermission("filesystem_item_access", array(
+			self::PERMISSION_LEVEL_NONE,
+			self::PERMISSION_LEVEL_READ,
+			self::PERMISSION_LEVEL_READWRITE,
+			self::PERMISSION_LEVEL_READWRITEDELETE
+		));
 	}
 
 	public function getItem($itemId) {
@@ -117,9 +131,9 @@ class FilesystemController {
 
 	/* utils */
 
-	private function assertPermission($i, $required = "r") {
-		if (!$this->hasRights($item, $required)) {
-			throw new ServiceException("INSUFFICIENT_PERMISSIONS", $desc . ", required: " . $required);
+	private function assertPermission($i, $required = "r", $desc = "") {
+		if (!$this->hasPermission($i, $required)) {
+			new \Cloudberry\Core\CloudberryException("Insufficient permissions [" . $desc . "], required: " . $required, ErrorCodes::INSUFFICIENT_PERMISSIONS);
 		}
 	}
 

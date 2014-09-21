@@ -108,6 +108,7 @@ class ErrorCodes {
 	const REQUEST_FAILED = 1;
 
 	const AUTHENTICATION_FAILED = 101;
+	const INSUFFICIENT_PERMISSIONS = 102;
 
 	const UNKNOWN = 999;
 }
