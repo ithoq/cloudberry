@@ -63,6 +63,12 @@ class CoreServiceProvider extends ServiceProvider {
 		Route::group(array('prefix' => 'api/v1'), function () {
 			Route::controller('session', 'Cloudberry\Core\Services\SessionServiceController');
 			Route::controller('filesystem/{item_id}', 'Cloudberry\Core\Services\FilesystemServiceController');
+
+			Route::group(array('prefix' => 'permissions'), function () {
+				Route::get('types', 'Cloudberry\Core\Services\PermissionServiceController@getPermissionTypes');
+				//Route::post('items/{item_id}', 'Cloudberry\Comments\Services\CommentsServiceController@addItemComment');
+				//Route::delete('items/{item_id}/{comment_id}', 'Cloudberry\Comments\Services\CommentsServiceController@deleteItemComment');
+			});
 		});
 	}
 

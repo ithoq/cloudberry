@@ -20,7 +20,7 @@ class User extends \Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function isAdmin() {
-		return ($this->type == 'a');
+		return (strcasecmp($this->type, 'a') == 0);
 	}
 
 }
