@@ -379,7 +379,7 @@
                 }
             ]);
 
-            mod.factory('userRepository', ['$rootScope', 'service',
+            mod.factory('userRepository', ['$rootScope', 'core_service',
                 function($rootScope, service) {
                     return {
                         getAllUsers: function() {
@@ -427,7 +427,7 @@
                 }
             ]);
 
-            mod.factory('c_service', ['$rootScope', 'cache', 'service',
+            mod.factory('c_service', ['$rootScope', 'cache', 'core_service',
                 function($rootScope, cache, service) {
                     return {
                         get: function(url, cacheKey) {

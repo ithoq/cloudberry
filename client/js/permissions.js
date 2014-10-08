@@ -6,13 +6,16 @@
 
         setup: function(h, mod, gettext) {
             mod.factory('permissionRepository', ['$rootScope', 'c_service', 'cache',
-                function($rootScope, c_service, cache) {
+                function($rootScope, service, cache) {
                     return {
+                        getAllPermissions: function() {
+                            return service.get("permissions/list");
+                        },
                         getDefaultPermissions: function(u) {
-                            return c_service.get("permissions/user/" + (u ? u.id : '0') + "/generic/");
+                            return service.get("permissions/user/" + (u ? u.id : '0') + "/generic/");
                         },
                         getUserPermissions: function(u) {
-                            return c_service.get("permissions/user/" + u.id + "/generic/");
+                            return service.get("permissions/user/" + u.id + "/generic/");
                         }
                     }
                 }
@@ -63,8 +66,8 @@
                     };
                     $scope.refreshPermissions = function() {
                         //TODO paging params
-                        permissionRepository.getAllPermissions().done(function(f) {
-                            $scope.folders = f;
+                        permissionRepository.getAllPermissions().done(function(p) {
+                            $scope.permissions = p;
                         });
                     }
                     $scope.refreshPermissions();

@@ -49,7 +49,7 @@ class PermissionController {
 
 	public function getPermission($name) {
 		if ($name != NULL and !array_key_exists($name, $this->genericPermissions)) {
-			new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
+			throw new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
 		}
 
 		$nameKeys = ($name != NULL ? array($name) : array_keys($this->genericPermissions));
@@ -107,11 +107,11 @@ class PermissionController {
 
 	public function getFilesystemPermission($name, $item) {
 		if ($item == NULL) {
-			new \Cloudberry\Core\CloudberryException("No item defined");
+			throw new \Cloudberry\Core\CloudberryException("No item defined");
 		}
 
 		if ($name != NULL and !array_key_exists($name, $this->filesystemPermissions)) {
-			new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
+			throw new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
 		}
 
 		$nameKeys = ($name != NULL ? array($name) : array_keys($this->filesystemPermissions));
@@ -173,7 +173,8 @@ class PermissionController {
 			$result[$nk] = $permission;
 		}
 
-		if ($name != NULL) {return $result[$nk];
+		if ($name != NULL) {
+			return $result[$nk];
 		}
 
 		return $result;
@@ -181,14 +182,14 @@ class PermissionController {
 
 	public function hasFilesystemPermission($name, $item, $required = NULL) {
 		if (!array_key_exists($name, $this->filesystemPermissions)) {
-			new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
+			throw new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
 		}
 
 		$values = $this->filesystemPermissions[$name];
 		if ($required != NULL and $values != NULL) {
 			$requiredIndex = array_search($required, $values);
 			if ($requiredIndex === FALSE) {
-				new \Cloudberry\Core\CloudberryException("Invalid permission value: " . $required);
+				throw new \Cloudberry\Core\CloudberryException("Invalid permission value: " . $required);
 			}
 		}
 
@@ -213,6 +214,31 @@ class PermissionController {
 
 		// check permission level by index
 		return $userValueIndex >= $requiredIndex;
+	}
+
+	public function getPermissions($name = NULL, $subject = NULL, $userId = NULL) {
+		if ($name != NULL) {
+			if (!array_key_exists($name, $this->genericPermissions) and !array_key_exists($name, $this->filesystemPermissions)) {
+				throw new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
+			}
+		}
+
+		$user = \Auth::user();
+		//if ($userId == $user->id and $user->isAdmin()) {
+		//	return array();
+		//}
+		$q = Permission::start();
+		if ($name != NULL) {
+			$q = $q->forName($name);
+		}
+		if ($subject != NULL) {
+			$q = $q->forSubject($subject);
+		}
+		if ($userId != NULL) {
+			$q = $q->forUser($userId);
+		}
+
+		return $q->get();
 	}
 
 	private function getGroupIds() {
