@@ -14,6 +14,7 @@ class User extends \Eloquent implements UserInterface, RemindableInterface {
 	protected $table = 'users';
 
 	protected $hidden = array('password', 'remember_token');
+	protected $fillable = array('name', 'email', 'password');
 
 	public function rootFolders() {
 		return $this->belongsToMany('Cloudberry\Core\Filesystem\RootFolder', 'users_folders', 'user_id', 'root_folder_id')->withPivot('name');

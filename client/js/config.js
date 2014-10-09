@@ -293,7 +293,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, resources, userRepository, dialogs, configDetails, user) {
                     $scope.user = user;
 
-                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, resources, configDetails.getDetails('user'), {
+                    cloudberry.utils.setupTabCtrl($scope, $scope, $controller, gettextCatalog, resources, configDetails.getDetails('user'), {
                         user: user
                     });
                 }
