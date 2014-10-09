@@ -291,11 +291,13 @@
 
             mod.controller('ConfigUserCtrl', ['$scope', '$controller', '$stateParams', 'gettextCatalog', 'resources', 'userRepository', 'dialogs', 'configDetails', 'user',
                 function($scope, $controller, $stateParams, gettextCatalog, resources, userRepository, dialogs, configDetails, user) {
-                    $scope.user = user;
-
-                    cloudberry.utils.setupTabCtrl($scope, $scope, $controller, gettextCatalog, resources, configDetails.getDetails('user'), {
+                    $scope.userdetails = {
                         user: user
-                    });
+                    };
+
+                    cloudberry.utils.setupTabCtrl($scope, $scope.userdetails, $controller, gettextCatalog, resources, configDetails.getDetails('user'), {
+                        user: user
+                    }, 'userdetails');
                 }
             ]);
             gettext("configUserFolders_viewTitle");
@@ -510,7 +512,7 @@
                 function($scope, $controller, $stateParams, gettextCatalog, folderRepository, dialogs, configDetails, folder) {
                     $scope.folder = folder;
 
-                    cloudberry.utils.setupDetailsCtrl($scope, $scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
+                    cloudberry.utils.setupTabCtrl($scope, $scope, $controller, gettextCatalog, configDetails.getDetails('folder'), {
                         folder: folder
                     });
                 }

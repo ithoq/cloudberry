@@ -23,9 +23,13 @@ class ConfigurationServiceController extends BaseServiceController {
 		return User::find($id)->rootFolders()->get();
 	}
 
+	public function getUserGroups($id) {
+		return [];//TODO
+	}
+
 	public function addUser() {
 		if (!Input::has("name") or !Input::has("email") or !Input::has("password")) {
-			$this->invalidRequestJsonResponse("Missing user properties");
+			throw new \Cloudberry\Core\CloudberryException("Missing user properties");
 		}
 		//TODO validate
 		$name = Input::has("name") ? Input::get("name") : NULL;

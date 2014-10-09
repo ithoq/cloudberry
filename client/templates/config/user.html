@@ -12,8 +12,8 @@
 </dl>
 
 <tabset class="config-tab">
-    <tab ng-repeat="tab in details" heading="{{tab.title}}" ng-controller-controller="tab.controller" ng-click="onSelectDetails(tab)">
-    	<div class="config-tab-details" ng-include="tab.template">
+    <tab ng-repeat="tab in userdetails.tabs" heading="{{tab.title}}" ng-controller-controller="tab.controller" ng-click="onuserdetails(tab)">
+        <div class="tabset-tab-content config-tab-details userdetails-tab" ng-include="tab.template">
         </div>
     </tab>
 </tabset>

@@ -39,7 +39,7 @@ class SessionServiceController extends BaseServiceController {
 	public function postLogin() {
 		//TODO filter
 		if (!Input::has("name") and !Input::has("password")) {
-			$this->invalidRequestJsonResponse("Missing name and/or password");
+			throw new \Cloudberry\Core\CloudberryException("Missing name and/or password");
 		}
 
 		//TODO get user based on name or email, and attempt with that

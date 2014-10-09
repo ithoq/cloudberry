@@ -69,6 +69,7 @@ class CoreServiceProvider extends ServiceProvider {
 				Route::post('users', 'Cloudberry\Core\Services\ConfigurationServiceController@addUser');
 				Route::get('users/{user_id}', 'Cloudberry\Core\Services\ConfigurationServiceController@getUser');
 				Route::get('users/{user_id}/folders', 'Cloudberry\Core\Services\ConfigurationServiceController@getUserFolders');
+				Route::get('users/{user_id}/groups', 'Cloudberry\Core\Services\ConfigurationServiceController@getUserGroups');
 				Route::post('users/query', 'Cloudberry\Core\Services\ConfigurationServiceController@processUserQuery');
 			});
 
