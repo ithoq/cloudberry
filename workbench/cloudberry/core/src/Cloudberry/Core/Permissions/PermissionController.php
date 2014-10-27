@@ -10,7 +10,6 @@ class PermissionController {
 	private $filesystemPermissionPrefetchedParents = array();
 
 	public function __construct() {
-
 	}
 
 	public function registerFilesystemPermission($name, $values = NULL) {
@@ -18,6 +17,7 @@ class PermissionController {
 	}
 
 	public function registerPermission($name, $values = NULL) {
+		\Log::debug("Register permission: " . $name);
 		$this->genericPermissions[$name] = $values;
 	}
 

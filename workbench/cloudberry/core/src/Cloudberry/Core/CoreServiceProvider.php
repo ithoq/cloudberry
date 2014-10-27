@@ -50,11 +50,11 @@ class CoreServiceProvider extends ServiceProvider {
 			);
 		});
 
-		App::singleton('cloudberry', 'Cloudberry\Core\CloudberryController');
+		App::singleton('permissionController', 'Cloudberry\Core\Permissions\PermissionController');
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
 
-		App::singleton('permissionController', 'Cloudberry\Core\Permissions\PermissionController');
+		App::singleton('cloudberry', 'Cloudberry\Core\CloudberryController');
 
 		App::singleton('itemIdProvider', function () {
 			return new Filesystem\ItemIdProvider;
@@ -82,6 +82,16 @@ class CoreServiceProvider extends ServiceProvider {
 				//Route::post('items/{item_id}', 'Cloudberry\Comments\Services\CommentsServiceController@addItemComment');
 				//Route::delete('items/{item_id}/{comment_id}', 'Cloudberry\Comments\Services\CommentsServiceController@deleteItemComment');
 			});
+		});
+
+		App::before(function ($request) {
+			\Log::debug("Cloudberry START: " . $request);
+			$cloudberry = App::make('cloudberry');
+			$cloudberry->init($request);
+		});
+
+		App::after(function ($request, $response) {
+			\Log::debug("Cloudberry END: " . $response);
 		});
 	}
 
