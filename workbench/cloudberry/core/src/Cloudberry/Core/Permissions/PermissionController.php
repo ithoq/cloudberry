@@ -216,6 +216,18 @@ class PermissionController {
 		return $userValueIndex >= $requiredIndex;
 	}
 
+	public function getGenericPermissions($name = NULL, $userId) {
+		$q = Permission::start();
+		if ($name != NULL) {
+			$q = $q->forName($name);
+		}
+		$q = $q->forSubject("");
+		if ($userId != NULL) {
+			$q = $q->forUser($userId);
+		}
+		return $q->get();
+	}
+
 	public function getPermissions($name = NULL, $subject = NULL, $userId = NULL) {
 		if ($name != NULL) {
 			if (!array_key_exists($name, $this->genericPermissions) and !array_key_exists($name, $this->filesystemPermissions)) {
@@ -223,7 +235,7 @@ class PermissionController {
 			}
 		}
 
-		$user = \Auth::user();
+		//$user = \Auth::user();
 		//if ($userId == $user->id and $user->isAdmin()) {
 		//	return array();
 		//}

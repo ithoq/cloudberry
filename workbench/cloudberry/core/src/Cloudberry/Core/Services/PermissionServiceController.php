@@ -50,9 +50,6 @@ class PermissionServiceController extends BaseServiceController {
 	}
 
 	public function getGenericUserPermissions($userId) {
-		if (!Input::has("subject")) {
-			throw new \Cloudberry\Core\CloudberryException("Missing subject");
-		}
 		$permissions = $this->permissions->getGenericPermissions(NULL, $userId);
 		return $permissions;
 	}

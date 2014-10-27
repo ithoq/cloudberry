@@ -5,6 +5,59 @@
         id: 'cloudberry.plugin.permissions',
 
         setup: function(h, mod, gettext) {
+            mod.factory('permissions', ['$rootScope', 'session',
+                function($rootScope, session) {
+                    var _types = null;
+                    var _filesystemPermissions = {};
+                    var _permissions = {};
+
+                    var updatePermissions = function(list, permissions) {
+                        $.each(cloudberry.utils.getKeys(permissions), function(i, p) {
+                            list[p] = permissions[p];
+                        });
+                    };
+                    $rootScope.$on('session/start', function(e, s) {
+                        if (!s.user) return;
+
+                        _types = s.permissions.types;
+                        updatePermissions(_permissions, s.permissions.user);
+                    });
+
+                    var hasPermission = function(list, name, required) {
+                        if (!list || list[name] === undefined) return false;
+                        var v = list[name];
+
+                        var options = _types.values[name];
+                        if (!required || !options) return v == "1";
+
+                        var ui = options.indexOf(v);
+                        var ri = options.indexOf(required);
+                        return (ui >= ri);
+                    };
+                    return {
+                        getTypes: function() {
+                            return _types;
+                        },
+                        putFilesystemPermissions: function(id, permissions) {
+                            if (!_filesystemPermissions[id]) _filesystemPermissions[id] = {};
+                            updatePermissions(_filesystemPermissions[id], permissions);
+                        },
+                        hasFilesystemPermission: function(item, name, required) {
+                            var user = session.get().user;
+                            if (!user) return false;
+                            if (user.admin) return true;
+                            return hasPermission(_filesystemPermissions[((typeof(item) === "string") ? item : item.id)], name, required);
+                        },
+                        hasPermission: function(name, required) {
+                            var user = session.get().user;
+                            if (!user) return false;
+                            if (user.admin) return true;
+                            return hasPermission(_permissions, name, required);
+                        }
+                    }
+                }
+            ]);
+
             mod.factory('permissionRepository', ['$rootScope', 'c_service', 'cache',
                 function($rootScope, service, cache) {
                     return {
@@ -159,7 +212,7 @@
                 id: "pluginPermissions_editGenericPermissions",
                 template: 'config/permissions_editgeneric.html',
                 controller: function($scope, $modalInstance, settings, user, permissions) {
-                    $scope.edit = !! user;
+                    $scope.edit = !!user;
                     $scope.user = user;
                     $scope.permissions = permissions;
 

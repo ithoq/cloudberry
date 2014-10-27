@@ -3,12 +3,18 @@
 namespace Cloudberry\Core\Services;
 
 use Cloudberry\Core\Facades\Cloudberry;
+use Cloudberry\Core\Permissions\PermissionController;
 use Cloudberry\Core\User;
 use \Auth;
 use \Input;
 use \Log;
 
 class SessionServiceController extends BaseServiceController {
+	private $permissions;
+
+	public function __construct(PermissionController $permissionController) {
+		$this->permissions = $permissionController;
+	}
 
 	public function getInfo() {
 		// not logged
@@ -29,9 +35,9 @@ class SessionServiceController extends BaseServiceController {
 			'plugins' => Cloudberry::getPlugins(),
 			'user' => $user,
 			'folders' => $folders,
-			'permissions' => array(), //TODO
-			'data' => array(
-				'permission_types' => array()//TODO
+			'permissions' => array(
+				"types" => $this->permissions->getTypes(),
+				"user" => $this->permissions->getAllPermissions()
 			)
 		);
 	}
