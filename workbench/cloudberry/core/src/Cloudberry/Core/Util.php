@@ -47,7 +47,8 @@ class Util {
 	}
 
 	public static function toString($a) {
-		if (is_array($a)) {return self::array2str($a);
+		if (is_array($a)) {
+			return self::array2str($a);
 		}
 
 		if (is_object($a)) {

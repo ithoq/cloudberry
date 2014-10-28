@@ -1,6 +1,7 @@
 <?php
 
 namespace Cloudberry\Core\Permissions;
+use Cloudberry\Core\Util;
 
 class PermissionController {
 
@@ -22,6 +23,7 @@ class PermissionController {
 	}
 
 	public function getTypes() {
+		\Log::debug("Permission types: " . Util::array2str($this->genericPermissions));
 		return array("generic" => $this->genericPermissions, "filesystem" => $this->filesystemPermissions);
 	}
 
@@ -52,14 +54,15 @@ class PermissionController {
 			throw new \Cloudberry\Core\CloudberryException("Invalid permission key: " . $name);
 		}
 
+		$user = \Auth::user();
 		$nameKeys = ($name != NULL ? array($name) : array_keys($this->genericPermissions));
-		$userId = \Auth::user()->id;
+		$userId = $user->id;
 		$groupIds = $this->getGroupIds();
 		$result = array();
 		$queryResult = NULL;
 
 		foreach ($nameKeys as $nk) {
-			if ($this->env->authentication()->isAdmin()) {
+			if ($user->isAdmin()) {
 				$values = $this->genericPermissions[$nk];
 
 				if ($values != NULL) {$result[$nk] = $values[count($values) - 1];

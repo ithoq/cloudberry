@@ -50,7 +50,7 @@ class CoreServiceProvider extends ServiceProvider {
 			);
 		});
 
-		App::singleton('permissionController', 'Cloudberry\Core\Permissions\PermissionController');
+		App::singleton('Cloudberry\Core\Permissions\PermissionController');
 
 		App::singleton('filesystemController', 'Cloudberry\Core\Filesystem\FilesystemController');
 
