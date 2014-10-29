@@ -20,6 +20,13 @@
                         if (!s.user) return;
 
                         _types = s.permissions.types;
+                        var genericKeys = cloudberry.utils.getKeys(_types.generic);
+                        var filesystemKeys = cloudberry.utils.getKeys(_types.filesystem);
+                        _types.keys = {
+                            generic: genericKeys,
+                            filesystem: filesystemKeys,
+                            all: genericKeys.concat(filesystemKeys)
+                        }
                         updatePermissions(_permissions, s.permissions.user);
                     });
 
