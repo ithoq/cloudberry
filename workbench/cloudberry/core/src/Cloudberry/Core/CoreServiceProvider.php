@@ -56,9 +56,7 @@ class CoreServiceProvider extends ServiceProvider {
 
 		App::singleton('cloudberry', 'Cloudberry\Core\CloudberryController');
 
-		App::singleton('itemIdProvider', function () {
-			return new Filesystem\ItemIdProvider;
-		});
+		App::singleton('Cloudberry\Core\Filesystem\ItemIdProvider');
 
 		Route::group(array('prefix' => 'api/v1'), function () {
 			Route::controller('session', 'Cloudberry\Core\Services\SessionServiceController');
