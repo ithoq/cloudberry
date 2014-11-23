@@ -874,11 +874,12 @@ angular.module('ui.bootstrap.dateparser', [])
 
             if (results && results.length) {
                 var fields = {
-                    year: 1900,
-                    month: 0,
-                    date: 1,
-                    hours: 0
-                }, dt;
+                        year: 1900,
+                        month: 0,
+                        date: 1,
+                        hours: 0
+                    },
+                    dt;
 
                 for (var i = 1, n = results.length; i < n; i++) {
                     var mapper = map[i - 1];
@@ -1802,13 +1803,13 @@ angular.module('ui.bootstrap.dropdown', [])
                 setIsOpen = getIsOpen.assign;
 
                 $scope.$watch(getIsOpen, function(value) {
-                    scope.isOpen = !! value;
+                    scope.isOpen = !!value;
                 });
             }
         };
 
         this.toggle = function(open) {
-            return scope.isOpen = arguments.length ? !! open : !scope.isOpen;
+            return scope.isOpen = arguments.length ? !!open : !scope.isOpen;
         };
 
         // Allow other directives to watch status
@@ -1835,7 +1836,7 @@ angular.module('ui.bootstrap.dropdown', [])
             setIsOpen($scope, isOpen);
             if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
                 toggleInvoker($scope, {
-                    open: !! isOpen
+                    open: !!isOpen
                 });
             }
         });
@@ -1889,7 +1890,7 @@ angular.module('ui.bootstrap.dropdown', [])
                 'aria-expanded': false
             });
             scope.$watch(dropdownCtrl.isOpen, function(isOpen) {
-                element.attr('aria-expanded', !! isOpen);
+                element.attr('aria-expanded', !!isOpen);
             });
 
             scope.$on('$destroy', function() {
@@ -2836,7 +2837,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.b
                             });
 
                             var animation = scope.$eval(attrs[prefix + 'Animation']);
-                            scope.tt_animation = angular.isDefined(animation) ? !! animation : options.animation;
+                            scope.tt_animation = angular.isDefined(animation) ? !!animation : options.animation;
 
                             attrs.$observe(prefix + 'AppendToBody', function(val) {
                                 appendToBody = angular.isDefined(val) ? $parse(val)(scope) : appendToBody;
@@ -2851,8 +2852,8 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.b
                                     return;
                                 }
                                 $http.get(val, {
-                                    cache: $templateCache
-                                })
+                                        cache: $templateCache
+                                    })
                                     .then(function(response) {
                                         scope.tt_template = $compile(response.data.trim())(scope.$parent);
                                     });
@@ -2999,8 +3000,8 @@ angular.module('ui.bootstrap.popover', ['ui.bootstrap.tooltip'])
 
                 attrs.$observe('ttLoadTemplateInSibling', function(val) {
                     $http.get(val, {
-                        cache: $templateCache
-                    })
+                            cache: $templateCache
+                        })
                         .then(function(response) {
                             element.html(response.data);
                             $compile(element.contents())(templateScope);
@@ -3398,7 +3399,7 @@ angular.module('ui.bootstrap.tabs', [])
                     scope.disabled = false;
                     if (attrs.disabled) {
                         scope.$parent.$watch($parse(attrs.disabled), function(value) {
-                            scope.disabled = !! value;
+                            scope.disabled = !!value;
                         });
                     }
 
@@ -3526,7 +3527,7 @@ angular.module('ui.bootstrap.timepicker', [])
         $scope.showMeridian = timepickerConfig.showMeridian;
         if ($attrs.showMeridian) {
             $scope.$parent.$watch($parse($attrs.showMeridian), function(value) {
-                $scope.showMeridian = !! value;
+                $scope.showMeridian = !!value;
 
                 if (ngModelCtrl.$error.time) {
                     // Evaluate from template

@@ -10,7 +10,7 @@ class RootFolder extends \Eloquent {
 	protected $hidden = array('pivot');
 
 	public function getNameAttribute() {
-		if ($this->pivot->attributes['name'] != NULL) {
+		if ($this->pivot and $this->pivot->attributes['name'] != NULL) {
 			return $this->pivot->attributes['name'];
 		}
 

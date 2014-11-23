@@ -2,6 +2,7 @@
 
 namespace Cloudberry\Core\Services;
 
+use Cloudberry\Core\Filesystem\RootFolder;
 use Cloudberry\Core\User;
 use \Hash;
 use \Input;
@@ -49,5 +50,9 @@ class ConfigurationServiceController extends BaseServiceController {
 	public function processUserQuery() {
 		//TODO
 		return User::all();
+	}
+
+	public function getFolders() {
+		return RootFolder::all();
 	}
 }

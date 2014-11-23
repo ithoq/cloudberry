@@ -94,7 +94,6 @@
             ]);
 
             mod.factory('cache', [
-
                 function() {
                     var _cache = {};
                     return {
@@ -292,7 +291,7 @@
                 }
             ]);
 
-            mod.factory('folderRepository', ['$rootScope', 'service',
+            mod.factory('folderRepository', ['$rootScope', 'core_service',
                 function($rootScope, service) {
                     return {
                         getAllFolders: function() {

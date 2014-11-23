@@ -67,8 +67,13 @@
                                     });
                                     if (scope.config.rowActions)
                                         cols.push({
+                                            name: 'rowactions',
                                             displayName: ' ',
-                                            cellTemplate: '<div class="ngCellActions" ng-class="col.colIndex()"><a class="ngCellAction" ng-repeat="ac in config.rowActions" ng-click="onRowAction(ac, row.entity)"><i class="fa {{ac.icon}}"></i></a></div>'
+                                            actions: scope.config.rowActions,
+                                            onAction: function(ac, row) {
+                                                if (ac && ac.callback) ac.callback.apply(null, [row]);
+                                            },
+                                            cellTemplate: '<div class="config-table-row-actions" ng-class="col.colIndex()"><a class="config-table-row-action" ng-repeat="ac in col.colDef.actions" ng-click="col.colDef.onAction(ac, row.entity)"><i class="fa {{ac.icon}}"></i></a></div>'
                                         })
                                     scope._values = [];
                                     scope.total = 0;
@@ -80,10 +85,13 @@
                                         columnDefs: cols,
                                         rowHeight: 33,
                                         headerRowHeight: 32,
-                                        showFooter: !! scope.paging,
-                                        enablePaging: !! scope.paging,
+                                        showFooter: !!scope.paging,
+                                        enablePaging: !!scope.paging,
                                         pagingOptions: scope.paging,
                                         //totalServerItems: scope.paging ? scope.total : undefined,
+                                        onRegisterApi: function(grid) {
+                                            scope.gridApi = grid;
+                                        }
                                     };
 
                                     scope.isActionDisabled = function(ac) {
@@ -96,17 +104,14 @@
                                     scope.onAction = function(ac) {
                                         if (ac && ac.callback) ac.callback.apply(null, [scope.selected]);
                                     };
-                                    scope.onRowAction = function(ac, row) {
-                                        if (ac && ac.callback) ac.callback.apply(null, [row]);
-                                    };
                                     scope.$watch('values', function(v) {
-                                        $timeout(function() {
-                                            if (v && v.data && v.total) {
-                                                scope._values = v.data.slice(0);
-                                                scope.total = v.total;
-                                            } else
-                                                scope._values = v;
-                                        }, 100);
+                                        console.log('val');
+                                        if (v && v.data && v.total) {
+                                            scope._values = v.data.slice(0);
+                                            scope.total = v.total;
+                                        } else
+                                            scope._values = v;
+                                        scope.gridApi.core.notifyDataChange(scope.gridApi.grid, 'all');
                                     }, false);
                                 }
                             }
@@ -230,7 +235,7 @@
                 id: "configUsers_addEditUser",
                 template: 'config/users-addedit.html',
                 controller: function($scope, $modalInstance, settings, user) {
-                    $scope.edit = !! user;
+                    $scope.edit = !!user;
                     $scope.user = user || {};
                     $scope.showLanguages = (settings.language.options && settings.language.options.length > 1);
                     $scope.languages = settings.language.options;
@@ -469,6 +474,9 @@
                         //TODO paging params
                         folderRepository.getAllFolders().done(function(f) {
                             $scope.folders = f;
+
+                            if (!$scope.$$phase)
+                                $scope.$apply();
                         });
                     }
                     $scope.refreshFolders();
