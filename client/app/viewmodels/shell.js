@@ -1,6 +1,4 @@
-define(function(require) {
-    var router = require('plugins/router');
-
+define(['plugins/router'], function(router) {
     router.guardRoute = function(instance, instruction) {
         console.log("guard");
         console.log(instance);
@@ -25,8 +23,13 @@ define(function(require) {
         router: router,
         activate: function() {
             router.map([{
+                route: 'login',
+                title: '',
+                moduleId: 'viewmodels/login',
+                nav: true
+            }, {
                 route: '',
-                title: 'Main',
+                title: '',
                 moduleId: 'viewmodels/main',
                 nav: true
             }]).buildNavigationModel();
@@ -34,11 +37,4 @@ define(function(require) {
             return router.activate();
         }
     };
-});
-
-define("cloudberry/core", function(require) {
-
-    return {
-        foo: "bar"
-    }
 });
