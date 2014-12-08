@@ -1,8 +1,7 @@
 @import url(../../bower_components/bootstrap/less/bootstrap.less);
  @import url(../../bower_components/bootstrap/less/theme.less);
  @import url(../../bower_components/font-awesome/less/font-awesome.less);
- @import url(../bower_components/angular-ui-grid/ui-grid.css);
- @import url(../bower_components/angular-xeditable/dist/css/xeditable.css);
+ @import url(../bower_components/durandal/css/durandal.css);
  @fa-font-path:"../bower_components/font-awesome/fonts";
  #cloudberry {
     margin: 0;
@@ -144,95 +143,4 @@
             }
         }
     }
-}
-.ngGrid {
-    line-height: 1;
-    .ngHeaderContainer, .ngTopPanel {
-        height: 34px !important;
-    }
-    .ngHeaderScroller {
-        font-weight: normal;
-        background: white;
-        border-bottom: 2px solid #ddd;
-    }
-    .ngHeaderText {
-        padding: 8px;
-        vertical-align: bottom;
-    }
-    .ngRow {
-        height: 32px !important;
-        .ngCell, .ngCellText {
-            height: 31px !important;
-        }
-        border-spacing: 2px;
-        border-color: gray;
-        border-bottom: 1px solid #ddd;
-        &.even {
-            background-color: #f9f9f9;
-        }
-        &.even.selected {
-            background-color: #c9dde1
-        }
-    }
-    .ngCellText, .ngCellActions {
-        padding: 8px;
-    }
-    .ngCellAction {
-        cursor: pointer;
-        margin-right: 8px;
-    }
-    .ngFooterPanel {
-        border: none;
-        .ngTotalSelectContainer {
-            margin-top: 10px;
-        }
-        .ngPagerContainer {
-            float: right;
-            margin-top: 10px;
-            .ngRowCountPicker {
-                float:left;
-                margin-right: 10px;
-                .ngLabel {
-                    float: left;
-                    margin-top: 3px;
-                }
-                select {
-                    float: left;
-                    width: 100px;
-                }
-            }
-            .ngPagerControl {
-                float: left;
-                margin: 0 10px 0 0;
-                line-height: 25px;
-                .ngPagerCurrent {
-                    float: left;
-                    width: 50px;
-                }
-                li.prev > a {
-                    margin-right: 4px;
-                }
-                .ngGridMaxPagesNumber {
-                    float: left;
-                    line-height: 35px;
-                    margin: 0 8px;
-                }
-            }
-        }
-        .ngLabel {
-            margin: 0;
-            line-height: 30px;
-        }
-    }
-}
-.config-tab {
-    ul {
-        margin-bottom: 15px;
-    }
-}
-.select-list.ngGrid {
-    height: 200px;
-}
-.tabset {
-    
 }

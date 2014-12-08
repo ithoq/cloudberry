@@ -33,13 +33,13 @@ module.exports = function(grunt) {
 
         jshint: {
             options: {
-                jshintrc: 'js/.jshintrc'
+                jshintrc: 'client/js/.jshintrc'
             },
             grunt: {
                 src: [] //TODO clean up 'Gruntfile.js']
             },
             src: {
-                src: ['js/*.js']
+                src: ['client/js/*.js']
             },
             test: {
                 src: [] //'js/tests/unit/*.js'
@@ -51,13 +51,13 @@ module.exports = function(grunt) {
 
         jscs: {
             options: {
-                config: 'js/.jscs.json',
+                config: 'client/js/.jscs.json',
             },
             grunt: {
                 src: [] //'Gruntfile.js']
             },
             src: {
-                src: ['js/*.js'] //TODO clean 
+                src: ['client/js/*.js'] //TODO clean 
             },
             test: {
                 src: [] //'js/tests/unit/*.js'
@@ -334,8 +334,8 @@ module.exports = function(grunt) {
         scope: 'devDependencies'
     });
 
-    grunt.registerTask('extract_texts', ['nggettext_extract']);
-    grunt.registerTask('compile_texts', ['nggettext_compile']);
+    //grunt.registerTask('extract_texts', ['nggettext_extract']);
+    //grunt.registerTask('compile_texts', ['nggettext_compile']);
 
     grunt.registerTask('test', ['jshint', 'jscs', 'qunit', 'phpunit']);
 
@@ -352,7 +352,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dist-dav', ['clean', 'copy:dav', 'compress:dav']);
 
     // Full distribution task.
-    grunt.registerTask('dist', ['clean', 'compile_texts', 'dist-js', 'dist-css', 'dist-backend', 'copy:dist', 'copy:dist_ver', 'compress:dist']);
+    grunt.registerTask('dist', ['clean', 'dist-js', 'dist-css', 'dist-backend', 'copy:dist', 'copy:dist_ver', 'compress:dist']);
 
     // Default task.
     grunt.registerTask('default', ['dist']);
