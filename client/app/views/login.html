@@ -27,14 +27,14 @@
                 <a class="btn btn-link" href="javascript: void(0)" translate>login_Reset password</a>
             </div>
             <div class="link" ng-if="features.registration">
-                <a class="btn btn-link" data-bind="popover: { template: '#login-reset', title: 'TODO', placement: 'bottom' }" translate>login_Register</a>
+                <a class="btn btn-link" data-bind="popover: {template: 'login-reset', title: 'Oh Yea'}" translate>login_Register</a>
             </div>
         </div>
 
         <script id="login-reset" type="text/html">
         	<form role="form" data-bind="submit: onReset">
 	            <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>
-	            <input class="form-control" required="1" placeholder="TODO" data-bind="value:model.username" />
+	            <input class="form-control" required="1" placeholder="TODO" data-bind="value:model.resetEmail" />
 		        <button class="btn btn-lg btn-primary btn-block" translate>forgotPassword_Send</button>
         	</form>
         </script>
