@@ -66,6 +66,8 @@ var cloudberryDefaults = {
 };
 
 define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator'], function(require, $, system, app, viewLocator, service, session) {
+    require(['bootstrap']);
+    
     var cloudberryApp = {};
 
     cloudberryApp.init = function(cfg) {

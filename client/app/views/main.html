@@ -1,21 +1,31 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <a class="navbar-brand" data-bind="attr: { href: router.navigationModel()[0].hash }">
-            <i class="icon-home"></i>
-            <span>Cloudberry</span>
-        </a>
-        <ul class="nav" data-bind="foreach: router.navigationModel">
-            <li data-bind="css: { active: isActive }">
-                <a data-bind="attr: { href: hash }, html: title"></a>
-            </li>
-        </ul>
-        <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
-            <i class="icon-spinner icon-2x icon-spin"></i>
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">Cloudberry</a>
         </div>
-        <form class="navbar-search pull-right">
-            <input type="text" class="search-query" placeholder="Search">
-        </form>
+
+        <div class="navbar-collapse collapse">
+            <ul class="main-header-nav nav navbar-nav navbar-left">
+                <li class="main-view dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    	<i class="fa fa-file"></i>&nbsp;<span>TODO</span> <b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu" data-bind="foreach: router.navigationModel">
+                        <li>
+                        	<a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
-    
+
 <div class="container-fluid page-host" data-bind="router: { transition:'entrance', cacheViews:true }"></div>
