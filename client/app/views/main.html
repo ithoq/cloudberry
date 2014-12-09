@@ -1,31 +1,52 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
+<div class="main-view">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="#" class="navbar-brand">Cloudberry</a>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Cloudberry</a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="main-header-nav nav navbar-nav navbar-left">
+                    <li class="main-view dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa fa-file"></i>&nbsp;
+                            <span>TODO</span> <b class="caret"></b>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: router.navigationModel">
+                            <li>
+                                <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span data-bind="text: session.user.name"></span> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: sessionActions">
+                            <li>
+                                <a href="javascript: void(0)" data-bind="click: $parent.onAction"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="TODO">
+                </form>
+                <ul class="nav navbar-nav navbar-right nav-pills">
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <div class="navbar-collapse collapse">
-            <ul class="main-header-nav nav navbar-nav navbar-left">
-                <li class="main-view dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    	<i class="fa fa-file"></i>&nbsp;<span>TODO</span> <b class="caret"></b>
-                    </a>
-
-                    <ul class="dropdown-menu" role="menu" data-bind="foreach: router.navigationModel">
-                        <li>
-                        	<a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container-fluid page-host" data-bind="router: { transition:'entrance', cacheViews:true }"></div>
+    <div class="container-main-subview container-fluid page-host" data-bind="router: { transition:'entrance', cacheViews:true }"></div>
+</div>

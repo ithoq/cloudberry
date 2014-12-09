@@ -14,22 +14,30 @@
             <input id="loginPassword" type="password" class="form-control" required="1" placeholder="TODO" data-bind="value:model.password" />
         </div>
         <label class="checkbox">
-		    <label>
-				<input type="checkbox" data-bind="checked:model.remember"><span translate>login_Remember me</span>
-		    </label>
+            <label>
+                <input type="checkbox" data-bind="checked:model.remember">
+                <span translate>login_Remember me</span>
+            </label>
         </label>
 
         <button class="btn btn-lg btn-primary btn-block" translate>login_Login</button>
 
         <div class="links center-block">
-        	<div class="link" ng-if="features.lost_password">
-        		<a class="btn btn-link" href="javascript: void(0)" translate>login_Reset password</a>
-        	</div>
-        	<div class="link" ng-if="features.registration">
-        		<a class="btn btn-link" ui-sref="registration/new" translate>login_Register</a>
-        	</div>
+            <div class="link" ng-if="features.lost_password">
+                <a class="btn btn-link" href="javascript: void(0)" translate>login_Reset password</a>
+            </div>
+            <div class="link" ng-if="features.registration">
+                <a class="btn btn-link" data-bind="popover: { template: '#login-reset', title: 'TODO', placement: 'bottom' }" translate>login_Register</a>
+            </div>
         </div>
 
+        <script id="login-reset" type="text/html">
+        	<form role="form" data-bind="submit: onReset">
+	            <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>
+	            <input class="form-control" required="1" placeholder="TODO" data-bind="value:model.username" />
+		        <button class="btn btn-lg btn-primary btn-block" translate>forgotPassword_Send</button>
+        	</form>
+        </script>
         <!--script id="login/reset" type="text/ng-template">
         	<form role="form">
 	            <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>

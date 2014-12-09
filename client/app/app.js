@@ -66,8 +66,9 @@ var cloudberryDefaults = {
 };
 
 define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator'], function(require, $, system, app, viewLocator, service, session) {
-    require(['bootstrap']);
-    
+    // load deps that don't need reference
+    require(['cloudberry/platform']);
+
     var cloudberryApp = {};
 
     cloudberryApp.init = function(cfg) {
@@ -283,6 +284,37 @@ define("cloudberry/core_service", ['cloudberry/service'],
         return cs;
     }
 );
+
+define("cloudberry/platform", [
+    "durandal/composition",
+    "knockout",
+    "jquery",
+    "bootstrap"
+], function(composition, ko, $) {
+    composition.addBindingHandler("popover", {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var options = ko.utils.unwrapObservable(valueAccessor());
+            options.content = options.template;
+            options.template = undefined;
+
+            if (options.content.startsWith('#')) {
+                var $t = $(options.content);
+                if ($t.length === 0) return;
+
+                options.content = $t.html();
+                options.html = true;
+            }
+
+            var $element = $(element);
+            var popover = $element.data("popover");
+
+            if (popover)
+                $.extend(popover.options, options)
+            else
+                $element.popover(options)
+        }
+    });
+});
 
 if (!window.isArray)
     window.isArray = function(o) {

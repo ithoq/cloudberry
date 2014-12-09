@@ -1,4 +1,5 @@
-define(['plugins/router'], function(router) {
+define(['plugins/router', 'cloudberry/session'], function(router, session) {
+    var _session = session.get();
     var childRouter = router.createChildRouter()
         .map([{
             route: 'files',
@@ -14,7 +15,18 @@ define(['plugins/router'], function(router) {
             nav: true
         }]).buildNavigationModel();
 
+    var sessionActions = [{
+    	title: 'logout',
+    	onAction: function() {
+    		session.end();
+    	}
+    }];
     return {
-        router: childRouter
+        router: childRouter,
+        session: _session,
+        sessionActions: sessionActions,
+        onAction: function(ac) {
+        	ac.onAction();
+        }
     };
 });
