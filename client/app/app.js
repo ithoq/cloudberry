@@ -8,6 +8,7 @@ requirejs.config({
         'knockout': '../bower_components/knockout.js/knockout',
         'jquery': '../bower_components/jquery/jquery',
         'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
+        'underscore': '../bower_components/underscore/underscore',
     },
     shim: {
         'bootstrap': {
@@ -96,14 +97,16 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
     return cloudberryApp;
 });
 
-define("cloudberry/session", ['jquery', 'cloudberry/core_service'],
-    function($, service) {
+define("cloudberry/session", ['jquery', 'cloudberry/core_service', 'durandal/app'],
+    function($, service, da) {
         var _session = false;
         var _end = function() {
             //$rootScope.features = {};
             //$rootScope.session = null;
-            //$rootScope.$broadcast('session/end');
+            da.trigger('session:end');
         };
+        da.on('error:unauthorized').then(_end);
+
         var _set = function(s) {
             //$rootScope.features = s.features;
 
@@ -117,8 +120,7 @@ define("cloudberry/session", ['jquery', 'cloudberry/core_service'],
                 _session.user.admin = s.user.type == 'a';
             }
             //$rootScope.session = _session;
-            //$rootScope.$broadcast('session/start', _session);
-            //$rootScope.$on('error/unauthorized', _end);
+            da.trigger('session:start', _session);
         };
         //_set();
         return {
@@ -153,15 +155,17 @@ define("cloudberry/session", ['jquery', 'cloudberry/core_service'],
         };
     });
 
-define("cloudberry/service", ['jquery', 'cloudberry/config'],
-    function($, config) {
+define("cloudberry/service", ['jquery', 'cloudberry/config', 'durandal/app'],
+    function($, config, da) {
         var _sessionId = false;
-        /*$rootScope.$on('session/start', function(event, session) {
+
+        da.on('session:start').then(function(session) {
             _sessionId = session.id;
         });
-        $rootScope.$on('session/end', function(event) {
+        da.on('session:end').then(function(session) {
             _sessionId = false;
-        });*/
+        });
+
         var _limitedHttpMethods = !!config['limited-http-methods'];
         var _restPath = config['rest-path'];
 
@@ -225,7 +229,7 @@ define("cloudberry/service", ['jquery', 'cloudberry/config'],
                             handled: false
                         }
                         if (error.code == 100 && _sessionId) {
-                            //TODO $rootScope.$broadcast('error/unauthorized');
+                            app.trigger('error:unauthorized');
                             failContext.handled = true;
                         }
                         // push default handler to end of callback list

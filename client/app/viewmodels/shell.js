@@ -1,22 +1,14 @@
-define(['plugins/router'], function(router) {
+define(['plugins/router', 'cloudberry/session'], function(router, session) {
     router.guardRoute = function(instance, instruction) {
-        console.log("guard");
+        if (!instance || instruction.fragment == 'login' || session.get().user) {
+            return true;
+        }
+        console.log("UNAUTHORIZED");
         console.log(instance);
         console.log(instruction);
 
-        /*if (user.isAuthenticated()) {
-            return true;
-        } else {
-            if (instance && typeof(instance.preventAnonymous) === "boolean") {
-                if (instance.preventAnonymous) {
-                    return 'login/' + instruction.fragment;
-                }
-            }
-
-            return true;
-        }*/
-
-        return true;
+        if (instance.allowUnauthorized) return true;
+        return 'login/' + instruction.fragment;
     };
 
     return {
@@ -25,10 +17,9 @@ define(['plugins/router'], function(router) {
             router.map([{
                 route: 'login',
                 title: '',
-                moduleId: 'viewmodels/login',
-                nav: true
+                moduleId: 'viewmodels/login'
             }, {
-                route: '',
+                route: '*details',
                 title: '',
                 moduleId: 'viewmodels/main',
                 nav: true

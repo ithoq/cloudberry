@@ -1,11 +1,20 @@
-define(function(require) {
-    var app = require('durandal/app'),
-        ko = require('knockout');
+define(['plugins/router'], function(router) {
+    var childRouter = router.createChildRouter()
+        .map([{
+            route: 'files',
+            moduleId: 'viewmodels/main/files',
+            title: 'Files',
+            hash: "#files",
+            nav: true
+        }, {
+            route: 'config',
+            moduleId: 'viewmodels/main/config',
+            title: 'Configuration',
+            hash: "#config",
+            nav: true
+        }]).buildNavigationModel();
 
     return {
-        name: ko.observable(),
-        sayHello: function() {
-            app.showMessage('Hello ' + this.name() + '! Nice to meet you.', 'Greetings');
-        }
+        router: childRouter
     };
 });
