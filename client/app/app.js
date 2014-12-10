@@ -9,7 +9,8 @@ requirejs.config({
         'jquery': '../bower_components/jquery/jquery',
         'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
         'underscore': '../bower_components/underscore/underscore',
-        'knockout-bootstrap': '../vendor/knockout-bootstrap.min',
+        'knockout-bootstrap': '../vendor/knockout-bootstrap',
+        'i18next': '../bower_components/i18next/i18next.amd.withJQuery.min',
     },
     shim: {
         'bootstrap': {
@@ -66,7 +67,7 @@ var cloudberryDefaults = {
     }
 };
 
-define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator'], function(require, $, system, app, viewLocator, service, session) {
+define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next'], function(require, $, system, app, viewLocator, binder, i18n) {
     // load deps that don't need reference
     require(['cloudberry/platform']);
 
@@ -74,6 +75,15 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
 
     cloudberryApp.init = function(cfg) {
         cloudberryApp.config = $.extend({}, cloudberryDefaults, cfg);
+
+        var i18NOptions = {
+            detectFromHeaders: false,
+            lng: cloudberryApp.config.language.default || window.navigator.userLanguage || window.navigator.language,
+            fallbackLang: cloudberryApp.config.language.default,
+            ns: 'app',
+            resGetPath: 'app/localizations/__lng__/__ns__.json',
+            useCookie: false
+        };
 
         define("cloudberry/config", function() {
             return cloudberryApp.config;
@@ -91,9 +101,16 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
         app.start().then(function() {
             viewLocator.useConvention(false, cloudberryApp.config['templates-path']);
 
-            require(['cloudberry/session'], function(session) {
-                session.init(cloudberryApp.config).then(function() {
-                    app.setRoot('viewmodels/shell', false, 'cloudberry');
+            i18n.init(i18NOptions, function() {
+                //Call localization on view before binding...
+                binder.binding = function(obj, view) {
+                    $(view).i18n();
+                };
+
+                require(['cloudberry/session'], function(session) {
+                    session.init(cloudberryApp.config).then(function() {
+                        app.setRoot('viewmodels/shell', false, 'cloudberry');
+                    });
                 });
             });
         });
@@ -293,29 +310,7 @@ define("cloudberry/platform", [
     "bootstrap",
     "knockout-bootstrap"
 ], function(composition, ko, $) {
-    /*composition.addBindingHandler("popover", {
-        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var options = ko.utils.unwrapObservable(valueAccessor());
-            var tmpl = options.template;
-            options.template = undefined;
 
-            if (tmpl) {
-                //var $t = $(options.content);
-                //if ($t.length === 0) return;
-
-                options.content = '<div data-bind="template: { name: \'' + tmpl + '\' }"/>';//$t.html();
-                options.html = true;
-            }
-
-            var $element = $(element);
-            var popover = $element.data("popover");
-
-            if (popover)
-                $.extend(popover.options, options)
-            else
-                $element.popover(options)
-        }
-    });*/
 });
 
 /*define(['durandal/system', 'plugins/dialog', 'durandal/app', 'durandal/viewEngine', 'knockout'], function(system, dialog, app, viewEngine, ko) {

@@ -1,0 +1,16 @@
+{
+	"login" : {
+		"title": "Login",
+		"username": "Username",
+		"password": "Password",
+		"remember": "Remember me",
+		"loginAction": "Login",
+
+		"resetPassword": {
+			"title": "Reset password",
+			"email": "Email",
+			"send": "Send"
+		},
+		"register": "Register"
+	}
+}
