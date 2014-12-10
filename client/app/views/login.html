@@ -32,18 +32,11 @@
         </div>
 
         <script id="login-reset" type="text/html">
-        	<form role="form" data-bind="submit: onReset">
-	            <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>
-	            <input class="form-control" required="1" placeholder="TODO" data-bind="value:model.resetEmail" />
-		        <button class="btn btn-lg btn-primary btn-block" translate>forgotPassword_Send</button>
-        	</form>
+            <form role="form" data-bind="submit: onReset">
+                <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>
+                <input class="form-control" required="1" placeholder="TODO" data-bind="value:model.resetEmail" />
+                <button class="btn btn-lg btn-primary btn-block" translate>forgotPassword_Send</button>
+            </form>
         </script>
-        <!--script id="login/reset" type="text/ng-template">
-        	<form role="form">
-	            <label class="sr-only" for="forgotPasswordEmail" translate>forgotPassword_Email</label>
-	            <input ng-model="reset.forgotEmail" class="form-control" required="1" placeholder="{{ 'forgotPassword_Email' | translate }}" />
-		        <button ng-click="reset.sendPassword()" class="btn btn-lg btn-primary btn-block" translate>forgotPassword_Send</button>
-        	</form>
-        </script-->
     </form>
 </div>
