@@ -303,6 +303,20 @@ define("cloudberry/core_service", ['cloudberry/service'],
     }
 );
 
+define("cloudberry/filesystem", ['cloudberry/core_service'],
+    function(service) {
+        return {
+            items: function(folderId) {
+                return service.post("filesystem/" + folderId + "/info/", {
+                    children: true,
+                    hierarchy: true,
+                    permissions: true
+                });
+            }
+        };
+    }
+);
+
 define("cloudberry/platform", [
     "durandal/composition",
     "knockout",

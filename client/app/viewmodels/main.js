@@ -2,7 +2,7 @@ define(['plugins/router', 'cloudberry/session'], function(router, session) {
     var _session = session.get();
     var childRouter = router.createChildRouter()
         .map([{
-            route: 'files',
+            route: 'files(/:id)',
             moduleId: 'viewmodels/main/files',
             title: 'Files',
             hash: "#files",

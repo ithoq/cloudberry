@@ -1,5 +1,12 @@
-define(['plugins/router', 'cloudberry/session'], function(router, session) {
+define(['plugins/router', 'cloudberry/session', 'durandal/app'], function(router, session, da) {
+    da.on('session:end').then(function() {
+        router.navigate('login');
+    });
+
     router.guardRoute = function(instance, instruction) {
+        if (instruction.fragment == 'login' && session.get().user)
+            return "main";
+        
         if (!instance || instruction.fragment == 'login' || session.get().user) {
             return true;
         }
@@ -8,7 +15,7 @@ define(['plugins/router', 'cloudberry/session'], function(router, session) {
         console.log(instruction);
 
         if (instance.allowUnauthorized) return true;
-        return 'login/' + instruction.fragment;
+        return 'login';
     };
 
     return {

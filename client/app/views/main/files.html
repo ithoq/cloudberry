@@ -1,1 +1,15 @@
 <span>files</span>
+
+<div class="row-fluid">
+	Hierarchy:
+    <ul data-bind="foreach: model.hierarchy">
+        <li data-bind="text: name, click: $parent.onItemClick">
+        </li>
+    </ul>
+
+	Items:
+    <ul data-bind="foreach: model.items">
+        <li data-bind="text: name, click: $parent.onItemClick">
+        </li>
+    </ul>
+</div>
