@@ -1,4 +1,13 @@
-! function(cloudberry) {
+define(['cloudberry/core', 'durandal/app'], function(core, da) {
+    console.log("Comments");
+
+    core.views.register({
+        parent: 'config',
+        route: 'comments',
+        title: 'TODO comments'
+    });
+});
+/*! function(cloudberry) {
     'use strict';
 
     cloudberry.modules.register({
@@ -60,12 +69,12 @@
                         list: [],
                         newComment: "",
                         canEdit: function(c) {
-                        	if (session.get().user.admin) return true;
-                        	return session.get().user.id == c.user_id;
+                            if (session.get().user.admin) return true;
+                            return session.get().user.id == c.user_id;
                         },
                         editComment: function(data, c) {
-                        	if (data.comment.length < 1) return;
-                        	commentsRepository.editComment(c.id, data.comment);
+                            if (data.comment.length < 1) return;
+                            commentsRepository.editComment(c.id, data.comment);
                         }
                     };
 
@@ -96,4 +105,4 @@
             ]);
         }
     });
-}(window.cloudberry);
+}(window.cloudberry);*/

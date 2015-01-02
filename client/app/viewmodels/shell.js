@@ -5,8 +5,8 @@ define(['plugins/router', 'cloudberry/session', 'durandal/app'], function(router
 
     router.guardRoute = function(instance, instruction) {
         if (instruction.fragment == 'login' && session.get().user)
-            return "main";
-        
+            return "files"; //TODO default
+
         if (!instance || instruction.fragment == 'login' || session.get().user) {
             return true;
         }

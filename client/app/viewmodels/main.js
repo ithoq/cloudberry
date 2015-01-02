@@ -1,6 +1,6 @@
-define(['plugins/router', 'cloudberry/session'], function(router, session) {
+define(['cloudberry/session', 'cloudberry/core'], function(session, core) {
     var _session = session.get();
-    var childRouter = router.createChildRouter()
+    var router = core.routers.main()
         .map([{
             route: 'files(/:id)',
             moduleId: 'viewmodels/main/files',
@@ -8,25 +8,27 @@ define(['plugins/router', 'cloudberry/session'], function(router, session) {
             hash: "#files",
             nav: true
         }, {
-            route: 'config',
+            route: 'config*details',
             moduleId: 'viewmodels/main/config',
             title: 'Configuration',
             hash: "#config",
             nav: true
         }]).buildNavigationModel();
 
-    var sessionActions = [{
-    	title: 'logout',
-    	onAction: function() {
-    		session.end();
-    	}
-    }];
+    core.actions.register({
+        type: 'session',
+        title: 'logout',
+        onAction: function() {
+            session.end();
+        }
+    });
+
     return {
-        router: childRouter,
+        router: router,
         session: _session,
-        sessionActions: sessionActions,
+        sessionActions: core.actions.get('session'),
         onAction: function(ac) {
-        	ac.onAction();
+            ac.onAction();
         }
     };
 });
