@@ -16,10 +16,10 @@
                     <li class="main-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
-                            <span data-bind="text:model.activeView.title"></span> <b class="caret"></b>
+                            <span data-bind="text:model.activeFirstLevelView().title"></span> <b class="caret"></b>
                         </a>
 
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.views">
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.firstLevelViews()">
                             <li>
                                 <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>
@@ -27,14 +27,17 @@
                     </li>
                 </ul>
 
-                <ul class="main-header-nav nav navbar-nav navbar-left">
+                <ul class="main-header-nav nav navbar-nav navbar-left" data-bind="if: model.secondLevelViews().length > 0">
                     <li class="main-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
-                            <span data-bind="text:model.activeSecondLevelView.title"></span> <b class="caret"></b>
+                            <!-- ko if: model.activeSecondLevelView() -->
+                            <span data-bind="text:model.activeSecondLevelView().title"></span>
+                            <!-- /ko -->
+                             <b class="caret"></b>
                         </a>
 
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews">
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews()">
                             <li>
                                 <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>

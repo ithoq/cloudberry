@@ -67,7 +67,7 @@ var cloudberryDefaults = {
     }
 };
 
-define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next', 'cloudberry/core'], function(require, $, system, app, viewLocator, binder, i18n, core) {
+define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next', 'cloudberry/core', 'plugins/router'], function(require, $, system, app, viewLocator, binder, i18n, core, router) {
     // load deps that don't need reference
     require(['cloudberry/platform']);
 
@@ -118,9 +118,14 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
                     $(view).i18n();
                 };
 
-                // change language when session starts
+                // change language when session starts, and redirect to default view (?)
+                // TODO move to where?
                 app.on('session:start').then(function(session) {
-                    i18n.setLng((session.user ? session.user.lang : false) || cloudberryApp.config.language.default);
+                    var lang = (session.user ? session.user.lang : false) || cloudberryApp.config.language.default;
+                    console.log("LANG=" + lang);
+                    i18n.setLng(lang);
+
+                    router.navigate("files");
                 });
 
                 require(['cloudberry/session'], function(session) {

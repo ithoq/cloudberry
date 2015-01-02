@@ -12,10 +12,10 @@ define(['cloudberry/core', 'cloudberry/session', 'durandal/app'], function(core,
         console.log(instance);
         console.log(instruction);
 
-        if (instruction.fragment == 'login' && !!user)
+        if (instruction.fragment == 'login' && user)
             return "files"; //TODO default
 
-        if (!instance || instruction.fragment == 'login' || !!user) {
+        if (!instance || instruction.fragment == 'login' || user) {
             return true;
         }
         console.log("UNAUTHORIZED");

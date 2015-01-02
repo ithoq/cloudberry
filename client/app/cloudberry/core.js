@@ -20,6 +20,7 @@ define("cloudberry/core", ['plugins/router'],
                     viewsById[v.id] = v;
                 },
                 getById: function(id) {
+                    if (!id) return null;
                     return viewsById[id];
                 },
                 get: function(parent) {
