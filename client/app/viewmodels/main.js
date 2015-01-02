@@ -1,4 +1,4 @@
-define(['cloudberry/session', 'cloudberry/core'], function(session, core) {
+define(['cloudberry/session', 'cloudberry/core', 'knockout'], function(session, core, ko) {
     var _session = session.get();
     var router = core.routers.get('main');
 
@@ -10,12 +10,39 @@ define(['cloudberry/session', 'cloudberry/core'], function(session, core) {
         }
     });
 
+    var model = {
+        session: false,
+        views: core.views.get('main'),
+        secondLevelViews: ko.observableArray([]),
+        activeView: false,
+        activeSecondLevelView: false
+    };
+
+    router.on('router:navigation:complete').then(function(instance, instruction, router) {
+        console.log("Main nav");
+        console.log(instance);
+        console.log(instruction);
+
+        var parts = instruction.fragment.split("/");
+        var firstLevel = parts[0];
+        var secondLevel = (parts.length > 1) ? parts[1] : null;
+
+        console.log("active=" + firstLevel + " / " + secondLevel);
+        model.activeView = core.views.getById(firstLevel);
+        model.activeSecondLevelView = secondLevel ? core.views.getById(secondLevel) : null;
+        model.secondLevelViews(secondLevel ? core.views.get(firstLevel) : []);
+    });
+
     return {
         router: router,
-        session: _session,
-        sessionActions: core.actions.get('session'),
-        onAction: function(ac) {
-            ac.onAction();
-        }
+        activate: function() {
+            model.session = session.get();
+        },
+        core: core,
+        model: model,
+        //session: session.get(),
+        //onAction: function(ac) {
+        //    ac.onAction();
+        //}
     };
 });

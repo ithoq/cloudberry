@@ -1,6 +1,7 @@
 define("cloudberry/core", ['plugins/router'],
     function(router) {
         var views = {};
+        var viewsById = {};
         var actions = {};
         var routers = {
             '_': false
@@ -16,6 +17,10 @@ define("cloudberry/core", ['plugins/router'],
                     var parent = v.parent || '_';
                     if (views[parent] === undefined) views[parent] = [];
                     views[parent].push(v);
+                    viewsById[v.id] = v;
+                },
+                getById: function(id) {
+                    return viewsById[id];
                 },
                 get: function(parent) {
                     return views[parent || '_'] || [];
@@ -296,6 +301,7 @@ define("cloudberry/platform", [
 ], function(core, composition, ko, $) {
     // full
     core.views.register({
+        id: 'login',
         route: 'login',
         title: '',
         moduleId: 'viewmodels/login'
@@ -309,6 +315,7 @@ define("cloudberry/platform", [
 
     // main
     core.views.register({
+        id: 'files',
         parent: 'main',
         route: 'files(/:id)',
         moduleId: 'viewmodels/main/files',
@@ -317,6 +324,7 @@ define("cloudberry/platform", [
         nav: true
     });
     core.views.register({
+        id: 'config',
         parent: 'main',
         route: 'config*details',
         moduleId: 'viewmodels/main/config',

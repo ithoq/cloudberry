@@ -2,6 +2,7 @@ define(['cloudberry/core', 'knockout'], function(core, ko) {
     console.log("Config route");
 
     core.views.register({
+    	id: 'users',
         parent: 'config',
         route: 'config/users(/:id)',
         moduleId: 'views/main/config/users',
@@ -25,7 +26,7 @@ define(['cloudberry/core', 'knockout'], function(core, ko) {
 
 define('views/main/config/users', [], function() {
 	var model = {};
-	
+
     return {
         activate: function(id) {
             console.log(id);

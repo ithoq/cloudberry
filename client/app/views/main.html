@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Cloudberry</a>
+                <a href="#" class="navbar-brand">Cloudberry</a>                
             </div>
 
             <div class="navbar-collapse collapse">
@@ -16,10 +16,25 @@
                     <li class="main-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
-                            <span>TODO</span> <b class="caret"></b>
+                            <span data-bind="text:model.activeView.title"></span> <b class="caret"></b>
                         </a>
 
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: router.navigationModel">
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.views">
+                            <li>
+                                <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="main-header-nav nav navbar-nav navbar-left">
+                    <li class="main-view dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa fa-file"></i>&nbsp;
+                            <span data-bind="text:model.activeSecondLevelView.title"></span> <b class="caret"></b>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews">
                             <li>
                                 <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>
@@ -30,9 +45,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span data-bind="text: session.user.name"></span> <b class="caret"></b>
+                            <span data-bind="text: model.session.user.name"></span> <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: sessionActions">
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: core.actions.get('session')">
                             <li>
                                 <a href="javascript: void(0)" data-bind="click: $parent.onAction"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>

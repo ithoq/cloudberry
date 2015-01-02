@@ -5,10 +5,13 @@ define(['cloudberry/core', 'cloudberry/session', 'durandal/app'], function(core,
         router.navigate('login');
     });
 
-    router.guardRoute = function(instance, instruction) {        
+    router.guardRoute = function(instance, instruction) {
         var user = session.get().user;
-        console.log("Guard route, user: "+JSON.stringify(user));
-                
+        console.log("Guard route");
+        console.log(user);
+        console.log(instance);
+        console.log(instruction);
+
         if (instruction.fragment == 'login' && !!user)
             return "files"; //TODO default
 
@@ -16,8 +19,6 @@ define(['cloudberry/core', 'cloudberry/session', 'durandal/app'], function(core,
             return true;
         }
         console.log("UNAUTHORIZED");
-        console.log(instance);
-        console.log(instruction);
 
         if (instance.allowUnauthorized) return true;
         return 'login';

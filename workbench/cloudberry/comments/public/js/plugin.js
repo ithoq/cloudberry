@@ -3,8 +3,9 @@ define(['cloudberry/core', 'durandal/app'], function(core, da) {
 
     core.views.register({
         parent: 'config',
-        route: 'comments',
-        title: 'TODO comments'
+        route: 'config/comments',
+        title: 'TODO comments',
+        hash: '#config/comments'
     });
 });
 /*! function(cloudberry) {
