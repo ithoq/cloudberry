@@ -187,6 +187,7 @@ define("cloudberry/service", ['jquery', 'cloudberry/config', 'durandal/app'],
             _sessionId = false;
         });
 
+
         var _limitedHttpMethods = !!config['limited-http-methods'];
         var _restPath = config['rest-path'];
 
@@ -303,14 +304,46 @@ define("cloudberry/core_service", ['cloudberry/service'],
     }
 );
 
-define("cloudberry/filesystem", ['cloudberry/core_service'],
-    function(service) {
+define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissions', 'durandal/app'],
+    function(service, permissions, da) {
+        var _roots = [];
+        var _rootsById = [];
+        da.on('session:start').then(function(session) {
+            _roots = session.folders ? session.folders : [];
+            $.each(_roots, function(i, r) {
+                _rootsById[r.id] = r;
+            })
+        });
+        da.on('session:end').then(function(session) {
+            _roots = [];
+            _rootsById = {};
+        });
+
         return {
-            items: function(folderId) {
+            roots: function() {
+                return _roots;
+            },
+            root: function(id) {
+                return _rootsById[id];
+            },
+            rootsById: function() {
+                return _rootsById;
+            },
+            folderInfo: function(folderId) {
                 return service.post("filesystem/" + folderId + "/info/", {
                     children: true,
                     hierarchy: true,
                     permissions: true
+                }).pipe(function(r) {
+                    permissions.putFilesystemPermissions(folderId, r.permissions);
+
+                    var folder = r.folder;
+                    var data = r;
+                    data.items = r.children; //r.folders.slice(0).concat(r.files);
+                    data.hierarchy = r.hierarchy;
+                    //if (r.hierarchy)
+                    //    r.hierarchy[0] = _rootsById[r.hierarchy[0].id];
+                    return data;
                 });
             }
         };
@@ -419,6 +452,155 @@ define("cloudberry/platform", [
     };
     return bootstrapModal;
 });*/
+
+window.cloudberry = {
+    platform: [],
+    actions: [],
+    filelist: {
+        columns: []
+    },
+
+    //TODO break utils
+    utils: {
+        createObj: function neu(constructor, args) {
+            // http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2
+            var instance = Object.create(constructor.prototype);
+            var result = constructor.apply(instance, args);
+
+            // The ECMAScript language types are Undefined, Null, Boolean, String, Number, and Object.
+            return (result !== null && typeof result === 'object') ? result : instance;
+        },
+
+        deferreds: function(m) {
+            var master = $.Deferred();
+            var res = {
+                success: {},
+                fail: {}
+            };
+            var all = cloudberry.utils.getKeys(m);
+            var count = all.length;
+            $.each(all, function(i, dk) {
+                var df = m[dk];
+                df.done(function(r) {
+                    res.success[dk] = r;
+                    count--;
+                    if (count === 0) master.resolve(res);
+                }).fail(function(r) {
+                    res.fail[dk] = r;
+                    count--;
+                    if (count === 0) master.resolve(res);
+                });
+            });
+            return master.promise();
+        },
+
+        breakUrl: function(u) {
+            var parts = u.split("?");
+            return {
+                path: parts[0],
+                params: cloudberry.helpers.getUrlParams(u),
+                paramsString: (parts.length > 1 ? ("?" + parts[1]) : "")
+            };
+        },
+
+        getUrlParams: function(u) {
+            var params = {};
+            $.each(u.substring(1).split("&"), function(i, p) {
+                var pp = p.split("=");
+                if (!pp || pp.length < 2) return;
+                params[decodeURIComponent(pp[0])] = decodeURIComponent(pp[1]);
+            });
+            return params;
+        },
+
+        urlWithParam: function(url, param, v) {
+            var p = param;
+            if (v) p = param + "=" + encodeURIComponent(v);
+            return url + (window.strpos(url, "?") ? "&" : "?") + p;
+        },
+
+        noncachedUrl: function(url) {
+            return cloudberry.utils.urlWithParam(url, "_=" + cloudberry._time);
+        },
+
+        formatDateTime: function(time, fmt) {
+            var ft = time.toString(fmt);
+            return ft;
+        },
+
+        parseInternalTime: function(time) {
+            if (!time || time == null || typeof(time) !== 'string' || time.length != 14) return null;
+
+            var ts = new Date();
+            ts.setYear(time.substring(0, 4));
+            ts.setMonth(time.substring(4, 6) - 1);
+            ts.setDate(time.substring(6, 8));
+            ts.setHours(time.substring(8, 10));
+            ts.setMinutes(time.substring(10, 12));
+            ts.setSeconds(time.substring(12, 14));
+            return ts;
+        },
+
+        formatInternalTime: function(time) {
+            if (!time) return null;
+            return cloudberry.utils.formatDateTime(time, 'yyyyMMddHHmmss');
+        },
+
+        mapByKey: function(list, key, value) {
+            var byKey = {};
+            if (!list) return byKey;
+            for (var i = 0, j = list.length; i < j; i++) {
+                var r = list[i];
+                if (!window.def(r)) continue;
+                var v = r[key];
+                if (!window.def(v)) continue;
+
+                if (window.def(value) && r[value])
+                    byKey[v] = r[value];
+                else
+                    byKey[v] = r;
+            }
+            return byKey;
+        },
+
+        getKeys: function(m) {
+            var list = [];
+            if (m)
+                for (var k in m) {
+                    if (!m.hasOwnProperty(k)) continue;
+                    list.push(k);
+                }
+            return list;
+        },
+
+        extractValue: function(list, key) {
+            var l = [];
+            for (var i = 0, j = list.length; i < j; i++) {
+                var r = list[i];
+                l.push(r[key]);
+            }
+            return l;
+        },
+
+        filter: function(list, f) {
+            var result = [];
+            $.each(list, function(i, it) {
+                if (f(it)) result.push(it);
+            });
+            return result;
+        },
+
+        arrayize: function(i) {
+            var a = [];
+            if (!window.isArray(i)) {
+                a.push(i);
+            } else {
+                return i;
+            }
+            return a;
+        }
+    }
+};
 
 if (!window.isArray)
     window.isArray = function(o) {

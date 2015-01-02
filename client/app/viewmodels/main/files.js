@@ -12,8 +12,8 @@ define(['plugins/router', 'cloudberry/session', 'cloudberry/filesystem', 'knocko
             //TODO request data
 
             //var folder = itemRepository.getItem
-            fs.items(id || 'roots').then(function(r) {
-                model.items(r.children);
+            fs.folderInfo(id || 'roots').then(function(r) {
+                model.items(r.items);
                 model.hierarchy(r.hierarchy);
             });
             //
