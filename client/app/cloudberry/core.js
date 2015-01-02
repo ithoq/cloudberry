@@ -2,9 +2,15 @@ define("cloudberry/core", ['plugins/router'],
     function(router) {
         var views = {};
         var actions = {};
-        var routers = {};
+        var routers = {
+            '_': false
+        };
 
-        return {
+        var mapViewsToRouter = function(router, views) {
+            router.map(views).buildNavigationModel();
+        }
+
+        var core = {
             views: {
                 register: function(v) {
                     var parent = v.parent || '_';
@@ -26,41 +32,54 @@ define("cloudberry/core", ['plugins/router'],
                 }
             },
             routers: {
-                main : function() {
-                    if (!routers['_']) routers['_'] = router.createChildRouter();
+                root: function() {
+                    if (!routers['_']) {
+                        routers['_'] = router;
+                        mapViewsToRouter(router, core.views.get());
+                    }
                     return routers['_'];
                 },
-                get : function(parent) {
-                    if (!routers[parent]) routers[parent] = this.main().createChildRouter();
-                    return routers[parent];
+                get: function(id) {
+                    if (!id) return this.root();
+
+                    if (!routers[id]) {
+                        var parent = (id == 'main') ? core.routers.root() : core.routers.get('main');
+                        routers[id] = parent.createChildRouter();
+                        mapViewsToRouter(routers[id], core.views.get(id));
+                    }
+                    return routers[id];
                 }
             }
         }
+        return core;
     });
 
 define("cloudberry/session", ['jquery', 'cloudberry/core_service', 'durandal/app'],
     function($, service, da) {
         var _session = false;
         var _end = function() {
-            //$rootScope.features = {};
-            //$rootScope.session = null;
+            _session = {
+                id: false,
+                user: null
+            };
             da.trigger('session:end');
         };
         da.on('error:unauthorized').then(_end);
 
         var _set = function(s) {
-            //$rootScope.features = s.features;
+            _session = s;
 
-            if (!s || !s.user) {
+            if (!s) {
                 _session = {
                     id: false,
                     user: null
-                }
+                };
+            }
+            if (!s.user) {
+                _session.user = null;
             } else {
-                _session = s;
                 _session.user.admin = s.user.type == 'a';
             }
-            //$rootScope.session = _session;
             da.trigger('session:start', _session);
         };
         //_set();
@@ -259,10 +278,7 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
 
                     var folder = r.folder;
                     var data = r;
-                    data.items = r.children; //r.folders.slice(0).concat(r.files);
-                    data.hierarchy = r.hierarchy;
-                    //if (r.hierarchy)
-                    //    r.hierarchy[0] = _rootsById[r.hierarchy[0].id];
+                    data.items = r.children;
                     return data;
                 });
             }
@@ -271,11 +287,41 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
 );
 
 define("cloudberry/platform", [
+    "cloudberry/core",
     "durandal/composition",
     "knockout",
     "jquery",
     "bootstrap",
     "knockout-bootstrap"
-], function(composition, ko, $) {
+], function(core, composition, ko, $) {
+    // full
+    core.views.register({
+        route: 'login',
+        title: '',
+        moduleId: 'viewmodels/login'
+    });
+    core.views.register({
+        route: '*details',
+        title: '',
+        moduleId: 'viewmodels/main',
+        nav: true
+    });
 
+    // main
+    core.views.register({
+        parent: 'main',
+        route: 'files(/:id)',
+        moduleId: 'viewmodels/main/files',
+        title: 'Files',
+        hash: "#files",
+        nav: true
+    });
+    core.views.register({
+        parent: 'main',
+        route: 'config*details',
+        moduleId: 'viewmodels/main/config',
+        title: 'Configuration',
+        hash: "#config",
+        nav: true
+    });
 });

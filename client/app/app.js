@@ -67,7 +67,7 @@ var cloudberryDefaults = {
     }
 };
 
-define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next', 'cloudberry/core'], function(require, $, system, app, viewLocator, binder, i18n) {
+define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next', 'cloudberry/core'], function(require, $, system, app, viewLocator, binder, i18n, core) {
     // load deps that don't need reference
     require(['cloudberry/platform']);
 
@@ -98,8 +98,11 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
             dialog: true
         });
 
-        var loadModules = function() {
+        var loadModules = function(session) {
+            console.log("Loading modules");
+            console.log(session);
             var df = $.Deferred();
+            //TODO
             require(['../../workbench/cloudberry/comments/public/js/plugin'], function() {
                 df.resolve();
             });
@@ -122,7 +125,7 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
 
                 require(['cloudberry/session'], function(session) {
                     session.init(cloudberryApp.config).then(function() {
-                        loadModules().then(function() {
+                        loadModules(session).then(function() {
                             app.setRoot('viewmodels/shell', false, 'cloudberry');
                         });
                     });

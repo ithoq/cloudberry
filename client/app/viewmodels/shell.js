@@ -1,13 +1,18 @@
-define(['plugins/router', 'cloudberry/session', 'durandal/app'], function(router, session, da) {
+define(['cloudberry/core', 'cloudberry/session', 'durandal/app'], function(core, session, da) {
+    var router = core.routers.root();
+
     da.on('session:end').then(function() {
         router.navigate('login');
     });
 
-    router.guardRoute = function(instance, instruction) {
-        if (instruction.fragment == 'login' && session.get().user)
+    router.guardRoute = function(instance, instruction) {        
+        var user = session.get().user;
+        console.log("Guard route, user: "+JSON.stringify(user));
+                
+        if (instruction.fragment == 'login' && !!user)
             return "files"; //TODO default
 
-        if (!instance || instruction.fragment == 'login' || session.get().user) {
+        if (!instance || instruction.fragment == 'login' || !!user) {
             return true;
         }
         console.log("UNAUTHORIZED");
@@ -21,17 +26,6 @@ define(['plugins/router', 'cloudberry/session', 'durandal/app'], function(router
     return {
         router: router,
         activate: function() {
-            router.map([{
-                route: 'login',
-                title: '',
-                moduleId: 'viewmodels/login'
-            }, {
-                route: '*details',
-                title: '',
-                moduleId: 'viewmodels/main',
-                nav: true
-            }]).buildNavigationModel();
-
             return router.activate();
         }
     };
