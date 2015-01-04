@@ -1,7 +1,8 @@
 define(['plugins/router', 'cloudberry/session', 'cloudberry/filesystem', 'knockout'], function(router, session, fs, ko) {
     var model = {
     	hierarchy: ko.observableArray([]),
-        items: ko.observableArray([])
+        items: ko.observableArray([]),
+        folder: ko.observable(null)
     };
     return {
         activate: function(id) {
@@ -15,6 +16,7 @@ define(['plugins/router', 'cloudberry/session', 'cloudberry/filesystem', 'knocko
             fs.folderInfo(id || 'roots').then(function(r) {
                 model.items(r.items);
                 model.hierarchy(r.hierarchy);
+                model.folder(r.item);
             });
             //
             return true;

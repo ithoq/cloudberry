@@ -1,5 +1,20 @@
-define(['cloudberry/session', 'cloudberry/core', 'knockout'], function(session, core, ko) {
+define(['cloudberry/session', 'cloudberry/core', 'knockout', 'jquery'], function(session, core, ko, $) {
     var _session = session.get();
+
+    /*core.routers.get().on('router:navigation:complete').then(function(instance, instruction, router) {
+        console.log("Root nav");
+        console.log(instance);
+        console.log(instruction);
+
+        var parts = instruction.fragment.split("/");
+        var id = parts[0];
+        var firstLevelView = core.views.getById(id);
+        console.log(firstLevelView);
+        if (firstLevelView.parent == 'main') {
+            _modules[id] = instance;
+        }
+    });*/
+
     var router = core.routers.get('main');
 
     core.actions.register({
@@ -17,7 +32,9 @@ define(['cloudberry/session', 'cloudberry/core', 'knockout'], function(session, 
         firstLevelViews: ko.observableArray(core.views.get('main')),
 
         activeSecondLevelView: ko.observable(null),
-        secondLevelViews: ko.observableArray([])
+        secondLevelViews: ko.observableArray([]),
+
+        subviews: ko.observable(null)
     };
 
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
@@ -31,9 +48,15 @@ define(['cloudberry/session', 'cloudberry/core', 'knockout'], function(session, 
 
         console.log("active=" + firstLevel + " / " + secondLevel);
 
-        model.activeFirstLevelView(core.views.getById(firstLevel));
+        var a = core.views.getById(firstLevel);
+        model.activeFirstLevelView(a);
         model.activeSecondLevelView(secondLevel ? core.views.getById(secondLevel) : null);
         model.secondLevelViews(core.views.get(firstLevel) || []);
+
+        if (instruction.config.mainNavTemplate)
+            model.subviews({ template: instruction.config.mainNavTemplate, model: instance });
+        else
+            model.subviews(null);
     });
 
     return {
@@ -42,6 +65,11 @@ define(['cloudberry/session', 'cloudberry/core', 'knockout'], function(session, 
         },
         core: core,
         model: model,
+        getActiveFirstLevelModule: function() {
+            //var df = $.Deferred();
+            return _activeModule;// _modules[model.activeFirstLevelView().id];
+            //return df;
+        }
         //onAction: function(ac) {
         //    ac.onAction();
         //}

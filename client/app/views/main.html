@@ -16,7 +16,10 @@
                     <li class="main-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
-                            <span data-bind="text:model.activeFirstLevelView().title"></span> <b class="caret"></b>
+                            <!-- ko if: model.activeFirstLevelView() -->
+                            <span data-bind="text:model.activeFirstLevelView().title"></span>
+                            <!-- /ko -->
+                            <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.firstLevelViews()">
@@ -44,6 +47,11 @@
                         </ul>
                     </li>
                 </ul>
+
+                <!-- ko if: model.subviews() -->
+                <div class="subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().template }">
+                </div>
+                <!-- /ko -->
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">

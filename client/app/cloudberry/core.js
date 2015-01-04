@@ -282,7 +282,7 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
                 }).pipe(function(r) {
                     permissions.putFilesystemPermissions(folderId, r.permissions);
 
-                    var folder = r.folder;
+                    //var folder = r.folder;
                     var data = r;
                     data.items = r.children;
                     return data;
@@ -320,6 +320,7 @@ define("cloudberry/platform", [
         parent: 'main',
         route: 'files(/:id)',
         moduleId: 'viewmodels/main/files',
+        mainNavTemplate: 'views/main/files/nav',
         title: 'Files',
         hash: "#files",
         nav: true
