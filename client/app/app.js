@@ -67,10 +67,7 @@ var cloudberryDefaults = {
     }
 };
 
-define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next', 'cloudberry/core', 'plugins/router'], function(require, $, system, app, viewLocator, binder, i18n, core, router) {
-    // load deps that don't need reference
-    require(['cloudberry/platform']);
-
+define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/binder', 'i18next'], function(require, $, system, app, viewLocator, binder, i18n) {
     var cloudberryApp = {};
 
     cloudberryApp.init = function(cfg) {
@@ -109,29 +106,31 @@ define("cloudberry/app", ['require', 'jquery', 'durandal/system', 'durandal/app'
             return df;
         };
 
-        app.start().then(function() {
-            viewLocator.useConvention(false, cloudberryApp.config['templates-path']);
+        require(['plugins/router', 'cloudberry/platform'], function(router) {
+            app.start().then(function() {
+                viewLocator.useConvention(false, cloudberryApp.config['templates-path']);
 
-            i18n.init(i18NOptions, function() {
-                //Call localization on view before binding...
-                binder.binding = function(obj, view) {
-                    $(view).i18n();
-                };
+                i18n.init(i18NOptions, function() {
+                    //Call localization on view before binding...
+                    binder.binding = function(obj, view) {
+                        $(view).i18n();
+                    };
 
-                // change language when session starts, and redirect to default view (?)
-                // TODO move to where?
-                app.on('session:start').then(function(session) {
-                    var lang = (session.user ? session.user.lang : false) || cloudberryApp.config.language.default;
-                    console.log("LANG=" + lang);
-                    i18n.setLng(lang);
+                    // change language when session starts, and redirect to default view (?)
+                    // TODO move to where?
+                    app.on('session:start').then(function(session) {
+                        var lang = (session.user ? session.user.lang : false) || cloudberryApp.config.language.default;
+                        console.log("LANG=" + lang);
+                        i18n.setLng(lang);
 
-                    router.navigate("files");
-                });
+                        router.navigate("files");
+                    });
 
-                require(['cloudberry/session'], function(session) {
-                    session.init(cloudberryApp.config).then(function() {
-                        loadModules(session).then(function() {
-                            app.setRoot('viewmodels/shell', false, 'cloudberry');
+                    require(['cloudberry/session'], function(session) {
+                        session.init(cloudberryApp.config).then(function() {
+                            loadModules(session).then(function() {
+                                app.setRoot('viewmodels/shell', false, 'cloudberry');
+                            });
                         });
                     });
                 });

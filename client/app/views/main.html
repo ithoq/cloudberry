@@ -8,12 +8,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Cloudberry</a>                
+                <a href="#" class="navbar-brand">Cloudberry</a> 
             </div>
 
             <div class="navbar-collapse collapse">
                 <ul class="main-header-nav nav navbar-nav navbar-left">
-                    <li class="main-view dropdown">
+                    <li class="first-level-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
                             <!-- ko if: model.activeFirstLevelView() -->
@@ -31,13 +31,13 @@
                 </ul>
 
                 <ul class="main-header-nav nav navbar-nav navbar-left" data-bind="if: model.secondLevelViews().length > 0">
-                    <li class="main-view dropdown">
+                    <li class="second-level-view dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
                             <!-- ko if: model.activeSecondLevelView() -->
                             <span data-bind="text:model.activeSecondLevelView().title"></span>
                             <!-- /ko -->
-                             <b class="caret"></b>
+                            <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews()">
@@ -48,8 +48,8 @@
                     </li>
                 </ul>
 
-                <!-- ko if: model.subviews() -->
-                <div class="subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().template }">
+                <!-- ko if: model.subviews() && model.subviews().templates.nav -->
+                <div class="main-header-subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().templates.nav }">
                 </div>
                 <!-- /ko -->
 

@@ -1,5 +1,5 @@
-define("cloudberry/core", ['plugins/router'],
-    function(router) {
+define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
+    function(router, fs) {
         var views = {};
         var viewsById = {};
         var actions = {};
@@ -292,7 +292,7 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
     }
 );
 
-define("cloudberry/platform", [
+define([
     "cloudberry/core",
     "durandal/composition",
     "knockout",
@@ -320,7 +320,9 @@ define("cloudberry/platform", [
         parent: 'main',
         route: 'files(/:id)',
         moduleId: 'viewmodels/main/files',
-        mainNavTemplate: 'views/main/files/nav',
+        subViewTemplates: {
+            nav: 'views/main/files/nav'
+        },
         title: 'Files',
         hash: "#files",
         nav: true
