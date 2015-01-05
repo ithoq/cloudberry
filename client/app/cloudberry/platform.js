@@ -321,7 +321,8 @@ define([
         route: 'files(/:id)',
         moduleId: 'viewmodels/main/files',
         subViewTemplates: {
-            nav: 'views/main/files/nav'
+            nav: 'views/main/files/nav',
+            tools: 'views/main/files/tools'
         },
         title: 'Files',
         hash: "#files",

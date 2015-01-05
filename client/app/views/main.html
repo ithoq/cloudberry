@@ -49,7 +49,7 @@
                 </ul>
 
                 <!-- ko if: model.subviews() && model.subviews().templates.nav -->
-                <div class="main-header-subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().templates.nav }">
+                <div class="main-header-subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().templates.nav, activate:false }">
                 </div>
                 <!-- /ko -->
 
@@ -68,6 +68,12 @@
                 <form class="navbar-form navbar-right">
                     <input type="text" class="form-control" placeholder="TODO">
                 </form>
+
+                <!-- ko if: model.subviews() && model.subviews().templates.tools -->
+                <div class="main-header-subnav" data-bind="compose: { model: model.subviews().model, view:model.subviews().templates.tools, activate:false }">
+                </div>
+                <!-- /ko -->
+
                 <ul class="nav navbar-nav navbar-right nav-pills">
                 </ul>
             </div>

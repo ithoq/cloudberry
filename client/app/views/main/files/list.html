@@ -1,0 +1,13 @@
+<div class="filelist-table">
+    <div class="filelist-header" data-bind="foreach: cols">
+        <div data-bind="attr: { class: 'filelist-header-col col col-'+id }, text: title">
+        </div>
+    </div>
+
+    <div class="filelist-items" data-bind="foreach: { data: model.items, as: 'item' }">
+        <div data-bind="attr: { id: 'item-'+item.id }, foreach: { data: $parent.cols, as: 'col' }">
+            <div data-bind="attr: { class: 'filelist-item-value col col-'+col.id }, html: $root.getCell(col, item), click: function(data, event) { $root.onCellClick(col, item, data, event) }">
+            </div>
+        </div>
+    </div>
+</div>

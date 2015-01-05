@@ -17,6 +17,6 @@
 </ul>
 <ul class="files-nav hierarchy roots nav navbar-nav navbar-left" data-bind="foreach: model.hierarchy">
     <li>
-    	<a href="#" data-bind="text: name, click: $parent.onItemClick"></a>
+    	<a href="#" data-bind="text: name, attr: { href: '#files/'+id }"></a>
     </li>
 </ul>
