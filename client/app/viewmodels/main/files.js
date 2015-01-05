@@ -82,12 +82,18 @@ define('main/files/list', function() {
 });
 
 define('main/files/icon', function() {
+	var parentModel = null;
+
     return {
         model: null,
         large: false,
-        activate: function(m) {
-            this.model = m;
-            this.large = (m.viewType().id == 'icon-large');
+        activate: function(p) {
+        	parentModel = p;
+            this.model = parentModel.model;
+            this.large = (parentModel.model.viewType().id == 'icon-large');
+        },
+        onItemClick: function(item) {
+        	parentModel.onItemClick(item);
         }
     };
 });
