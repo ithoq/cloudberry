@@ -1,16 +1,21 @@
 {
-	"login" : {
-		"title": "Login",
-		"username": "Username",
-		"password": "Password",
-		"remember": "Remember me",
-		"loginAction": "Login",
+    "core": {
+        "action": {
+            "session-logout": "Logout"
+        }
+    },
+    "login": {
+        "title": "Login",
+        "username": "Username",
+        "password": "Password",
+        "remember": "Remember me",
+        "loginAction": "Login",
 
-		"resetPassword": {
-			"title": "Reset password",
-			"email": "Email",
-			"send": "Send"
-		},
-		"register": "Register"
-	}
+        "resetPassword": {
+            "title": "Reset password",
+            "email": "Email",
+            "send": "Send"
+        },
+        "register": "Register"
+    }
 }

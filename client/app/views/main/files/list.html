@@ -6,7 +6,8 @@
 
     <div class="filelist-items" data-bind="foreach: { data: model.items, as: 'item' }">
         <div data-bind="attr: { id: 'item-'+item.id }, foreach: { data: $parent.cols, as: 'col' }">
-            <div data-bind="attr: { class: 'filelist-item-value col col-'+col.id }, html: $root.getCell(col, item), click: function(data, event) { $root.onCellClick(col, item, data, event) }">
+            <div data-bind="attr: { class: 'filelist-item-value col col-'+col.id }, html: $root.getCell(col, item)">
+            <!-- , event : { click: function(data, event) { $root.onCellClick(col, item, data, event), dblclick: function(data, event) { $root.onCellDblClick(col, item, data, event), contextmenu : function(data, event) { $root.onCellRightClick(col, item, data, event) } -->
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@ define(['cloudberry/core', 'knockout'], function(core, ko) {
 
     core.views.register({
     	id: 'users',
+    	icon: 'user',
         parent: 'config',
         route: 'config/users(/:id)',
         moduleId: 'views/main/config/users',

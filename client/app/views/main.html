@@ -24,7 +24,7 @@
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.firstLevelViews()">
                             <li>
-                                <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>
                         </ul>
                     </li>
@@ -42,7 +42,7 @@
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews()">
                             <li>
-                                <a href="#" data-bind="attr: { href: hash }"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="text: title"></span></a>
                             </li>
                         </ul>
                     </li>
@@ -60,7 +60,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: core.actions.get('session')">
                             <li>
-                                <a href="javascript: void(0)" data-bind="click: $parent.onAction"><i class="fa fa-file"></i>&nbsp;<span data-bind="text: title"></span></a>
+                                <a href="javascript: void(0)" data-bind="click: trigger"><i class="fa fa-file"></i>&nbsp;<span data-bind="i18n: titleKey"></span></a>
                             </li>
                         </ul>
                     </li>

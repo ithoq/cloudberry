@@ -2,6 +2,8 @@ define(['cloudberry/core', 'durandal/app'], function(core, da) {
     console.log("Comments");
 
     core.views.register({
+        id: 'comments',
+        icon: 'comment',
         parent: 'config',
         route: 'config/comments',
         title: 'TODO comments',

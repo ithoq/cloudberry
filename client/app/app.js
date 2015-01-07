@@ -10,6 +10,7 @@ requirejs.config({
         'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
         'underscore': '../bower_components/underscore/underscore',
         'knockout-bootstrap': '../vendor/knockout-bootstrap',
+        'jquery-singledoubleclick': '../vendor/jquery-singledoubleclick',
         'i18next': '../bower_components/i18next/i18next.amd.withJQuery.min',
     },
     shim: {

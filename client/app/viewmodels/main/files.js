@@ -1,4 +1,4 @@
-define(['plugins/router', 'cloudberry/session', 'cloudberry/filesystem', 'knockout'], function(router, session, fs, ko) {
+define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry/filesystem', 'knockout', 'jquery'], function(router, config, session, fs, ko, $) {
     var viewTypes = [{
         id: 'list',
         icon: 'fa-list',
@@ -43,14 +43,30 @@ define(['plugins/router', 'cloudberry/session', 'cloudberry/filesystem', 'knocko
             if (item.is_file) return;
             router.navigate("files/" + item.id);
         },
+        onItemAction: function(item, action, ctx) {
+            var itemAction = config["file-view"].actions[action];
+            if (!itemAction) return;
+            if (typeof(itemAction) == "function") itemAction = itemAction(item);
+
+            console.log(item.name + " " + itemAction);
+            if (itemAction == "menu") {
+                //$scope.showPopupmenu(ctx.e, item, actions.getType('filesystem', item));
+            } else if (itemAction == "quickactions") {
+                //$scope.showQuickactions(ctx.e, item, actions.getType('quick', item));
+            } else if (itemAction == "details") {
+                //$scope.showItemDetails(item);
+            } else {
+                core.actions.trigger(itemAction, item);
+            }
+        },
         setViewType: function(v) {
             model.viewType(v);
         }
     };
 });
 
-define('main/files/list', function() {
-	var parentModel = null;
+define('main/files/list', ['knockout'], function(ko) {
+    var parentModel = null;
     var cols = [{
         id: 'name',
         title: 'Name',
@@ -65,35 +81,60 @@ define('main/files/list', function() {
         }
     }];
 
+    var onCellClick = function(col, item) {
+        parentModel.onItemClick(item);
+    };
+    var onCellDblClick = function(col, item) {
+        parentModel.onItemDblClick(item);
+    };
+    var onCellRightClick = function(col, item) {
+        parentModel.onItemRightClick(item);
+        return false;
+    };
     return {
         model: null,
         cols: cols,
         activate: function(p) {
-        	parentModel = p;
+            parentModel = p;
             this.model = parentModel.model;
+        },
+        attached: function(v, p) {
+            /*$(v).on('click', '.filelist-item-value', function() {
+                var ctx = ko.contextFor(this);
+                onCellClick(ctx.col, ctx.item);
+            })*/
+            $(v).on('contextmenu', '.filelist-item-value', function() {
+                var ctx = ko.contextFor(this);
+                return onCellRightClick(ctx.col, ctx.item);
+            }).find('.filelist-item-value').single_double_click(function(e) {
+                //TODO delegate
+                var ctx = ko.contextFor(this);
+                onCellClick(ctx.col, ctx.item);
+            }, function(e) {
+                //TODO delegate
+                var ctx = ko.contextFor(this);
+                onCellDblClick(ctx.col, ctx.item);
+            });
         },
         getCell: function(col, item) {
             return col.content(item);
-        },
-        onCellClick: function(col, item) {
-        	parentModel.onItemClick(item);
         }
     };
 });
 
 define('main/files/icon', function() {
-	var parentModel = null;
+    var parentModel = null;
 
     return {
         model: null,
         large: false,
         activate: function(p) {
-        	parentModel = p;
+            parentModel = p;
             this.model = parentModel.model;
             this.large = (parentModel.model.viewType().id == 'icon-large');
         },
         onItemClick: function(item) {
-        	parentModel.onItemClick(item);
+            parentModel.onItemClick(item);
         }
     };
 });

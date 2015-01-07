@@ -1,16 +1,17 @@
-define(['cloudberry/session', 'cloudberry/core', 'knockout', 'jquery'], function(session, core, ko, $) {
+define(['cloudberry/session', 'cloudberry/core', 'knockout', 'jquery', 'i18next'], function(session, core, ko, $, i18n) {
     var router = core.routers.get('main');
 
     core.actions.register({
+        id: 'session-logout',
         type: 'session',
-        title: 'logout',
-        onAction: function() {
+        titleKey: 'core.action.session-logout',
+        handler: function() {
             session.end();
         }
     });
 
     var model = {
-        session: session.get(),
+        session: null,
 
         activeFirstLevelView: ko.observable(null),
         firstLevelViews: ko.observableArray(core.views.get('main')),
@@ -41,11 +42,16 @@ define(['cloudberry/session', 'cloudberry/core', 'knockout', 'jquery'], function
     return {
         router: router,
         activate: function() {
+            model.session = session.get();
         },
         core: core,
-        model: model
-        //onAction: function(ac) {
-        //    ac.onAction();
-        //}
+        model: model,
+        t: function(o) {
+            if (!o) return "";
+            if (typeof(o) == 'string') return i18n.t(o);
+            if (o['title-key']) return i18n.t(o['title-key']);
+            if (o.title) return o.title;
+            return "";
+        }
     };
 });
