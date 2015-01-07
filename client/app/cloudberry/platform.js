@@ -85,12 +85,10 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
         core.views.register({
             id: 'login',
             route: 'login',
-            title: '',
             moduleId: 'viewmodels/login'
         });
         core.views.register({
             route: '*details',
-            title: '',
             moduleId: 'viewmodels/main',
             nav: true
         });
@@ -106,7 +104,7 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
                 nav: 'views/main/files/nav',
                 tools: 'views/main/files/tools'
             },
-            title: 'Files',
+            titleKey: 'main.files.title',
             hash: "#files",
             nav: true
         });
@@ -116,7 +114,7 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
             parent: 'main',
             route: 'config*details',
             moduleId: 'viewmodels/main/config',
-            title: 'Configuration',
+            titleKey: 'main.config.title',
             hash: "#config",
             nav: true
         });
@@ -365,16 +363,18 @@ define([
     "knockout-bootstrap",
     "jquery-singledoubleclick"
 ], function(core, composition, ko, $, i18n) {
+    var _i18n = function(e, va) {
+        var value = ko.unwrap(va());
+        var loc = i18n.t(value) || '';
+        var $e = $(e);
+        var target = $e.attr('data-i18n-bind-target');
+        if (target && target != 'text')
+            $a.attr(target, loc);
+        else
+            $e.text(loc);
+    }
     composition.addBindingHandler('i18n', {
-        init: function(e, va) {
-            var value = ko.unwrap(va());
-            var loc = i18n.t(value) || '';
-            var $e = $(e);
-            var target = $e.attr('data-i18n-bind-target');
-            if (target && target != 'text')
-                $a.attr(target, loc);
-            else
-                $e.text(loc);
-        }
+        init: _i18n,
+        update: _i18n
     });
 });

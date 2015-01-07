@@ -17,14 +17,14 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
                             <!-- ko if: model.activeFirstLevelView() -->
-                            <span data-bind="text:model.activeFirstLevelView().title"></span>
+                            <span data-bind="i18n:model.activeFirstLevelView().titleKey"></span>
                             <!-- /ko -->
                             <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.firstLevelViews()">
                             <li>
-                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="text: title"></span></a>
+                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="i18n: titleKey"></span></a>
                             </li>
                         </ul>
                     </li>
@@ -35,14 +35,14 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-file"></i>&nbsp;
                             <!-- ko if: model.activeSecondLevelView() -->
-                            <span data-bind="text:model.activeSecondLevelView().title"></span>
+                            <span data-bind="i18n:model.activeSecondLevelView().titleKey"></span>
                             <!-- /ko -->
                             <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu" role="menu" data-bind="foreach: model.secondLevelViews()">
                             <li>
-                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="text: title"></span></a>
+                                <a href="#" data-bind="attr: { href: hash }"><i data-bind="attr: {class: 'fa fa-'+icon }"></i>&nbsp;<span data-bind="i18n: titleKey"></span></a>
                             </li>
                         </ul>
                     </li>

@@ -17,5 +17,17 @@
             "send": "Send"
         },
         "register": "Register"
+    },
+    "main": {
+        "files": {
+            "title": "Files"
+        },
+        "config": {
+            "title": "Configuration",
+
+            "users": {
+                "title": "Users"
+            }
+        }
     }
 }

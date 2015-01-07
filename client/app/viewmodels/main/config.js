@@ -7,7 +7,7 @@ define(['cloudberry/core', 'knockout'], function(core, ko) {
         parent: 'config',
         route: 'config/users(/:id)',
         moduleId: 'views/main/config/users',
-        title: 'Users',
+        titleKey: 'main.config.users.title',
         hash: "#config/users",
         nav: true
     });
