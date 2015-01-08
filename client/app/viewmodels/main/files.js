@@ -18,6 +18,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
     var model = {
         viewTypes: viewTypes,
         viewType: ko.observable(viewTypes[0]),
+        activeListWidget: null,
 
         roots: [],
         root: ko.observable(null),
@@ -25,16 +26,32 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         items: ko.observableArray([]),
         folder: ko.observable(null)
     };
+    var onListWidgetReady = function(o) {
+        model.activeListWidget = o;
+        reload();
+    };
+    var reload = function() {
+        var rqData = {};
+        if (model.activeListWidget && model.activeListWidget.getRequestData) rqData = model.activeListWidget.getRequestData(model.folderId);
+        console.log("Files load " + model.folderId);
+        fs.folderInfo(model.folderId || 'roots', rqData).then(function(r) {
+            model.items(r.items);
+            model.root(r.hierarchy ? r.hierarchy[0] : null);
+            model.hierarchy((r.hierarchy && r.hierarchy.length > 1) ? r.hierarchy.slice(1) : []);
+            model.folder(r.item);
+        });
+    };
     return {
         activate: function(id) {
-            model.roots = fs.roots();
+            console.log('files activate');
 
-            fs.folderInfo(id || 'roots').then(function(r) {
-                model.items(r.items);
-                model.root(r.hierarchy ? r.hierarchy[0] : null);
-                model.hierarchy((r.hierarchy && r.hierarchy.length > 1) ? r.hierarchy.slice(1) : []);
-                model.folder(r.item);
-            });
+            model.roots = fs.roots();
+            model.folderId = id;
+            model.root(null);
+            model.hierarchy([]);
+            model.items([]);
+            model.folder(null);
+            if (model.activeListWidget) reload();
 
             return true;
         },
@@ -61,7 +78,8 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         },
         setViewType: function(v) {
             model.viewType(v);
-        }
+        },
+        onListWidgetReady: onListWidgetReady
     };
 });
 
@@ -91,12 +109,24 @@ define('main/files/list', ['knockout'], function(ko) {
         parentModel.onItemRightClick(item);
         return false;
     };
+    var getRequestData = function() {
+        console.log('file list rq');
+        return {
+            foo: "bar"
+        };
+    };
     return {
         model: null,
         cols: cols,
         activate: function(p) {
+            console.log('files list activate');
+
             parentModel = p;
             this.model = parentModel.model;
+
+            parentModel.onListWidgetReady({
+                getRequestData: getRequestData
+            });
         },
         attached: function(v, p) {
             /*$(v).on('click', '.filelist-item-value', function() {
@@ -129,9 +159,13 @@ define('main/files/icon', function() {
         model: null,
         large: false,
         activate: function(p) {
+        	console.log('files icon list activate');
+
             parentModel = p;
             this.model = parentModel.model;
             this.large = (parentModel.model.viewType().id == 'icon-large');
+
+            parentModel.onListWidgetReady({});
         },
         onItemClick: function(item) {
             parentModel.onItemClick(item);
