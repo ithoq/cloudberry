@@ -44,15 +44,9 @@ var cloudberryDefaults = {
             }
         },
         "actions": {
-            "click": function(item) {
-                return "details";
-            },
-            "dbl-click": function(item) {
-                return "file/open";
-            },
-            "right-click": function(item) {
-                return "menu";
-            },
+            "click": "view/details",
+            "dbl-click": "filesystem/open",
+            "right-click": "view/menu",
             "mouse-over": "quickactions"
         }
     },

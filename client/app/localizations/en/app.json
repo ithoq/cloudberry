@@ -1,7 +1,12 @@
 {
     "core": {
         "action": {
-            "session-logout": "Logout"
+            "session": {
+            	"logout": "Logout"
+            },
+            "filesystem": {
+            	"open": "Open"
+            }
         }
     },
     "login": {

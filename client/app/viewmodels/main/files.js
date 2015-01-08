@@ -1,4 +1,26 @@
-define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry/filesystem', 'knockout', 'jquery'], function(router, config, session, fs, ko, $) {
+define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry/filesystem', 'cloudberry/core', 'knockout', 'jquery'], function(router, config, session, fs, core, ko, $) {
+    core.actions.register({
+        id: 'filesystem/open',
+        type: 'filesystem',
+        titleKey: 'core.action.filesystem.open',
+        handler: function(item) {
+            if (item.is_file) {
+                alert("open " + item.name);
+                return;
+            }
+            router.navigate("files/" + item.id);
+        }
+    });
+
+    core.actions.register({
+        id: 'view/details',
+        type: 'filesystem',
+        titleKey: 'core.action.filesystem.open',
+        handler: function(item) {
+            alert("details " + item.name);
+        }
+    });
+
     var viewTypes = [{
         id: 'list',
         icon: 'fa-list',
@@ -31,8 +53,11 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         reload();
     };
     var reload = function() {
+    	if (!model.activeListWidget) return;
+
         var rqData = {};
-        if (model.activeListWidget && model.activeListWidget.getRequestData) rqData = model.activeListWidget.getRequestData(model.folderId);
+        if (model.activeListWidget.getRequestData) rqData = model.activeListWidget.getRequestData(model.folderId);
+        
         console.log("Files load " + model.folderId);
         fs.folderInfo(model.folderId || 'roots', rqData).then(function(r) {
             model.items(r.items);
@@ -57,10 +82,10 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         },
         model: model,
         onItemClick: function(item, e) {
-            if (item.is_file) return;
-            router.navigate("files/" + item.id);
+            this.onItemAction(item, "click", e);
         },
         onItemAction: function(item, action, ctx) {
+            console.log("item action " + action);
             var itemAction = config["file-view"].actions[action];
             if (!itemAction) return;
             if (typeof(itemAction) == "function") itemAction = itemAction(item);
@@ -99,14 +124,17 @@ define('main/files/list', ['knockout'], function(ko) {
         }
     }];
 
+    var getCtx = function() {
+        return {};
+    };
     var onCellClick = function(col, item) {
-        parentModel.onItemClick(item);
+        parentModel.onItemAction(item, "click", getCtx());
     };
     var onCellDblClick = function(col, item) {
-        parentModel.onItemDblClick(item);
+        parentModel.onItemAction(item, "dbl-click", getCtx());
     };
     var onCellRightClick = function(col, item) {
-        parentModel.onItemRightClick(item);
+        parentModel.onItemAction(item, "right-click", getCtx());
         return false;
     };
     var getRequestData = function() {
@@ -129,21 +157,32 @@ define('main/files/list', ['knockout'], function(ko) {
             });
         },
         attached: function(v, p) {
+            var clicks = 0,
+                clickElement = null;
             /*$(v).on('click', '.filelist-item-value', function() {
                 var ctx = ko.contextFor(this);
                 onCellClick(ctx.col, ctx.item);
             })*/
-            $(v).on('contextmenu', '.filelist-item-value', function() {
+            $(v).on('click', '.filelist-item-value', function() {
+                if (!clickElement || clickElement != this) clicks = 0;
+                var ctx = ko.contextFor(this);
+                //onCellClick(ctx.col, ctx.item);
+                clicks++;
+                clickElement = this;
+
+                if (clicks == 1) {
+                    setTimeout(function() {
+                        if (clicks == 1) {
+                            onCellClick(ctx.col, ctx.item);
+                        } else {
+                            onCellDblClick(ctx.col, ctx.item);
+                        }
+                        clicks = 0;
+                    }, 300);
+                }
+            }).on('contextmenu', '.filelist-item-value', function() {
                 var ctx = ko.contextFor(this);
                 return onCellRightClick(ctx.col, ctx.item);
-            }).find('.filelist-item-value').single_double_click(function(e) {
-                //TODO delegate
-                var ctx = ko.contextFor(this);
-                onCellClick(ctx.col, ctx.item);
-            }, function(e) {
-                //TODO delegate
-                var ctx = ko.contextFor(this);
-                onCellDblClick(ctx.col, ctx.item);
             });
         },
         getCell: function(col, item) {
@@ -159,7 +198,7 @@ define('main/files/icon', function() {
         model: null,
         large: false,
         activate: function(p) {
-        	console.log('files icon list activate');
+            console.log('files icon list activate');
 
             parentModel = p;
             this.model = parentModel.model;

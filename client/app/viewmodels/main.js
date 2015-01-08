@@ -2,9 +2,9 @@ define(['cloudberry/session', 'cloudberry/core', 'knockout', 'jquery', 'i18next'
     var router = core.routers.get('main');
 
     core.actions.register({
-        id: 'session-logout',
+        id: 'session/logout',
         type: 'session',
-        titleKey: 'core.action.session-logout',
+        titleKey: 'core.action.session.logout',
         handler: function() {
             session.end();
         }

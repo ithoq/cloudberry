@@ -37,6 +37,7 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
                     var t = ac.type || '_';
                     if (actions[t] === undefined) actions[t] = [];
                     actions[t].push(ac);
+                    actionsById[ac.id] = ac;
                     ac.trigger = actionTrigger;
                 },
                 get: function(type) {
@@ -360,8 +361,7 @@ define([
     "jquery",
     "i18next",
     "bootstrap",
-    "knockout-bootstrap",
-    "jquery-singledoubleclick"
+    "knockout-bootstrap"
 ], function(core, composition, ko, $, i18n) {
     var _i18n = function(e, va) {
         var value = ko.unwrap(va());
