@@ -47,7 +47,7 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
                     if (!id) return null;
                     return actionsById[id];
                 },
-                trigger: function(ac, ctx) {
+                trigger: function(ac, subj, ctx) {
                     if (!ac) return;
                     if (typeof(ac) == 'string') ac = actionsById[ac];
                     if (!ac || !ac.handler) return;
@@ -55,7 +55,7 @@ define("cloudberry/core", ['plugins/router', 'cloudberry/filesystem'],
                     // inject handler params
                     //var fn = window.isArray(ac.handler) ? ac.handler[ac.handler.length - 1] : ac.handler;
                     //var deps = [];
-                    var args = [ctx];
+                    var args = [subj, ctx];
                     //if (window.isArray(ac.handler) && ac.handler.length > 1)
                     //    for (var i = 0; i <= ac.handler.length - 2; i++) args.push($injector.get(ac.handler[i]));
                     ac.handler.apply(null, args);

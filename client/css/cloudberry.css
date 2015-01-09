@@ -8417,44 +8417,51 @@ button.close {
 #cloudberry .main-view > .container-fluid {
   margin-top: 60px;
 }
-#cloudberry .main-view .fileview .filelist-table {
+#cloudberry .main-view .files-view .filelist-table {
   float: left;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-header {
+#cloudberry .main-view .files-view .filelist-table .filelist-header {
   float: left;
   width: 100%;
   font-weight: bold;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-header .filelist-header-col {
+#cloudberry .main-view .files-view .filelist-table .filelist-header .filelist-header-col {
   float: left;
   vertical-align: bottom;
   border-bottom: 2px solid #ddd;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-items {
+#cloudberry .main-view .files-view .filelist-table .filelist-items {
   float: left;
   clear: both;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-items .filelist-item {
+#cloudberry .main-view .files-view .filelist-table .filelist-items .filelist-item {
   float: left;
   width: 100%;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-items .filelist-item .filelist-item-value {
+#cloudberry .main-view .files-view .filelist-table .filelist-items .filelist-item .filelist-item-value {
   float: left;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-items .filelist-item.dragover {
+#cloudberry .main-view .files-view .filelist-table .filelist-items .filelist-item.dragover {
   background-color: red;
 }
-#cloudberry .main-view .fileview .filelist-table .filelist-header-col,
-#cloudberry .main-view .fileview .filelist-table .filelist-item-value {
+#cloudberry .main-view .files-view .filelist-table .filelist-header-col,
+#cloudberry .main-view .files-view .filelist-table .filelist-item-value {
   padding: 8px;
 }
-#cloudberry .main-view .fileview .filelist-table .col {
+#cloudberry .main-view .files-view .filelist-table .col {
   width: 175px;
 }
-#cloudberry .main-view .fileview .filelist-table .col-name {
+#cloudberry .main-view .files-view .filelist-table .col-name {
   width: 275px;
 }
-#cloudberry .main-view .fileview .item-details-container {
+#cloudberry .main-view .files-view .item-details-container {
   float: left;
   width: 100%;
   height: 100%;

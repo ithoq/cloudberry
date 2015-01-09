@@ -1,9 +1,9 @@
 @import url(../../bower_components/bootstrap/less/bootstrap.less);
- @import url(../../bower_components/bootstrap/less/theme.less);
- @import url(../../bower_components/font-awesome/less/font-awesome.less);
- @import url(../bower_components/durandal/css/durandal.css);
- @fa-font-path:"../bower_components/font-awesome/fonts";
- #cloudberry {
+@import url(../../bower_components/bootstrap/less/theme.less);
+@import url(../../bower_components/font-awesome/less/font-awesome.less);
+@import url(../bower_components/durandal/css/durandal.css);
+@fa-font-path: "../bower_components/font-awesome/fonts";
+#cloudberry {
     margin: 0;
     .container {
         & .fullpage {
@@ -34,7 +34,7 @@
         & > .container-fluid {
             margin-top: 60px;
         }
-        .fileview {
+        .files-view {
             .filelist-table {
                 float: left;
                 .filelist-header {
@@ -55,6 +55,13 @@
                         width: 100%;
                         .filelist-item-value {
                             float: left;
+                            cursor: pointer;
+                            -webkit-touch-callout: none;
+                            -webkit-user-select: none;
+                            -khtml-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
                         }
                         &.dragover {
                             background-color: red;
@@ -95,11 +102,9 @@
             float: left;
             width: 100%;
             height: 100%;
-
             & h3.title {
                 margin-top: 0;
             }
-
             .tabset {
                 .tab-content {
                     height: 150px;

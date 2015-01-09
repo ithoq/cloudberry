@@ -307,27 +307,8 @@ module.exports = function(grunt) {
                 files: 'client/less/*.less',
                 tasks: 'less'
             }
-        },
-
-        nggettext_extract: {
-            pot: {
-                files: {
-                    'client/po/template.pot': ['client/templates/**/*.html', 'client/js/**/*.js']
-                }
-            }
-        },
-        nggettext_compile: {
-            all: {
-                options: {
-                    //module: 'cloudberry'
-                },
-                files: {
-                    'client/js/translations.js': ['client/po/*.po']
-                }
-            },
         }
     });
-
 
     // These plugins provide necessary tasks.
     require('load-grunt-tasks')(grunt, {
