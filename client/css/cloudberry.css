@@ -8467,6 +8467,9 @@ button.close {
   background-color: #ababab;
   display: none;
 }
+#cloudberry .main-view .files-view .item-details-container .item-details.content.loading {
+  background-color: red;
+}
 #cloudberry .main-view .popupmenu-container,
 #cloudberry .main-view .quickaction-container {
   position: absolute;

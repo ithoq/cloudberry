@@ -336,8 +336,9 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
             rootsById: function() {
                 return _rootsById;
             },
-            folderInfo: function(folderId) {
+            folderInfo: function(folderId, data) {
                 return service.post("filesystem/" + folderId + "/info/", {
+                    data: data,
                     children: true,
                     hierarchy: true,
                     permissions: true
@@ -348,6 +349,15 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
                     var data = r;
                     data.items = r.children;
                     return data;
+                });
+            },
+            itemInfo: function(itemId, data) {
+                return service.post("filesystem/" + itemId + "/info/", {
+                    data: data,
+                    permissions: true
+                }).pipe(function(r) {
+                    permissions.putFilesystemPermissions(itemId, r.permissions);
+                    return r;
                 });
             }
         };

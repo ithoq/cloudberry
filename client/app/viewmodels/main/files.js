@@ -21,21 +21,31 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
             console.log("details " + item.name);
             if (!model.activeListWidget) return;
 
+            var oldItem = model.itemDetails.item();
             var $itemElement = model.activeListWidget.getItemDOMObject(item);
 
             //var $all = $(".item-details-container");
             var showDetails = function() {
                 if ($activeDetails) $activeDetails.hide();
+                // same item clicked, just close
+                if (oldItem && item.id == oldItem.id) {
+                    model.itemDetails.item(null);
+                    return;
+                }
 
-                //$all.removeClass("visible");
                 var $container = $itemElement.find(".item-details-container").hide();
+                model.itemDetails.item(item);
+                model.itemDetails.loading(true);
+                model.itemDetails.data(null);
 
-                model.itemDetails({
-                    item: item
-                });
                 $("#files-view-item-details").remove().appendTo($container);
                 $container.slideDown();
                 $activeDetails = $container;
+
+                fs.itemInfo(item.id).done(function(r) {
+                    model.itemDetails.loading(false);
+                    model.itemDetails.data(r);
+                });
             };
             $activeDetails ? $activeDetails.slideUp({
                 complete: showDetails
@@ -72,7 +82,11 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         items: ko.observableArray([]),
         folder: ko.observable(null),
 
-        itemDetails: ko.observable(null)
+        itemDetails: {
+            item: ko.observable(null),
+            loading: ko.observable(false),
+            data: ko.observable(null)
+        }
     };
     var onListWidgetReady = function(o) {
         model.activeListWidget = o;
