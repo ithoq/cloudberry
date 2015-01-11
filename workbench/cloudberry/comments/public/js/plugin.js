@@ -14,7 +14,11 @@ define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core
             return {foo: "bar"}
         },
         getItemDetails : function(item) {
-
+            return {
+                title: "todo",
+                module: 'plugin/comments/itemdetails',
+                template: 'plugin/comments/itemdetails'
+            }
         }
     });
 });

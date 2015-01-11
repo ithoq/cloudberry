@@ -38,6 +38,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
                 model.itemDetails.loading(true);
                 model.itemDetails.data(null);
                 model.itemDetails.details([]);
+                model.itemDetails.activeDetails(null);
 
                 $("#files-view-item-details").remove().appendTo($container);
                 $container.slideDown();
@@ -88,7 +89,11 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
             item: ko.observable(null),
             loading: ko.observable(false),
             data: ko.observable(null),
-            details: ko.observableArray([])
+            details: ko.observableArray([]),
+            activeDetails: ko.observable(null),
+            setActiveDetails: function(d) {
+            	model.itemDetails.activeDetails(d);
+            }
         }
     };
     var onListWidgetReady = function(o) {

@@ -382,7 +382,7 @@ define('cloudberry/ui/files', [], function() {
             return r;
         },
         getItemDetails: function(item, data) {
-            var r = {};
+            var r = [];
             _.each(itemDetailsHandlers, function(h) {
                 var hi = h.getItemDetails(item, data[h.id]);
                 if (!hi) return;
