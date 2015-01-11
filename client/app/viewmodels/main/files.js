@@ -1,4 +1,4 @@
-define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry/filesystem', 'cloudberry/core', 'knockout', 'jquery'], function(router, config, session, fs, core, ko, $) {
+define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry/filesystem', 'cloudberry/core', 'cloudberry/ui/files', 'knockout', 'jquery'], function(router, config, session, fs, core, uif, ko, $) {
     core.actions.register({
         id: 'filesystem/open',
         type: 'filesystem',
@@ -37,14 +37,16 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
                 model.itemDetails.item(item);
                 model.itemDetails.loading(true);
                 model.itemDetails.data(null);
+                model.itemDetails.details([]);
 
                 $("#files-view-item-details").remove().appendTo($container);
                 $container.slideDown();
                 $activeDetails = $container;
 
-                fs.itemInfo(item.id).done(function(r) {
+                fs.itemInfo(item.id, uif.getItemDetailsRequestData(item)).done(function(r) {
                     model.itemDetails.loading(false);
                     model.itemDetails.data(r);
+                    model.itemDetails.details(uif.getItemDetails(item, r));
                 });
             };
             $activeDetails ? $activeDetails.slideUp({
@@ -85,7 +87,8 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         itemDetails: {
             item: ko.observable(null),
             loading: ko.observable(false),
-            data: ko.observable(null)
+            data: ko.observable(null),
+            details: ko.observableArray([])
         }
     };
     var onListWidgetReady = function(o) {

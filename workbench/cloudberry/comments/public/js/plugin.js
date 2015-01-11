@@ -1,4 +1,4 @@
-define(['cloudberry/core', 'durandal/app'], function(core, da) {
+define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core, da, uif) {
     core.views.register({
         id: 'comments',
         icon: 'comment',
@@ -6,6 +6,16 @@ define(['cloudberry/core', 'durandal/app'], function(core, da) {
         route: 'config/comments',
         titleKey: 'plugin-comments.config.title',
         hash: '#config/comments'
+    });
+
+    uif.registerItemDetailsHandler({
+        id: 'plugin-comments',
+        getItemDetailsRequestData : function(item) {
+            return {foo: "bar"}
+        },
+        getItemDetails : function(item) {
+
+        }
     });
 });
 /*! function(cloudberry) {

@@ -364,6 +364,35 @@ define("cloudberry/filesystem", ['cloudberry/core_service', 'cloudberry/permissi
     }
 );
 
+define('cloudberry/ui/files', [], function() {
+    var itemDetailsHandlers = [];
+    return {
+        itemDetailsHandlers: itemDetailsHandlers,
+        registerItemDetailsHandler: function(h) {
+            itemDetailsHandlers.push(h);
+        },
+        getItemDetailsRequestData: function(item) {
+            var r = {};
+            _.each(itemDetailsHandlers, function(h) {
+                if (!h.getItemDetailsRequestData) return;
+                var hd = h.getItemDetailsRequestData(item);
+                if (!hd) return;
+                r[h.id] = hd;
+            });
+            return r;
+        },
+        getItemDetails: function(item, data) {
+            var r = {};
+            _.each(itemDetailsHandlers, function(h) {
+                var hi = h.getItemDetails(item, data[h.id]);
+                if (!hi) return;
+                r.push(hi);
+            });
+            return r;
+        }
+    }
+});
+
 define([
     "cloudberry/core",
     "durandal/composition",
@@ -371,7 +400,8 @@ define([
     "jquery",
     "i18next",
     "bootstrap",
-    "knockout-bootstrap"
+    "knockout-bootstrap",
+    "underscore"
 ], function(core, composition, ko, $, i18n) {
     var _i18n = function(e, va) {
         var value = ko.unwrap(va());
