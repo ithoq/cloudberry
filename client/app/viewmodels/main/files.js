@@ -12,20 +12,34 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         }
     });
 
+    var $activeDetails = null;
     core.actions.register({
         id: 'view/details',
         type: 'filesystem',
         titleKey: 'core.action.filesystem.open',
         handler: function(item, ctx) {
-			console.log("details " + item.name);
-			if (!model.activeListWidget) return;
-			var $itemElement = model.activeListWidget.getItemDOMObject(item);
-			var $container = $itemElement.find(".item-details-container");
+            console.log("details " + item.name);
+            if (!model.activeListWidget) return;
 
-			model.itemDetails({
-				item: item
-			});
-			$("#files-view-item-details").remove().appendTo($container);
+            var $itemElement = model.activeListWidget.getItemDOMObject(item);
+
+            //var $all = $(".item-details-container");
+            var showDetails = function() {
+                if ($activeDetails) $activeDetails.hide();
+
+                //$all.removeClass("visible");
+                var $container = $itemElement.find(".item-details-container").hide();
+
+                model.itemDetails({
+                    item: item
+                });
+                $("#files-view-item-details").remove().appendTo($container);
+                $container.slideDown();
+                $activeDetails = $container;
+            };
+            $activeDetails ? $activeDetails.slideUp({
+                complete: showDetails
+            }) : showDetails();
         }
     });
 
@@ -46,7 +60,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         template: 'views/main/files/icon'
     }];
     var model = {
-    	loading: ko.observable(false),
+        loading: ko.observable(false),
 
         viewTypes: viewTypes,
         viewType: ko.observable(viewTypes[0]),
@@ -71,7 +85,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
         model.folder(null);
     };
     var reload = function() {
-    	model.loading(true);
+        model.loading(true);
         if (!model.activeListWidget) return;
 
         var rqData = {};
@@ -79,7 +93,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
 
         console.log("Files load " + model.folderId);
         fs.folderInfo(model.folderId || 'roots', rqData).then(function(r) {
-        	model.loading(false);
+            model.loading(false);
             model.items(r.items);
             model.root(r.hierarchy ? r.hierarchy[0] : null);
             model.hierarchy((r.hierarchy && r.hierarchy.length > 1) ? r.hierarchy.slice(1) : []);
@@ -114,7 +128,7 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
             }
         },
         setViewType: function(v) {
-        	reset();
+            reset();
             model.activeListWidget = null;
             model.viewType(v);
         },
@@ -139,7 +153,7 @@ define('main/files/list', ['knockout'], function(ko) {
     }];
 
     var getCtx = function(col, item, e) {
-    	var $e = $(e.target);
+        var $e = $(e.target);
         return {
             e: e,
             col: col,
@@ -174,9 +188,9 @@ define('main/files/list', ['knockout'], function(ko) {
             this.model = parentModel.model;
 
             parentModel.onListWidgetReady({
-            	getItemDOMObject: function(item) {
-            		return $("#filelist-item-"+item.id);
-            	},
+                getItemDOMObject: function(item) {
+                    return $("#filelist-item-" + item.id);
+                },
                 getRequestData: getRequestData
             });
         },

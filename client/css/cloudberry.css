@@ -8464,8 +8464,8 @@ button.close {
 #cloudberry .main-view .files-view .item-details-container {
   float: left;
   width: 100%;
-  height: 100%;
   background-color: #ababab;
+  display: none;
 }
 #cloudberry .main-view .popupmenu-container,
 #cloudberry .main-view .quickaction-container {

@@ -1,8 +1,10 @@
 <div class="row-fluid files-view" data-bind="compose: { view: model.viewType().template, model: model.viewType().module, activationData: $root }, class: { loading: model.loading }">
 </div>
 
-<!-- ko if: model.itemDetails() -->
-<div id="files-view-item-details" class="item-details">
-	<div data-bind="compose: { view: 'main/files/itemdetails' }"></div>	
+<div style="height: 0; visibility: hidden">
+    <!-- ko if: model.itemDetails() -->
+    <div id="files-view-item-details" class="item-details">
+        <div data-bind="compose: { view: 'main/files/itemdetails' }"></div>
+    </div>
+    <!-- /ko -->
 </div>
-<!-- /ko -->
