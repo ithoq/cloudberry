@@ -4,25 +4,38 @@ define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core
         icon: 'comment',
         parent: 'config',
         route: 'config/comments',
-        titleKey: 'plugin-comments.config.title',
-        hash: '#config/comments'
+        titleKey: 'comments.config.title',
+        hash: '#config/comments',
+        moduleId: 'cloudberry/comments/config',
     });
 
     uif.registerItemDetailsHandler({
-        id: 'plugin-comments',
+        id: 'cloudberry/comments',
         getItemDetailsRequestData : function(item) {
             return {foo: "bar"}
         },
         getItemDetails : function(item) {
             return {
-                titleKey: "plugin-comments.itemdetails.title",
-                module: 'plugin/comments/itemdetails'
+                titleKey: "comments.itemdetails.title",
+                module: 'cloudberry/comments/itemdetails'
             }
         }
     });
 });
 
-define('plugin/comments/itemdetails', [], function() {
+define('cloudberry/comments/config', [], function() {
+    return {
+        activate: function() {
+            console.log("comments/config");
+        },
+        getView : function() {
+            //TODO util that resolves plugin url from "comments/public/templates/config"
+            return '../../../workbench/cloudberry/comments/public/templates/config';
+        }
+    };
+});
+
+define('cloudberry/comments/itemdetails', [], function() {
     return {
         activate: function(d) {
             console.log("comments/itemdetails");
