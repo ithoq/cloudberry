@@ -15,13 +15,26 @@ define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core
         },
         getItemDetails : function(item) {
             return {
-                title: "todo",
-                module: 'plugin/comments/itemdetails',
-                template: 'plugin/comments/itemdetails'
+                titleKey: "plugin-comments.itemdetails.title",
+                module: 'plugin/comments/itemdetails'
             }
         }
     });
 });
+
+define('plugin/comments/itemdetails', [], function() {
+    return {
+        activate: function(d) {
+            console.log("comments/itemdetails");
+            console.log(d);
+        },
+        getView : function() {
+            //TODO util that resolves plugin url from "comments/public/templates/itemdetails"
+            return '../../../workbench/cloudberry/comments/public/templates/itemdetails';
+        }
+    };
+});
+
 /*! function(cloudberry) {
     'use strict';
 

@@ -27,27 +27,35 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
             //var $all = $(".item-details-container");
             var showDetails = function() {
                 if ($activeDetails) $activeDetails.hide();
+
+                var itemDetails = model.itemDetails;
+                itemDetails.loading(false);
+                itemDetails.data(null);
+                itemDetails.details([]);
+                itemDetails.activeDetails(null);
+
                 // same item clicked, just close
                 if (oldItem && item.id == oldItem.id) {
-                    model.itemDetails.item(null);
+                    itemDetails.item(null);
                     return;
                 }
 
                 var $container = $itemElement.find(".item-details-container").hide();
-                model.itemDetails.item(item);
-                model.itemDetails.loading(true);
-                model.itemDetails.data(null);
-                model.itemDetails.details([]);
-                model.itemDetails.activeDetails(null);
+                
+                itemDetails.item(item);
+                itemDetails.loading(true);
 
                 $("#files-view-item-details").remove().appendTo($container);
                 $container.slideDown();
                 $activeDetails = $container;
 
                 fs.itemInfo(item.id, uif.getItemDetailsRequestData(item)).done(function(r) {
-                    model.itemDetails.loading(false);
-                    model.itemDetails.data(r);
-                    model.itemDetails.details(uif.getItemDetails(item, r));
+                    itemDetails.loading(false);
+                    itemDetails.data(r);
+
+                    var d = uif.getItemDetails(item, r);
+                    itemDetails.details(d);
+                    itemDetails.activeDetails((d && d.length > 0) ? d[0] : null);
                 });
             };
             $activeDetails ? $activeDetails.slideUp({
