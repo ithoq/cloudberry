@@ -22,6 +22,20 @@ class CloudberryController {
 		return $this->plugins;
 	}
 
+	public function getItemDetails($item, $data) {
+		$result = array();
+		foreach ($this->plugins as $id => $plugin) {
+			if (array_key_exists("getItemDetailsData", $plugin)) {
+				$data = $plugin["getItemDetailsData"]($item, isset($data[$id]) ? $data[$id] : NULL);
+				if ($data) {
+					$result[$id] = $data;
+				}
+			}
+		}
+
+		return $result;
+	}
+
 	public function init($request) {
 		$this->permissions->registerPermission("change_password");
 

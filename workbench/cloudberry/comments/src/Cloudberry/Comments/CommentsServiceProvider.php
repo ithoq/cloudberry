@@ -18,6 +18,9 @@ class CommentsServiceProvider extends ServiceProvider {
 				\Log::debug("Comments init");
 			},
 			"client" => "cloudberry/comments/public/js/plugin.js",
+			"getItemDetailsData" => function ($item, $data) {
+				return Comment::forItem($item->getId());
+			}
 		));
 
 		Route::group(array('prefix' => 'comments/v1'), function () {

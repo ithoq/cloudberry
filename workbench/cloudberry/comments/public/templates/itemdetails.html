@@ -1,34 +1,9 @@
-<ul>
-	<!--li ng-repeat="c in comments.list">
-		{{c.created_at}}
-		{{c.user_id}}
-	    
-	    <div ng-if="comments.canEdit(c)">
-	    	<span editable-text="c.comment" e-name="comment" e-form="editCommentForm">
-	    		{{ c.comment }}
-	    	</span>
-
-			<form editable-form name="editCommentForm" onbeforesave="comments.editComment($data, c)" ng-show="editCommentForm.$visible">
-			    <button type="submit" ng-disabled="editCommentForm.$waiting" class="btn btn-primary">
-			        SAVE
-			    </button>
-			    <button type="button" ng-disabled="editCommentForm.$waiting" ng-click="editCommentForm.$cancel()" class="btn btn-default">
-			        CANCEL
-			    </button>
-			</form>
-			
-			<div class="buttons" ng-show="!editCommentForm.$visible">
-			    <button class="btn btn-default" ng-click="editCommentForm.$show()">EDIT</button>
-			</div>
-
-	    	<a ng-click="comments.onRemoveComment(c)">REMOVE</a>
-	    </div>
-
-	    <div ng-if="!comments.canEdit(c)">
-	    	{{ c.comment }}
-	    </div>
-	    
-	</li-->
+<ul data-bind="foreach: { data: model.list(), as: 'comment' }">
+	<li>
+		<span data-bind="text: created_at"></span>
+		<span data-bind="text: user_id"></span>
+		<span data-bind="text: created_at"></span>
+	</li>
 </ul>
 
-<input class="new_comment" ng-model="comments.newComment"></input><button class="add_comment" ng-click="comments.onAddComment()">ADD</button>
+<input class="new_comment" data-bind="value: model.comment"></input><button class="add_comment" data-bind="click: add">ADD</button>

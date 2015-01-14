@@ -49,11 +49,11 @@ define(['plugins/router', 'cloudberry/config', 'cloudberry/session', 'cloudberry
                 $container.slideDown();
                 $activeDetails = $container;
 
-                fs.itemInfo(item.id, uif.getItemDetailsRequestData(item)).done(function(r) {
+                fs.itemInfo(item.id, uif.itemDetails.getRequestData(item)).done(function(r) {
                     itemDetails.loading(false);
                     itemDetails.data(r);
 
-                    var d = uif.getItemDetails(item, r);
+                    var d = uif.itemDetails.get(item, r);
                     itemDetails.details(d);
                     itemDetails.activeDetails((d && d.length > 0) ? d[0] : null);
                 });

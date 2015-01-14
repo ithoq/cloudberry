@@ -2,6 +2,7 @@
 
 namespace Cloudberry\Core\Filesystem;
 
+use \Cloudberry\Core\Facades\Cloudberry;
 use \Cloudberry\Core\Permissions\PermissionController;
 
 class FilesystemController {
@@ -115,6 +116,8 @@ class FilesystemController {
 			$result["size"] = $item->getSize();
 		}
 		$result["last_modified"] = $item->getLastModified()->toDateTimeString();
+
+		$result = array_merge($result, Cloudberry::getItemDetails($item, $data));
 
 		return $result;
 	}

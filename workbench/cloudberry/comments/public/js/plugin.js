@@ -9,12 +9,12 @@ define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core
         moduleId: 'cloudberry/comments/config',
     });
 
-    uif.registerItemDetailsHandler({
+    uif.itemDetails.registerProvider({
         id: 'cloudberry/comments',
-        getItemDetailsRequestData : function(item) {
-            return {foo: "bar"}
+        getRequestData: function(item) {
+            return true
         },
-        getItemDetails : function(item) {
+        get: function(item) {
             return {
                 titleKey: "comments.itemdetails.title",
                 module: 'cloudberry/comments/itemdetails'
@@ -23,27 +23,75 @@ define(['cloudberry/core', 'durandal/app', 'cloudberry/ui/files'], function(core
     });
 });
 
-define('cloudberry/comments/config', [], function() {
+define('cloudberry/comments/config', ['cloudberry/comments/repository'], function(repository) {
     return {
         activate: function() {
             console.log("comments/config");
         },
-        getView : function() {
+        getView: function() {
             //TODO util that resolves plugin url from "comments/public/templates/config"
             return '../../../workbench/cloudberry/comments/public/templates/config';
         }
     };
 });
 
-define('cloudberry/comments/itemdetails', [], function() {
+define('cloudberry/comments/itemdetails', ['cloudberry/comments/repository', 'knockout'], function(repository, ko) {
+    var model = {
+        item: null,
+        list: null,
+        comment: ko.observable(""),
+    };
+    var reload = function() {
+        repository.getCommentsForItem(model.item).done(function(c) {
+            model.list(c);
+        });
+    };
+
     return {
-        activate: function(d) {
+        activate: function(p) {
             console.log("comments/itemdetails");
-            console.log(d);
+            var data = p.data();
+            console.log(data);
+
+            var list = data.details && data.details["cloudberry/comments"] ? data.details["cloudberry/comments"] : null;
+            model.item = data.item;
+            model.list = ko.observableArray(list || []);
         },
-        getView : function() {
+        getView: function() {
             //TODO util that resolves plugin url from "comments/public/templates/itemdetails"
             return '../../../workbench/cloudberry/comments/public/templates/itemdetails';
+        },
+        model: model,
+        add: function() {
+            var c = model.comment();
+            if (!c) return;
+
+            repository.addItemComment(model.item, c).done(function() {
+                model.comment("");
+                reload();
+            })
+        }
+    };
+});
+
+define('cloudberry/comments/repository', ['cloudberry/service'], function(service) {
+    var cs = service.get("comments/v1/");
+    return {
+        getCommentsForItem: function(item) {
+            return cs.get("items/" + item.id);
+        },
+        addItemComment: function(item, comment) {
+            return cs.post("items/" + item.id, {
+                comment: comment
+            });
+        },
+        editComment: function(id, newComment) {
+            return cs.put(id, {
+                comment: newComment
+            });
+        },
+        removeItemComment: function(item, comment) {
+            return cs.del("items/" + item.id + "/" + comment.id);
         }
     };
 });
